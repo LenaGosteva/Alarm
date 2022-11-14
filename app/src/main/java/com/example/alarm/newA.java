@@ -21,21 +21,28 @@ import android.widget.Toast;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
+import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
 public class newA extends AppCompatActivity {
     Button setAlarm;
+    Button plus;
+    Calendar calendar;
+    String t;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-        
+
         setAlarm = findViewById(R.id.alarm_button);
+        plus = findViewById(R.id.button6);
+
+
         setAlarm.setOnClickListener(v -> {
-            MaterialTimePicker Time= new MaterialTimePicker.Builder()
+            MaterialTimePicker Time = new MaterialTimePicker.Builder()
                     .setTimeFormat(TimeFormat.CLOCK_24H)
                     .setHour(12)
                     .setMinute(0)
@@ -43,24 +50,38 @@ public class newA extends AppCompatActivity {
                     .build();
 
             Time.addOnPositiveButtonClickListener(view -> {
-                Calendar calendar = Calendar.getInstance();
+                calendar = Calendar.getInstance();
                 calendar.set(Calendar.SECOND, 0);
                 calendar.set(Calendar.MILLISECOND, 0);
                 calendar.set(Calendar.MINUTE, Time.getMinute());
                 calendar.set(Calendar.HOUR_OF_DAY, Time.getHour());
 
-                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-                AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent());
-
-                alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent());
-                Toast.makeText(this, "Будильник установлен на " + sdf.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
             });
 
             Time.show(getSupportFragmentManager(), "tag_picker");
         });
 
+        plus.setOnClickListener(v -> {
+            Intent intent = new Intent(newA.this, MainActivity.class);
+            Intent intent1 = new Intent(newA.this, Alarm.class);
+
+            intent.putExtra("time", sdf.format(calendar.getTime()).toString());
+            intent1.putExtra("time", sdf.format(calendar.getTime()).toString());
+
+            startActivity(intent);
+
+
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+            AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent());
+
+            alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent());
+            Toast.makeText(this, "Будильник установлен на " + sdf.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
+        });
     }
+
     private PendingIntent getAlarmInfoPendingIntent() {
         Intent alarmInfoIntent = new Intent(this, MainActivity.class);
         alarmInfoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
