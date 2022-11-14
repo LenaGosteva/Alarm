@@ -6,6 +6,7 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 
 public class Alarm extends AppCompatActivity {
     Ringtone ringtone;
@@ -22,13 +23,13 @@ public class Alarm extends AppCompatActivity {
         if (ringtone != null) {
             ringtone.play();
         }
-    }
 
-    @Override
-    protected void onDestroy() {
+    }
+    public void off(View view) {
         if (ringtone != null && ringtone.isPlaying()) {
             ringtone.stop();
         }
         super.onDestroy();
     }
+
 }

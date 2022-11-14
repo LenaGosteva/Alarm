@@ -40,7 +40,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void settings(View view) {
-        Intent intent = new Intent(MainActivity.this, Settings.class);
+        Intent intent = new Intent(MainActivity.this, Alarm.class);
         startActivity(intent);
     }
+
+
 }
