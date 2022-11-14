@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".newA"
+    android:orientation="vertical">
+    <Button
+        android:id="@+id/backL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="250dp"
+        android:layout_marginTop="0dp"
+        android:backgroundTint="#681818"
+        android:minHeight="48dp"
+        android:onClick="back"
+        android:text="НАЗАД"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <EditText
+        android:id="@+id/editTextTime"
+        android:layout_width="257dp"
+        android:layout_height="81dp"
+        android:ems="10"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="40dp"
+        android:inputType="time"
+        />
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="МЕЛОДИЯ"
+        app:iconTint="#E8D6D6"
+        android:onClick="music"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="40dp"/>
+
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="ВИБРАЦИЯ"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="40dp"
+        />
+
+    <Switch
+        android:id="@+id/switch2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minHeight="48dp"
+        android:text="УСИЛЕНИЕ ЗВУКА"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="40dp"/>
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ГРОМКОСТЬ"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="40dp" />
+
+    <SeekBar
+        android:id="@+id/seekBar4"
+        android:layout_width="325dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="0dp"
+        android:max="9"
+
+        android:min="1" />
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="40dp"
+        android:text="ИНТЕРВАЛ ПОВТОРОВ" />
+
+    <SeekBar
+        android:id="@+id/seekBar2"
+        android:layout_width="325dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="0dp"
+        android:max="9"
+        android:min="1" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="325dp"
+        android:layout_height="125dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="20dp"
+        android:hint="ПРИМЕЧАНИЕ"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:text="+"
+        android:layout_marginTop="0dp"
+        android:layout_marginLeft="250dp"/>
+
+</LinearLayout>
