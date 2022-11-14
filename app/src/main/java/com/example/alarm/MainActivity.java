@@ -21,16 +21,11 @@ import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
-    Button setAlarm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-
-        setAlarm = findViewById(R.id.alarm_button);
 
     }
 
