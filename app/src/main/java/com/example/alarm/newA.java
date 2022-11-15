@@ -3,10 +3,13 @@ package com.example.alarm;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.Ringtone;
+import android.media.RingtoneManager;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.renderscript.ScriptGroup;
 import android.view.Menu;
@@ -15,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupMenu;
+import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -24,27 +28,28 @@ import com.google.android.material.timepicker.TimeFormat;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 public class newA extends AppCompatActivity {
     Button setAlarm;
     Button plus;
+    Switch vib;
+    public static boolean vibr = false;
     Calendar calendar;
-    String t;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-
         setAlarm = findViewById(R.id.alarm_button);
         plus = findViewById(R.id.button6);
-
+        vib = findViewById(R.id.vibration);
 
         setAlarm.setOnClickListener(v -> {
             MaterialTimePicker Time = new MaterialTimePicker.Builder()
                     .setTimeFormat(TimeFormat.CLOCK_24H)
-                    .setHour(12)
+                    .setHour(0)
                     .setMinute(0)
                     .setTitleText("Выберите время для будильника")
                     .build();
@@ -56,23 +61,22 @@ public class newA extends AppCompatActivity {
                 calendar.set(Calendar.MINUTE, Time.getMinute());
                 calendar.set(Calendar.HOUR_OF_DAY, Time.getHour());
 
+                setAlarm.setTextSize(38);
+                setAlarm.setText(String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE)));
 
             });
-
             Time.show(getSupportFragmentManager(), "tag_picker");
+        });
+
+        vib.setOnClickListener(t -> {
+            vibr = true;
         });
 
         plus.setOnClickListener(v -> {
             Intent intent = new Intent(newA.this, MainActivity.class);
-            Intent intent1 = new Intent(newA.this, Alarm.class);
 
-            intent.putExtra("time", sdf.format(calendar.getTime()).toString());
-            intent1.putExtra("time", sdf.format(calendar.getTime()).toString());
 
             startActivity(intent);
-
-
-
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
             AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent());
