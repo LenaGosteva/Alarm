@@ -37,6 +37,8 @@ public class newA extends AppCompatActivity {
     Switch vib;
     public static boolean vibr = false;
     Calendar calendar;
+    protected boolean alarm;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +47,7 @@ public class newA extends AppCompatActivity {
         setAlarm = findViewById(R.id.alarm_button);
         plus = findViewById(R.id.button6);
         vib = findViewById(R.id.vibration);
+        vib.setChecked(bool());
 
         setAlarm.setOnClickListener(v -> {
             MaterialTimePicker Time = new MaterialTimePicker.Builder()
@@ -64,6 +67,7 @@ public class newA extends AppCompatActivity {
 
             });
             Time.show(getSupportFragmentManager(), "tag_picker");
+            alarm = true;
         });
 
         vib.setOnClickListener(t -> {
@@ -71,17 +75,23 @@ public class newA extends AppCompatActivity {
         });
 
         plus.setOnClickListener(v -> {
+
+            if(alarm) {
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+                AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent());
+
+                alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent());
+                Toast.makeText(this, "Будильник установлен на " + sdf.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
+            }
             Intent intent = new Intent(newA.this, MainActivity.class);
-
-
             startActivity(intent);
-            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-            AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent());
-
-            alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent());
-            Toast.makeText(this, "Будильник установлен на " + sdf.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
         });
+    }
+
+    private boolean bool() {
+        if(getIntent().getStringExtra("vibration") == "true") return true;
+        return false;
     }
 
     private PendingIntent getAlarmInfoPendingIntent() {

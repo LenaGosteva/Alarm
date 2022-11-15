@@ -30,20 +30,22 @@
 
 
     <Switch
-        android:id="@+id/switch3"
+        android:id="@+id/vibrationS"
         android:layout_width="166dp"
         android:layout_height="48dp"
         android:layout_marginLeft="40dp"
         android:layout_marginTop="50dp"
-        android:text="ВИБРАЦИЯ"></Switch>
+        android:text="ВИБРАЦИЯ"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
     <Switch
         android:id="@+id/switch4"
         android:layout_width="185dp"
         android:layout_height="48dp"
-        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="0dp"
-        android:text="УСИЛЕНИЕ ЗВУКА" />
+        android:text="УСИЛЕНИЕ ЗВУКА"
+        tools:ignore="UseSwitchCompatOrMaterialXml" />
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
@@ -107,6 +109,19 @@
         android:minHeight="48dp"
         android:onClick="back"
         android:text="НАЗАД"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+    <Button
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="100dp"
+        android:layout_marginTop="-50dp"
+        android:backgroundTint="#681818"
+        android:minHeight="48dp"
+        android:text="СОХРАНИТЬ"
+        android:onClick="save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
