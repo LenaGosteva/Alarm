@@ -89,7 +89,7 @@ public class newA extends AppCompatActivity {
         });
     }
 
-    private boolean bool() {
+    public boolean bool() {
         if(getIntent().getBooleanExtra("vibration", newA.vibr)) return true;
         return false;
     }

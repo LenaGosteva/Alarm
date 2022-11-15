@@ -29,9 +29,9 @@
         android:textColor="@color/white"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="0dp"
-        android:textSize="90dp"
+        android:textSize="60dp"
         android:inputType="time"
-        tools:hint="10.02"
+        tools:hint="10.02.02"
         android:gravity="center"/>
 
 

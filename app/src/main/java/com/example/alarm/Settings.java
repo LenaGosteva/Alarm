@@ -27,13 +27,17 @@ public class Settings extends AppCompatActivity {
         save = findViewById(R.id.save);
         setContentView(R.layout.activity_settings);
         vib = findViewById(R.id.vibrationS);
+        vib.setChecked(bool());
         vib.setOnClickListener(t -> {
             newA.vibr = true;
         });
 
     }
 
-
+    protected boolean bool() {
+        if(getIntent().getBooleanExtra("vibration", newA.vibr)) return true;
+        return false;
+    }
 
     public void music(View view) {
         Intent intent = new Intent(Settings.this, Music.class);
@@ -48,7 +52,11 @@ public class Settings extends AppCompatActivity {
             SharedPreferences.Editor mEditor = mSharedPref.edit();
             mEditor.putBoolean("vibr", newA.vibr);
             mEditor.commit();
+
+
             intent = new Intent(Settings.this, newA.class);
             intent.putExtra("vibration", newA.vibr);
+            Intent intentA = new Intent(Settings.this, MainActivity.class);
+            startActivity(intentA);
     }
 }

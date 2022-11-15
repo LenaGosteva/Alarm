@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 text = findViewById(R.id.textt);
                 date = Calendar.getInstance();
-                text.setText(String.valueOf(date.getTime().getHours()+":"+date.getTime().getMinutes()));
+                text.setText(String.valueOf(sdf.format(date.getTime())));
             }
         }, 0, 1, TimeUnit.MILLISECONDS);
 

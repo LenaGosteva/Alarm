@@ -13,8 +13,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
@@ -33,17 +35,17 @@ public class Alarm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
 
-
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
 
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 textView = findViewById(R.id.text);
                 date = Calendar.getInstance();
-                textView.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);//вывод текста
-                textView.setText(String.valueOf(date.get(Calendar.HOUR_OF_DAY))+":"+(date.get(Calendar.MINUTE)));
+                textView.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
+                textView.setText(String.valueOf(sdf.format(date.getTime())));
             }
-        }, 0, 1, TimeUnit.MILLISECONDS);
+        }, 0, 1, TimeUnit.SECONDS);
 
 
 
@@ -57,6 +59,7 @@ public class Alarm extends AppCompatActivity {
         if (ringtone != null) {
             ringtone.play();
         }
+
         if(vibr){
             intentVibrate = new Intent(getApplicationContext(),VibrateService.class);
             startService(intentVibrate);
