@@ -49,6 +49,6 @@ public class Settings extends AppCompatActivity {
             mEditor.putBoolean("vibr", newA.vibr);
             mEditor.commit();
             intent = new Intent(Settings.this, newA.class);
-            intent.putExtra("vibration", String.valueOf(newA.vibr));
+            intent.putExtra("vibration", newA.vibr);
     }
 }
