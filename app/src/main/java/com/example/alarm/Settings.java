@@ -1,5 +1,7 @@
 package com.example.alarm;
 
+import static java.lang.Boolean.getBoolean;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,7 +29,9 @@ public class Settings extends AppCompatActivity {
         save = findViewById(R.id.save);
         setContentView(R.layout.activity_settings);
         vib = findViewById(R.id.vibrationS);
-        vib.setChecked(bool());
+
+
+        vib.setChecked(getBoolean("vibr"));
         vib.setOnClickListener(t -> {
             newA.vibr = true;
         });
@@ -52,11 +56,20 @@ public class Settings extends AppCompatActivity {
             SharedPreferences.Editor mEditor = mSharedPref.edit();
             mEditor.putBoolean("vibr", newA.vibr);
             mEditor.commit();
-
-
-            intent = new Intent(Settings.this, newA.class);
-            intent.putExtra("vibration", newA.vibr);
+//
+//            intent = new Intent(Settings.this, newA.class);
+//            intent.putExtra("vibration", newA.vibr);
             Intent intentA = new Intent(Settings.this, MainActivity.class);
             startActivity(intentA);
     }
+    @Override
+    protected void onPause() {
+
+        mSharedPref = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor mEditor = mSharedPref.edit();
+        mEditor.putBoolean("vibr", newA.vibr);
+        mEditor.apply();
+        super.onPause();
+    }
+
 }

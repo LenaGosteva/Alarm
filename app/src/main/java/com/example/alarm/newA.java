@@ -1,5 +1,7 @@
 package com.example.alarm;
 
+import static java.lang.Boolean.getBoolean;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -47,7 +49,7 @@ public class newA extends AppCompatActivity {
         setAlarm = findViewById(R.id.alarm_button);
         plus = findViewById(R.id.button6);
         vib = findViewById(R.id.vibration);
-        vib.setChecked(bool());
+        vib.setChecked(getBoolean("vibr"));
 
         setAlarm.setOnClickListener(v -> {
             MaterialTimePicker Time = new MaterialTimePicker.Builder()
@@ -63,7 +65,7 @@ public class newA extends AppCompatActivity {
                 calendar.set(Calendar.HOUR_OF_DAY, Time.getHour());
 
                 setAlarm.setTextSize(38);
-                setAlarm.setText(String.valueOf(calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.MINUTE)));
+                setAlarm.setText(sdf.format(calendar.getTime()));
 
             });
             Time.show(getSupportFragmentManager(), "tag_picker");
