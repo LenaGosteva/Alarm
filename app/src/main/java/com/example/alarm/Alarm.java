@@ -25,7 +25,7 @@ public class Alarm extends AppCompatActivity {
 
     TextView textView;
     Calendar date;
-
+    Intent intentVibrate;
 
 
     @Override
@@ -58,7 +58,7 @@ public class Alarm extends AppCompatActivity {
             ringtone.play();
         }
         if(vibr){
-            Intent intentVibrate = new Intent(getApplicationContext(),VibrateService.class);
+            intentVibrate = new Intent(getApplicationContext(),VibrateService.class);
             startService(intentVibrate);
         }
 
@@ -67,6 +67,7 @@ public class Alarm extends AppCompatActivity {
         if (ringtone != null && ringtone.isPlaying()) {
             ringtone.stop();
         }
+        stopService(intentVibrate);
         super.onDestroy();
     }
 //    protected static String beautiful(String s){

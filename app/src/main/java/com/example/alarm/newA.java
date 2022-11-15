@@ -56,8 +56,6 @@ public class newA extends AppCompatActivity {
 
             Time.addOnPositiveButtonClickListener(view -> {
                 calendar = Calendar.getInstance();
-                calendar.set(Calendar.SECOND, 0);
-                calendar.set(Calendar.MILLISECOND, 0);
                 calendar.set(Calendar.MINUTE, Time.getMinute());
                 calendar.set(Calendar.HOUR_OF_DAY, Time.getHour());
 

@@ -13,14 +13,8 @@ public class VibrateService extends Service {
     public void onStart(Intent intent, int startId) {
 
         super.onStart(intent, startId);
-
         Vibrator vibrator = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-
-        //Указываем длительность вибрации в миллисекундах,
-        //в нашем примере будет вибро-сигнал длительностью в 2 секунды
-        vibrator.vibrate(2000);
-
-        Toast.makeText(getApplicationContext(), "Вибрация активирована", Toast.LENGTH_LONG).show();
+        vibrator.vibrate(5000);
     }
 
     @Override
