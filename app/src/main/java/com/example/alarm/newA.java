@@ -14,6 +14,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.renderscript.ScriptGroup;
 import android.view.Menu;
@@ -46,7 +47,7 @@ public class newA extends AppCompatActivity {
     SharedPreferences prefs;
     AudioManager audioManager;
     public static float progress;
-
+    int curValue, maxVolume;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +62,9 @@ public class newA extends AppCompatActivity {
         plus = findViewById(R.id.button6);
         volume = findViewById(R.id.volumeControl);
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        int curValue = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        volume.setMax(100);
-        volume.setProgress(curValue);
-
+        curValue = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        volume.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
         volume.setProgress(prefs.getInt("vol", volume.getProgress()));
 
         boolean vibSwitchState = prefs.getBoolean("vibr", true);
@@ -79,8 +79,8 @@ public class newA extends AppCompatActivity {
         volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
-                newA.progress = volume.getProgress();
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, maxVolume);
+                newA.progress = progress;
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -93,9 +93,9 @@ public class newA extends AppCompatActivity {
         });
         setAlarm.setOnClickListener(v -> {
             MaterialTimePicker Time = new MaterialTimePicker.Builder()
-                    .setTimeFormat(TimeFormat.CLOCK_24H)
-                    .setHour(Calendar.HOUR_OF_DAY)
-                    .setMinute(Calendar.MINUTE)
+                    .setTimeFormat(TimeFormat.CLOCK_12H)
+                    .setHour(0)
+                    .setMinute(0)
                     .setTitleText("Выберите время для будильника")
                     .build();
 
@@ -118,6 +118,14 @@ public class newA extends AppCompatActivity {
                 Settings.vibr = true; }
             else{
                 Settings.vibr = false;
+            }
+        });
+        loudNew.setOnClickListener(k->{
+            if(loudNew.isChecked()){
+                loudNew.isChecked();
+                Settings.loudB = true; }
+            else{
+                Settings.loudB = false;
             }
         });
         

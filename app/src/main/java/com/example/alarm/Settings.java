@@ -40,15 +40,17 @@ public class Settings extends AppCompatActivity {
         loud = findViewById(R.id.moreLoudS);
         volumeControl = findViewById(R.id.volumeControlS);
 
+
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
         curValue = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        volumeControl.setMax(100);
+        volumeControl.setMax(maxVolume);
         volumeControl.setProgress(curValue);
         volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
+
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, Settings.volumeControl.getProgress());
 
             }
             @Override
@@ -77,7 +79,16 @@ public class Settings extends AppCompatActivity {
             loud.isChecked();
             loudB = true;
         });
+        save.setOnClickListener(save -> {
+                SharedPreferences.Editor ed = getSharedPreferences("test", Context.MODE_PRIVATE).edit();
 
+                ed.putBoolean("vibr", vib.isChecked());
+                ed.putBoolean("loud", loud.isChecked());
+                ed.putInt("vol", volumeControl.getProgress());
+                ed.apply();
+                Toast.makeText(this, "Настройки по умолчанию сохранены", Toast.LENGTH_SHORT).show();
+
+        });
 
     }
 
@@ -88,27 +99,5 @@ public class Settings extends AppCompatActivity {
     public void back(View view) {
         Intent intent = new Intent(Settings.this, MainActivity.class);
         startActivity(intent);}
-
-    public void save(View view) {
-        SharedPreferences.Editor ed = getSharedPreferences("test", Context.MODE_PRIVATE).edit();
-
-        ed.putBoolean("vibr", vib.isChecked());
-        ed.putBoolean("loud", loud.isChecked());
-        ed.putInt("vol", volumeControl.getProgress());
-        ed.apply();
-
-        Intent intentA = new Intent(Settings.this, MainActivity.class);
-        startActivity(intentA);
-    }
-
-//        protected void onPause () {
-//            super.onPause();
-//
-//            SharedPreferences.Editor ed = getSharedPreferences("test", Context.MODE_PRIVATE).edit();
-//            ed.putBoolean("vibr", vib.isChecked());
-//            ed.putBoolean("loud", loud.isChecked());
-//
-//            ed.apply();
-//        }
 
 }

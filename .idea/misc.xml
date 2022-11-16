@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/drawable/button.xml" value="0.2285" />
+        <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/drawable/buttons.xml" value="0.2285" />
+        <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2285" />
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/drawable/mask.xml" value="0.2285" />
-        <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/layout/activity_alarm.xml" value="0.1" />
+        <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/layout/activity_alarm.xml" value="0.152" />
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/layout/activity_music.xml" value="0.2604166666666667" />
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/layout/activity_new.xml" value="0.176" />

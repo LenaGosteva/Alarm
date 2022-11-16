@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 public class VibrateService extends Service {
     Vibrator vibrator;
 
+
     @Override
     public void onStart(Intent intent, int startId) {
 

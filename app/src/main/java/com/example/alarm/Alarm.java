@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
+import android.media.VolumeProvider;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +33,8 @@ public class Alarm extends AppCompatActivity {
     Calendar date;
     Intent intentVibrate;
     Uri notif;
+    AudioManager audioManager;
+
     SharedPreferences prefs;
     @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
@@ -55,13 +58,10 @@ public class Alarm extends AppCompatActivity {
         }, 0, 1, TimeUnit.SECONDS);
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
 
-
-
         notif = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         ringtone = RingtoneManager.getRingtone(this, notif);
-
+        ringtone.setVolume(newA.progress);
         if (ringtone == null) {
-            ringtone.setVolume(newA.progress);
             notif = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
             ringtone = RingtoneManager.getRingtone(this, notif);
 
@@ -75,12 +75,15 @@ public class Alarm extends AppCompatActivity {
             startService(intentVibrate);
         }
 
+        if(Settings.loudB){
+
+        }
+
     }
     public void off(View view) {
         stopService(intentVibrate);
         if (ringtone != null && ringtone.isPlaying()) {
             ringtone.stop();
-
         }
 
         super.onDestroy();
