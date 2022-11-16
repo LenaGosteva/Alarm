@@ -62,11 +62,12 @@ public class newA extends AppCompatActivity {
         plus = findViewById(R.id.button6);
         volume = findViewById(R.id.volumeControl);
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        curValue = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        volume.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-        volume.setProgress(prefs.getInt("vol", volume.getProgress()));
+        curValue = audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
 
+        volume.setMin(0);
+
+        volume.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
+        volume.setProgress(prefs.getInt("vol", volume.getProgress()));
         boolean vibSwitchState = prefs.getBoolean("vibr", true);
         boolean loudSwitchState = prefs.getBoolean("loud", true);
 
@@ -79,7 +80,7 @@ public class newA extends AppCompatActivity {
         volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, maxVolume);
+                audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, progress, audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
                 newA.progress = progress;
             }
             @Override

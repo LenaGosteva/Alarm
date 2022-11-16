@@ -6,6 +6,7 @@ import static java.lang.Boolean.valueOf;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -24,13 +25,14 @@ import android.widget.Toast;
 
 public class Settings extends AppCompatActivity {
     Intent intentVibrate;
-    int curValue, maxVolume;
+    static int curValue, maxVolume;
     public static Switch vib, loud;
     Button save;
     public static SeekBar volumeControl;
     public static SharedPreferences prefs;
     AudioManager audioManager;
     public static boolean vibr = true, loudB = true;
+    @SuppressLint("ServiceCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,16 +43,17 @@ public class Settings extends AppCompatActivity {
         volumeControl = findViewById(R.id.volumeControlS);
 
 
-        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        curValue = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        audioManager = (AudioManager) getSystemService(Context.ALARM_SERVICE);
+        maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM);
+        curValue = audioManager.getStreamVolume(AudioManager.STREAM_ALARM);
         volumeControl.setMax(maxVolume);
+        volumeControl.setMin(0);
         volumeControl.setProgress(curValue);
         volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, Settings.volumeControl.getProgress());
+                audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, progress, Settings.volumeControl.getProgress());
 
             }
             @Override

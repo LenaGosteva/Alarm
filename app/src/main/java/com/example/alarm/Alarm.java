@@ -14,6 +14,7 @@ import android.media.VolumeProvider;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ public class Alarm extends AppCompatActivity {
     Calendar date;
     Intent intentVibrate;
     Uri notif;
-    AudioManager audioManager;
+    protected static float d;
 
     SharedPreferences prefs;
     @RequiresApi(api = Build.VERSION_CODES.P)
@@ -58,12 +59,10 @@ public class Alarm extends AppCompatActivity {
         }, 0, 1, TimeUnit.SECONDS);
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
 
-        notif = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
-        ringtone = RingtoneManager.getRingtone(this, notif);
-        ringtone.setVolume(newA.progress);
         if (ringtone == null) {
-            notif = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+            notif = RingtoneManager.getDefaultUri(AudioManager.STREAM_ALARM);
             ringtone = RingtoneManager.getRingtone(this, notif);
+            ringtone.setVolume(newA.progress);
 
         }
         if (ringtone != null) {
@@ -77,6 +76,18 @@ public class Alarm extends AppCompatActivity {
 
         if(Settings.loudB){
 
+            Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
+
+                @Override
+                public void run() {
+                     d = ringtone.getVolume();
+                     while (d<Settings.maxVolume) {
+                         d += 2.5;
+                         ringtone.setVolume(d);
+                     }
+                }
+
+            }, 0, 2, TimeUnit.SECONDS);
         }
 
     }
