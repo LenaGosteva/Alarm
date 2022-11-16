@@ -2,11 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.alarm">
-    <uses-permission android:name="android.permission.VIBRATE"/>
 
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <application
 
+    <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -16,7 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Alarm"
         tools:targetApi="31">
-        <service android:name=".VibrateService"/>
+
+        <service android:name=".VibrateService" />
+
         <activity
             android:name=".Settings"
             android:exported="false" />
@@ -36,4 +38,5 @@
             </intent-filter>
         </activity>
     </application>
+
 </manifest>

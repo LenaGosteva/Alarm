@@ -49,7 +49,7 @@
         />
 
     <Switch
-        android:id="@+id/switch2"
+        android:id="@+id/moreLoud"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:minHeight="48dp"
@@ -65,14 +65,11 @@
         android:layout_marginLeft="40dp" />
 
     <SeekBar
-        android:id="@+id/seekBar4"
+        android:id="@+id/volumeControl"
         android:layout_width="325dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="40dp"
-        android:layout_marginTop="0dp"
-        android:max="9"
-
-        android:min="1" />
+        android:layout_marginTop="0dp" />
 
 
     <TextView

@@ -1,13 +1,17 @@
 package com.example.alarm;
 
-import static com.example.alarm.newA.vibr;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -24,61 +28,61 @@ import java.util.concurrent.TimeUnit;
 
 public class Alarm extends AppCompatActivity {
     public static Ringtone ringtone;
-
     TextView textView;
     Calendar date;
     Intent intentVibrate;
-
-
+    Uri notif;
+    SharedPreferences prefs;
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
 
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
+            @RequiresApi(api = Build.VERSION_CODES.P)
             @Override
             public void run() {
                 textView = findViewById(R.id.text);
                 date = Calendar.getInstance();
                 textView.setTextAlignment(View.TEXT_ALIGNMENT_GRAVITY);
-                textView.setText(String.valueOf(sdf.format(date.getTime())));
+                textView.setText(sdf.format(date.getTime()));
+
             }
+
         }, 0, 1, TimeUnit.SECONDS);
+        prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
 
 
 
-        Uri notif = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        notif = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         ringtone = RingtoneManager.getRingtone(this, notif);
 
         if (ringtone == null) {
+            ringtone.setVolume(newA.progress);
             notif = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
             ringtone = RingtoneManager.getRingtone(this, notif);
+
         }
         if (ringtone != null) {
             ringtone.play();
         }
 
-        if(vibr){
-            intentVibrate = new Intent(getApplicationContext(),VibrateService.class);
+        if(Settings.vibr){
+            intentVibrate = new Intent(getApplicationContext(), VibrateService.class);
             startService(intentVibrate);
         }
 
     }
     public void off(View view) {
+        stopService(intentVibrate);
         if (ringtone != null && ringtone.isPlaying()) {
             ringtone.stop();
+
         }
-        stopService(intentVibrate);
+
         super.onDestroy();
     }
-//    protected static String beautiful(String s){
-//        String stmin = "";
-//        if (s.length() < 2){
-//            stmin= "0" + stmin;
-//        }
-//        return stmin;
-//    }
-
 }

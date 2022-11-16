@@ -5,6 +5,8 @@ import static java.lang.Boolean.getBoolean;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.app.AlarmManager;
@@ -20,6 +22,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupMenu;
+import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -36,26 +39,63 @@ import java.util.Locale;
 public class newA extends AppCompatActivity {
     Button setAlarm;
     Button plus;
-    Switch vib;
-    public static boolean vibr = false;
+    Switch vibNew, loudNew;
     Calendar calendar;
+    SeekBar volume;
     protected boolean alarm;
+    SharedPreferences prefs;
+    AudioManager audioManager;
+    public static float progress;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new);
+
+        prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
+
+
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         setAlarm = findViewById(R.id.alarm_button);
         plus = findViewById(R.id.button6);
-        vib = findViewById(R.id.vibration);
-        vib.setChecked(getBoolean("vibr"));
+        volume = findViewById(R.id.volumeControl);
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        int curValue = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        volume.setMax(100);
+        volume.setProgress(curValue);
 
+        volume.setProgress(prefs.getInt("vol", volume.getProgress()));
+
+        boolean vibSwitchState = prefs.getBoolean("vibr", true);
+        boolean loudSwitchState = prefs.getBoolean("loud", true);
+
+        vibNew = findViewById(R.id.vibration);
+        loudNew = findViewById(R.id.moreLoud);
+
+        vibNew.setChecked(vibSwitchState);
+        loudNew.setChecked(loudSwitchState);
+
+        volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
+                newA.progress = volume.getProgress();
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
         setAlarm.setOnClickListener(v -> {
             MaterialTimePicker Time = new MaterialTimePicker.Builder()
                     .setTimeFormat(TimeFormat.CLOCK_24H)
-                    .setHour(0)
-                    .setMinute(0)
+                    .setHour(Calendar.HOUR_OF_DAY)
+                    .setMinute(Calendar.MINUTE)
                     .setTitleText("Выберите время для будильника")
                     .build();
 
@@ -72,10 +112,15 @@ public class newA extends AppCompatActivity {
             alarm = true;
         });
 
-        vib.setOnClickListener(t -> {
-            vibr = true;
+        vibNew.setOnClickListener(t -> {
+            if(vibNew.isChecked()){
+                vibNew.isChecked();
+                Settings.vibr = true; }
+            else{
+                Settings.vibr = false;
+            }
         });
-
+        
         plus.setOnClickListener(v -> {
 
             if(alarm) {
@@ -89,11 +134,6 @@ public class newA extends AppCompatActivity {
             Intent intent = new Intent(newA.this, MainActivity.class);
             startActivity(intent);
         });
-    }
-
-    public boolean bool() {
-        if(getIntent().getBooleanExtra("vibration", newA.vibr)) return true;
-        return false;
     }
 
     private PendingIntent getAlarmInfoPendingIntent() {
