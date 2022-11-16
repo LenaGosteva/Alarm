@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,13 +26,14 @@ import android.widget.Toast;
 
 public class Settings extends AppCompatActivity {
     Intent intentVibrate;
-    static int curValue, maxVolume;
+    public static int curValue, maxVolume;
     public static Switch vib, loud;
     Button save;
-    public static SeekBar volumeControl;
+    @SuppressLint("StaticFieldLeak")
+    public static SeekBar volumeControl, minutes;
     public static SharedPreferences prefs;
     AudioManager audioManager;
-    public static boolean vibr = true, loudB = true;
+    public static boolean vibr = true, loudB = true, minut = false;
     @SuppressLint("ServiceCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,9 +43,8 @@ public class Settings extends AppCompatActivity {
         vib = findViewById(R.id.vibrationS);
         loud = findViewById(R.id.moreLoudS);
         volumeControl = findViewById(R.id.volumeControlS);
-
-
-        audioManager = (AudioManager) getSystemService(Context.ALARM_SERVICE);
+        minutes = findViewById(R.id.minuteIntS);
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM);
         curValue = audioManager.getStreamVolume(AudioManager.STREAM_ALARM);
         volumeControl.setMax(maxVolume);
@@ -52,7 +53,6 @@ public class Settings extends AppCompatActivity {
         volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
                 audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, progress, Settings.volumeControl.getProgress());
 
             }
@@ -65,7 +65,22 @@ public class Settings extends AppCompatActivity {
 
             }
         });
+        minutes.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                minutes.setProgress(progress);
+                if (progress!=0) minut = true;
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
         boolean vibSwitchState = prefs.getBoolean("vibr", vib.isChecked());
         boolean loudSwitchState = prefs.getBoolean("loud", loud.isChecked());
@@ -88,6 +103,7 @@ public class Settings extends AppCompatActivity {
                 ed.putBoolean("vibr", vib.isChecked());
                 ed.putBoolean("loud", loud.isChecked());
                 ed.putInt("vol", volumeControl.getProgress());
+                ed.putInt("min", minutes.getProgress());
                 ed.apply();
                 Toast.makeText(this, "Настройки по умолчанию сохранены", Toast.LENGTH_SHORT).show();
 

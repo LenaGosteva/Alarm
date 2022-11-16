@@ -31,12 +31,15 @@
         android:text="МЕЛОДИЯ"
         app:iconTint="#E8D6D6" />
 
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
     <Switch
         android:id="@+id/vibration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:minHeight="48dp"
         android:text="ВИБРАЦИЯ" />
 
@@ -44,10 +47,12 @@
         android:id="@+id/moreLoud"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="0dp"
         android:minHeight="48dp"
         android:text="УСИЛЕНИЕ ЗВУКА"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
+        tools:ignore="UseSwitchCompatOrMaterialXml" /></LinearLayout>
+
 
     <TextView
         android:id="@+id/textView2"
@@ -72,12 +77,14 @@
         android:text="ИНТЕРВАЛ ПОВТОРОВ" />
 
     <SeekBar
-        android:id="@+id/seekBar2"
+        android:id="@+id/minuteInt"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:max="9"
-        android:min="1" />
+        android:max="10"
+        android:min="1"
+        />
+
 
     <EditText
         android:id="@+id/editText"

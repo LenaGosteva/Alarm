@@ -29,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 
 
 public class Alarm extends AppCompatActivity {
+
     public static Ringtone ringtone;
     TextView textView;
     Calendar date;
@@ -67,6 +68,7 @@ public class Alarm extends AppCompatActivity {
         }
         if (ringtone != null) {
             ringtone.play();
+
         }
 
         if(Settings.vibr){
@@ -82,19 +84,34 @@ public class Alarm extends AppCompatActivity {
                 public void run() {
                      d = ringtone.getVolume();
                      while (d<Settings.maxVolume) {
-                         d += 2.5;
+                         d += 0.1;
+                         try {
+                             TimeUnit.SECONDS.sleep(TimeUnit.SECONDS.toSeconds(2));
+                         } catch (InterruptedException e) {
+                             e.printStackTrace();
+                         }
                          ringtone.setVolume(d);
                      }
                 }
 
             }, 0, 2, TimeUnit.SECONDS);
         }
+//        if(Settings.minut) {
+//            try {
+//                TimeUnit.MINUTES.wait(prefs.getLong("min", Settings.minutes.getProgress()));
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            Intent intent = new Intent(Alarm.this, Alarm.class);
+//            Settings.minut = false;
+//        }
 
     }
     public void off(View view) {
-        stopService(intentVibrate);
+
         if (ringtone != null && ringtone.isPlaying()) {
             ringtone.stop();
+            VibrateService.thread.stop();
         }
 
         super.onDestroy();

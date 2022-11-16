@@ -82,32 +82,27 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:layout_marginBottom="36dp"
             android:text="ИНТЕРВАЛ ПОВТОРОВ"
             app:layout_constraintBottom_toTopOf="@+id/seekBar3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_bias="1.0" />
-
         <SeekBar
-            android:id="@+id/seekBar5"
+            android:id="@+id/minuteIntS"
+            android:layout_marginTop="0dp"
+            style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:layout_marginBottom="72dp"
-            android:max="9"
+            android:max="10"
             android:min="1"
-            app:layout_constraintBottom_toTopOf="@+id/seekBar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.909"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
+            />
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
+            android:layout_marginTop="20dp"
             android:orientation="horizontal">
 
             <Button

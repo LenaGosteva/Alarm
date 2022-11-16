@@ -42,12 +42,12 @@ public class newA extends AppCompatActivity {
     Button plus;
     Switch vibNew, loudNew;
     Calendar calendar;
-    SeekBar volume;
+    SeekBar volume, minute;
     protected boolean alarm;
     SharedPreferences prefs;
     AudioManager audioManager;
     public static float progress;
-    int curValue, maxVolume;
+    int curValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,24 @@ public class newA extends AppCompatActivity {
         setAlarm = findViewById(R.id.alarm_button);
         plus = findViewById(R.id.button6);
         volume = findViewById(R.id.volumeControl);
+        minute = findViewById(R.id.minuteInt);
+        minute.setProgress(prefs.getInt("min", Settings.minutes.getProgress()));
+        minute.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (progress!=0) Settings.minut = true;
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         curValue = audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
 
