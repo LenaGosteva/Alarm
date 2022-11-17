@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     TextView text;
-    Calendar date;
+    public static Calendar date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
     };
     public void alarm(View view) {
+        CreateNewAlarm newAlarm = new CreateNewAlarm(Settings.progress, Settings.progressM, Settings.vibr, Settings.loudB);
         Intent intent = new Intent(MainActivity.this, newA.class);
+
         startActivity(intent);
     }
 

@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="36dp"
-            android:text="ИНТЕРВАЛ ПОВТОРОВ"
+            android:text="ИНТЕРВАЛ ПОВТОРА ПРИ ОТКЛАДЫВАНИИ"
             app:layout_constraintBottom_toTopOf="@+id/seekBar3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintVertical_bias="1.0" />

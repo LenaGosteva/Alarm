@@ -25,7 +25,8 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 public class Settings extends AppCompatActivity {
-    private static int progressM;
+    protected static int progressM;
+    protected static int progress;
     Intent intentVibrate;
     public static int curValue, maxVolume;
     public static Switch vib, loud;
@@ -34,7 +35,7 @@ public class Settings extends AppCompatActivity {
     public static SeekBar volumeControl, minutes;
     public static SharedPreferences prefs;
     AudioManager audioManager;
-    public static boolean vibr = true, loudB = true, minut;
+    public static boolean vibr = true, loudB = true, minut = true;
     @SuppressLint("ServiceCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,17 +46,18 @@ public class Settings extends AppCompatActivity {
         loud = findViewById(R.id.moreLoudS);
         volumeControl = findViewById(R.id.volumeControlS);
         minutes = findViewById(R.id.minuteIntS);
+
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
-        curValue = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
+        maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM);
+        curValue = audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
         volumeControl.setMax(maxVolume);
         volumeControl.setMin(0);
         volumeControl.setProgress(curValue);
         volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, Settings.volumeControl.getProgress());
-                newA.progress = progress;
+                audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, progress, Settings.volumeControl.getProgress());
+                Settings.progress = progress;
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -70,7 +72,7 @@ public class Settings extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progressM, boolean k) {
-                minutes.setProgress(progressM);
+                progressM = minutes.getProgress();
                 if (progressM!=0) minut = true;
             }
             @Override
@@ -88,7 +90,7 @@ public class Settings extends AppCompatActivity {
 
         vib.setChecked(vibSwitchState);
         loud.setChecked(loudSwitchState);
-
+        minutes.setProgress(prefs.getInt("min", progressM));
         vib.setOnClickListener(t -> {
             vib.isChecked();
             vibr = true;
@@ -100,11 +102,11 @@ public class Settings extends AppCompatActivity {
         });
         save.setOnClickListener(save -> {
                 SharedPreferences.Editor ed = getSharedPreferences("test", Context.MODE_PRIVATE).edit();
-
+                Settings.progressM = minutes.getProgress();
                 ed.putBoolean("vibr", vib.isChecked());
                 ed.putBoolean("loud", loud.isChecked());
                 ed.putInt("vol", volumeControl.getProgress());
-                ed.putInt("min", minutes.getProgress());
+                ed.putInt("min", progressM);
                 ed.apply();
                 Toast.makeText(this, "Настройки по умолчанию сохранены", Toast.LENGTH_SHORT).show();
 

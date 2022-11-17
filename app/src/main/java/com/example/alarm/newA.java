@@ -40,28 +40,24 @@ import java.util.Locale;
 public class newA extends AppCompatActivity {
     Button setAlarm;
     Button plus;
-    Switch vibNew, loudNew;
+    protected static Switch vibNew, loudNew;
     Calendar calendar;
     SeekBar volume, minute;
     protected boolean alarm;
     SharedPreferences prefs;
     AudioManager audioManager;
-    public static float progress;
     int curValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new);
-
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
 
 
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-        setAlarm = findViewById(R.id.alarm_button);
-        plus = findViewById(R.id.button6);
-        volume = findViewById(R.id.volumeControl);
         minute = findViewById(R.id.minuteInt);
+        minute.setProgress(prefs.getInt("min", Settings.progressM));
         minute.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -78,27 +74,19 @@ public class newA extends AppCompatActivity {
             }
         });
 
+
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        curValue = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-
+        curValue = audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
+        volume = findViewById(R.id.volumeControl);
         volume.setMin(0);
-
-        volume.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-        volume.setProgress(prefs.getInt("vol", Settings.volumeControl.getProgress()));
-        boolean vibSwitchState = prefs.getBoolean("vibr", true);
-        boolean loudSwitchState = prefs.getBoolean("loud", true);
-
-        vibNew = findViewById(R.id.vibration);
-        loudNew = findViewById(R.id.moreLoud);
-
-        vibNew.setChecked(vibSwitchState);
-        loudNew.setChecked(loudSwitchState);
-
+        volume.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
+        volume.setProgress(prefs.getInt("vol", Settings.progress));
         volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
-                newA.progress = progress;
+
+                audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, progress, audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
+                Settings.progress = progress;
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -109,11 +97,14 @@ public class newA extends AppCompatActivity {
 
             }
         });
+
+
+        setAlarm = findViewById(R.id.alarm_button);
         setAlarm.setOnClickListener(v -> {
             MaterialTimePicker Time = new MaterialTimePicker.Builder()
                     .setTimeFormat(TimeFormat.CLOCK_12H)
-                    .setHour(0)
-                    .setMinute(0)
+                    .setHour(MainActivity.date.get(Calendar.HOUR_OF_DAY))
+                    .setMinute(MainActivity.date.get(Calendar.MINUTE))
                     .setTitleText("Выберите время для будильника")
                     .build();
 
@@ -130,23 +121,29 @@ public class newA extends AppCompatActivity {
 
         });
 
+
+        boolean vibSwitchState = prefs.getBoolean("vibr", true);
+
+        vibNew = findViewById(R.id.vibration);
+        vibNew.setChecked(vibSwitchState);
         vibNew.setOnClickListener(t -> {
-            if(vibNew.isChecked()){
+            if(Settings.vibr){
                 vibNew.isChecked();
-                Settings.vibr = true; }
-            else{
-                Settings.vibr = false;
             }
         });
+
+
+        boolean loudSwitchState = prefs.getBoolean("loud", true);
+        loudNew = findViewById(R.id.moreLoud);
+        loudNew.setChecked(loudSwitchState);
         loudNew.setOnClickListener(k->{
-            if(loudNew.isChecked()){
+            if(Settings.loudB){
                 loudNew.isChecked();
-                Settings.loudB = true; }
-            else{
-                Settings.loudB = false;
             }
         });
-        
+
+
+        plus = findViewById(R.id.button6);
         plus.setOnClickListener(v -> {
 
             if(alarm) {
@@ -156,9 +153,13 @@ public class newA extends AppCompatActivity {
 
                 alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent());
                 Toast.makeText(this, "Будильник установлен на " + sdf.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
+
+            } else{
+                Toast.makeText(this, "Вы не можете установить будильник без времени", Toast.LENGTH_SHORT).show();
             }
             Intent intent = new Intent(newA.this, MainActivity.class);
             startActivity(intent);
+
         });
     }
 

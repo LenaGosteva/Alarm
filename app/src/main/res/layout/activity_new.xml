@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="16dp"
-        android:text="ИНТЕРВАЛ ПОВТОРОВ" />
+        android:text="ИНТЕРВАЛ ПОВТОРА ПРИ ОТКЛАДЫВАНИИ" />
 
     <SeekBar
         android:id="@+id/minuteInt"

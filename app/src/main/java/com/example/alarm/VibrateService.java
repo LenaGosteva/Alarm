@@ -16,8 +16,6 @@ public class VibrateService extends Service {
 
     @Override
     public void onStart(Intent intent, int startId) {
-        thread = new Thread();
-        thread.start();
         super.onStart(intent, startId);
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
 
@@ -29,7 +27,7 @@ public class VibrateService extends Service {
 
             }
 
-        }, 0, 2, TimeUnit.SECONDS);
+        } ,1, 10, TimeUnit.SECONDS);
 
     }
 
