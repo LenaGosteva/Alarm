@@ -1,8 +1,8 @@
 package com.example.alarm;
-
+import java.io.Serializable;
 import android.widget.SeekBar;
 
-public class CreateNewAlarm {
+public class CreateNewAlarm implements Serializable {
 
     private float minute;
     public float vol;

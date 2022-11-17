@@ -1,45 +1,32 @@
 package com.example.alarm;
 
-import static java.lang.Boolean.getBoolean;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.SharedPreferences;
-import android.media.AudioManager;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
+import android.content.SharedPreferences;
+import android.media.AudioManager;
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.PopupMenu;
 import android.widget.SeekBar;
 import android.widget.Switch;
-import android.widget.TimePicker;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 public class newA extends AppCompatActivity {
     Button setAlarm;
     Button plus;
+    @SuppressLint("StaticFieldLeak")
     protected static Switch vibNew, loudNew;
     Calendar calendar;
     SeekBar volume, minute;
@@ -55,6 +42,9 @@ public class newA extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
 
+
+        Intent intentMain = getIntent();
+        CreateNewAlarm newAlarm = (CreateNewAlarm) intentMain.getSerializableExtra("NewAlarm");
 
         minute = findViewById(R.id.minuteInt);
         minute.setProgress(prefs.getInt("min", Settings.progressM));
@@ -158,6 +148,11 @@ public class newA extends AppCompatActivity {
                 Toast.makeText(this, "Вы не можете установить будильник без времени", Toast.LENGTH_SHORT).show();
             }
             Intent intent = new Intent(newA.this, MainActivity.class);
+            newAlarm.more = loudNew.isChecked();
+            newAlarm.time = calendar.getTime().toString();
+            newAlarm.vib = vibNew.isChecked();
+            newAlarm.vol = Settings.progress;
+            intent.putExtra("CreatedNew", newAlarm);
             startActivity(intent);
 
         });
