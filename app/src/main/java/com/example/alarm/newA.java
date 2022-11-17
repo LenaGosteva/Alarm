@@ -80,12 +80,12 @@ public class newA extends AppCompatActivity {
         });
 
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        curValue = audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
+        curValue = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
 
         volume.setMin(0);
 
-        volume.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
-        volume.setProgress(prefs.getInt("vol", volume.getProgress()));
+        volume.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+        volume.setProgress(prefs.getInt("vol", Settings.volumeControl.getProgress()));
         boolean vibSwitchState = prefs.getBoolean("vibr", true);
         boolean loudSwitchState = prefs.getBoolean("loud", true);
 
@@ -98,7 +98,7 @@ public class newA extends AppCompatActivity {
         volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, progress, audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
                 newA.progress = progress;
             }
             @Override
@@ -125,10 +125,10 @@ public class newA extends AppCompatActivity {
 
                 setAlarm.setTextSize(38);
                 setAlarm.setText(sdf.format(calendar.getTime()));
-
+                alarm = true;
             });
             Time.show(getSupportFragmentManager(), "tag_picker");
-            alarm = true;
+
         });
 
         vibNew.setOnClickListener(t -> {

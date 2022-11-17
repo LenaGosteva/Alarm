@@ -33,7 +33,7 @@ public class Settings extends AppCompatActivity {
     public static SeekBar volumeControl, minutes;
     public static SharedPreferences prefs;
     AudioManager audioManager;
-    public static boolean vibr = true, loudB = true, minut = false;
+    public static boolean vibr = true, loudB = true, minut;
     @SuppressLint("ServiceCast")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,16 +45,16 @@ public class Settings extends AppCompatActivity {
         volumeControl = findViewById(R.id.volumeControlS);
         minutes = findViewById(R.id.minuteIntS);
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_ALARM);
-        curValue = audioManager.getStreamVolume(AudioManager.STREAM_ALARM);
+        maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        curValue = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         volumeControl.setMax(maxVolume);
         volumeControl.setMin(0);
         volumeControl.setProgress(curValue);
         volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, progress, Settings.volumeControl.getProgress());
-
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, Settings.volumeControl.getProgress());
+                newA.progress = progress;
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
