@@ -62,11 +62,10 @@ public class newA extends AppCompatActivity {
         plus = findViewById(R.id.button6);
         volume = findViewById(R.id.volumeControl);
         minute = findViewById(R.id.minuteInt);
-        minute.setProgress(prefs.getInt("min", Settings.minutes.getProgress()));
         minute.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean f) {
                 if (progress!=0) Settings.minut = true;
             }
             @Override

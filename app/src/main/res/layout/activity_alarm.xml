@@ -39,7 +39,8 @@
             android:text="ВЫКЛЮЧИТЬ" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/out"
+            android:onClick="out"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -49,6 +50,7 @@
             android:background="@drawable/buttons"
             android:text="ОТЛОЖИТЬ"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="OnClick" />
     </LinearLayout>
 </LinearLayout>

@@ -59,7 +59,7 @@ public class Alarm extends AppCompatActivity {
 
         }, 0, 1, TimeUnit.SECONDS);
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
-        notif = RingtoneManager.getDefaultUri(AudioManager.STREAM_RING);
+        notif = RingtoneManager.getDefaultUri(AudioManager.STREAM_MUSIC);
         ringtone = RingtoneManager.getRingtone(this, notif);
         ringtone.setVolume(newA.progress);
 
@@ -93,15 +93,7 @@ public class Alarm extends AppCompatActivity {
 
             }, 0, 3, TimeUnit.SECONDS);
         }
-        if(Settings.minut) {
-            try {
-                TimeUnit.MINUTES.wait(prefs.getLong("min", Settings.minutes.getProgress()));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Intent intent = new Intent(Alarm.this, Alarm.class);
-            Settings.minut = false;
-        }
+
 
     }
     public void off(View view) {
@@ -111,7 +103,18 @@ public class Alarm extends AppCompatActivity {
         if (ringtone != null && ringtone.isPlaying()) {
             ringtone.stop();
         }
-
         super.onDestroy();
+    }
+
+    public void out(View view) {
+        if(Settings.minut) {
+        try {
+            TimeUnit.MINUTES.wait(prefs.getLong("min", Settings.minutes.getProgress()));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Intent intent = new Intent(Alarm.this, Alarm.class);
+        Settings.minut = false;
+    }
     }
 }

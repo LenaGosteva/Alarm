@@ -25,6 +25,7 @@ import android.widget.Switch;
 import android.widget.Toast;
 
 public class Settings extends AppCompatActivity {
+    private static int progressM;
     Intent intentVibrate;
     public static int curValue, maxVolume;
     public static Switch vib, loud;
@@ -68,9 +69,9 @@ public class Settings extends AppCompatActivity {
         minutes.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                minutes.setProgress(progress);
-                if (progress!=0) minut = true;
+            public void onProgressChanged(SeekBar seekBar, int progressM, boolean k) {
+                minutes.setProgress(progressM);
+                if (progressM!=0) minut = true;
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
