@@ -160,16 +160,16 @@ public class newA extends AppCompatActivity {
         });
     }
 
-    private PendingIntent getAlarmInfoPendingIntent() {
-        Intent alarmInfoIntent = new Intent(this, MainActivity.class);
-        alarmInfoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        return PendingIntent.getActivity(this, 0, alarmInfoIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-    }
 
     private PendingIntent getAlarmActionPendingIntent() {
         Intent intent = new Intent(this, Alarm.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         return PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+    private PendingIntent getAlarmInfoPendingIntent() {
+        Intent alarmInfoIntent = new Intent(this, MainActivity.class);
+        alarmInfoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        return PendingIntent.getActivity(this, 0, alarmInfoIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
     public void music(View view) {
         Intent intent = new Intent(newA.this, Music.class);
