@@ -105,7 +105,9 @@ public class Alarm extends AppCompatActivity {
 
     }
     public void off(View view) {
-
+        if (Settings.vibr){
+            VibrateService.thread.stop();
+        }
         if (ringtone != null && ringtone.isPlaying()) {
             ringtone.stop();
         }
