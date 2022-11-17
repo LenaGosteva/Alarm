@@ -119,6 +119,7 @@ public class newA extends AppCompatActivity {
         vibNew.setOnClickListener(t -> {
             if(Settings.vibr){
                 vibNew.isChecked();
+                Settings.vibr = true;
             }
         });
 
@@ -129,6 +130,7 @@ public class newA extends AppCompatActivity {
         loudNew.setOnClickListener(k->{
             if(Settings.loudB){
                 loudNew.isChecked();
+                Settings.loudB = true;
             }
         });
 
@@ -148,9 +150,9 @@ public class newA extends AppCompatActivity {
                 Toast.makeText(this, "Вы не можете установить будильник без времени", Toast.LENGTH_SHORT).show();
             }
             Intent intent = new Intent(newA.this, MainActivity.class);
-            newAlarm.more = loudNew.isChecked();
+            newAlarm.more = Settings.loudB;
             newAlarm.time = calendar.getTime().toString();
-            newAlarm.vib = vibNew.isChecked();
+            newAlarm.vib = Settings.vibr;
             newAlarm.vol = Settings.progress;
             intent.putExtra("CreatedNew", newAlarm);
             startActivity(intent);

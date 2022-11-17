@@ -70,13 +70,12 @@ public class Alarm extends AppCompatActivity {
 
         }
 
-        if (newA.vibNew.isChecked()) {
+        if (Settings.vibr) {
             intentVibrate = new Intent(getApplicationContext(), VibrateService.class);
             startService(intentVibrate);
-
         }
 
-        if (newA.loudNew.isChecked()) {
+        if (Settings.loudB) {
 
             Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
 
