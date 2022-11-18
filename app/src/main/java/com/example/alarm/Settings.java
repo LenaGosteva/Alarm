@@ -27,16 +27,13 @@ import android.widget.Toast;
 public class Settings extends AppCompatActivity {
     protected static int progressM;
     protected static int progress;
-    Intent intentVibrate;
     public static int curValue, maxVolume;
     public static Switch vib, loud;
     Button save;
-    @SuppressLint("StaticFieldLeak")
     public static SeekBar volumeControl, minutes;
     public static SharedPreferences prefs;
     AudioManager audioManager;
-    public static boolean vibr = true, loudB = true, minut = true;
-    @SuppressLint("ServiceCast")
+    public static boolean vibr, loudB, minut;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,11 +50,12 @@ public class Settings extends AppCompatActivity {
         volumeControl.setMax(maxVolume);
         volumeControl.setMin(0);
         volumeControl.setProgress(curValue);
+
         volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, progress, Settings.volumeControl.getProgress());
-                Settings.progress = progress;
+                audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, progress, maxVolume);
+                volumeControl.setProgress(progress);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -65,7 +63,7 @@ public class Settings extends AppCompatActivity {
             }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                Settings.progress = volumeControl.getProgress();
             }
         });
         minutes.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -92,12 +90,10 @@ public class Settings extends AppCompatActivity {
         loud.setChecked(loudSwitchState);
         minutes.setProgress(prefs.getInt("min", progressM));
         vib.setOnClickListener(t -> {
-            vib.isChecked();
             vibr = true;
         });
 
         loud.setOnClickListener(k->{
-            loud.isChecked();
             loudB = true;
         });
         save.setOnClickListener(save -> {

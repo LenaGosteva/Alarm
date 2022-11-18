@@ -73,10 +73,10 @@ public class newA extends AppCompatActivity {
         volume.setProgress(prefs.getInt("vol", Settings.progress));
         volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            public void onProgressChanged(SeekBar seekBar, int progressv, boolean fromUser) {
 
-                audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, progress, audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
-                Settings.progress = progress;
+                audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, progressv, audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
+                volume.setProgress(progressv);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -84,7 +84,7 @@ public class newA extends AppCompatActivity {
             }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+                Settings.progress = volume.getProgress();
             }
         });
 
@@ -117,10 +117,7 @@ public class newA extends AppCompatActivity {
         vibNew = findViewById(R.id.vibration);
         vibNew.setChecked(vibSwitchState);
         vibNew.setOnClickListener(t -> {
-            if(Settings.vibr){
-                vibNew.isChecked();
-                Settings.vibr = true;
-            }
+            if (vibNew.isChecked()? (Settings.vibr = true) : (Settings.vibr = false));
         });
 
 
@@ -128,10 +125,7 @@ public class newA extends AppCompatActivity {
         loudNew = findViewById(R.id.moreLoud);
         loudNew.setChecked(loudSwitchState);
         loudNew.setOnClickListener(k->{
-            if(Settings.loudB){
-                loudNew.isChecked();
-                Settings.loudB = true;
-            }
+            if (loudNew.isChecked()? (Settings.loudB = true) : (Settings.loudB = false));
         });
 
 

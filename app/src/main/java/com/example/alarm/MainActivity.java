@@ -22,12 +22,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        text = findViewById(R.id.textt);
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                text = findViewById(R.id.textt);
+
                 date = Calendar.getInstance();
                 text.setText(sdf.format(date.getTime()));
             }
