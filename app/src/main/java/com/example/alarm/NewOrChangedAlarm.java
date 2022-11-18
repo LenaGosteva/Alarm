@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.alarm.databinding.ActivityMainBinding;
+import com.example.alarm.databinding.ActivityNewBinding;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
@@ -36,17 +36,16 @@ public class NewOrChangedAlarm extends AppCompatActivity {
     SharedPreferences prefs;
     AudioManager audioManager;
     int curValue;
-
+    private ActivityNewBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        com.example.alarm.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
+
+        binding = ActivityNewBinding.inflate(getLayoutInflater());
 
         setContentView(R.layout.activity_new);
         super.onCreate(savedInstanceState);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
-
 
         Intent intentMain = getIntent();
         CreateNewAlarm newAlarm = (CreateNewAlarm) intentMain.getSerializableExtra("NewAlarm");
@@ -154,7 +153,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
             newAlarm.time = calendar.getTime().toString();
             newAlarm.vib = Settings.isValumeCanVibr;
             newAlarm.vol = Settings.progress;
-
+//            newAlarm.textMessange = binding.textMessage.getText().toString();
 
         });
     }
