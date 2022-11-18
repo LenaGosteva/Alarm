@@ -1,6 +1,6 @@
 package com.example.alarm;
+
 import java.io.Serializable;
-import android.widget.SeekBar;
 
 public class CreateNewAlarm implements Serializable {
 
@@ -13,7 +13,7 @@ public class CreateNewAlarm implements Serializable {
     CreateNewAlarm (float vol, float minute, boolean vib, boolean more){
         this.vol = Settings.progress;
         this.minute = Settings.progressM;
-        this.vib = Settings.vibr;
-        this.more = Settings.loudB;
+        this.vib = Settings.isValumeCanVibr;
+        this.more = Settings.isValumeIncreasingGradually;
     }
 }

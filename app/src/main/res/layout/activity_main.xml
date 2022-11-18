@@ -10,15 +10,13 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/settingsMain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginTop="30dp"
-        android:layout_marginRight="20dp"
-        android:onClick="settings"
+        android:layout_marginEnd="20dp"
         android:text=  "НАСТРОЙКИ"
-        android:textSize="15dp"
         android:background="@drawable/buttons"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,12 +39,11 @@
 
 
     <Button
-        android:id="@+id/alarm_button"
+        android:id="@+id/plusMain"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
         android:layout_marginTop="220dp"
-        android:onClick="alarm"
         android:text="+"
         android:background="@drawable/buttons"
         app:layout_constraintBottom_toBottomOf="parent"

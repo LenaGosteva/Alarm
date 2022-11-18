@@ -1,39 +1,28 @@
 package com.example.alarm;
 
-import static java.lang.Boolean.getBoolean;
-import static java.lang.Boolean.valueOf;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.PopupMenu;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Settings extends AppCompatActivity {
     protected static int progressM;
     protected static int progress;
     public static int curValue, maxVolume;
-    public static Switch vib, loud;
+    protected static Switch vib, loud;
     Button save;
     public static SeekBar volumeControl, minutes;
-    public static SharedPreferences prefs;
+    public SharedPreferences prefs;
     AudioManager audioManager;
-    public static boolean vibr = false, loudB = false, minut;
+    public static boolean isValumeCanVibr, isValumeIncreasingGradually, minut;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,13 +79,14 @@ public class Settings extends AppCompatActivity {
         loud.setChecked(loudSwitchState);
         minutes.setProgress(prefs.getInt("min", progressM));
         vib.setOnClickListener(t -> {
-            if(vib.isChecked()) vibr = true;
-            else vibr = false;
+            if(vib.isChecked()) isValumeCanVibr= true;
+            else isValumeCanVibr= false;
         });
 
         loud.setOnClickListener(k->{
-            if(loud.isChecked()) loudB = true;
-            else loudB = false;
+
+            if(loud.isChecked()) isValumeIncreasingGradually = true;
+            else isValumeIncreasingGradually = false;
         });
         save.setOnClickListener(save -> {
                 SharedPreferences.Editor ed = getSharedPreferences("test", Context.MODE_PRIVATE).edit();

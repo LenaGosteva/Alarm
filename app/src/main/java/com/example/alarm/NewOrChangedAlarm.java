@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.alarm.databinding.ActivityMainBinding;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
@@ -26,7 +27,8 @@ import java.util.Locale;
 public class NewOrChangedAlarm extends AppCompatActivity {
     Button setAlarm;
     Button plus;
-    @SuppressLint("StaticFieldLeak")
+
+    @SuppressLint({"StaticFieldLeak", "UseSwitchCompatOrMaterialCode"})
     protected static Switch vibNew, loudNew;
     Calendar calendar;
     SeekBar volume, minute;
@@ -37,8 +39,11 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        com.example.alarm.databinding.ActivityMainBinding binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         setContentView(R.layout.activity_new);
+        super.onCreate(savedInstanceState);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
 
@@ -117,7 +122,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         vibNew = findViewById(R.id.vibration);
         vibNew.setChecked(vibSwitchState);
         vibNew.setOnClickListener(t -> {
-            if (vibNew.isChecked()? (Settings.vibr = true) : (Settings.vibr = false));
+            if (vibNew.isChecked()? (Settings.isValumeCanVibr = true) : (Settings.isValumeCanVibr = false));
         });
 
 
@@ -125,11 +130,11 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         loudNew = findViewById(R.id.moreLoud);
         loudNew.setChecked(loudSwitchState);
         loudNew.setOnClickListener(k->{
-            if (loudNew.isChecked()? (Settings.loudB = true) : (Settings.loudB = false));
+            if (loudNew.isChecked()? (Settings.isValumeIncreasingGradually = true) : (Settings.isValumeIncreasingGradually = false));
         });
 
 
-        plus = findViewById(R.id.button6);
+        plus = findViewById(R.id.createdNewAlarm);
         plus.setOnClickListener(v -> {
 
             if(alarm) {
@@ -145,9 +150,9 @@ public class NewOrChangedAlarm extends AppCompatActivity {
                 Toast.makeText(this, "Вы не можете установить будильник без времени", Toast.LENGTH_SHORT).show();
             }
 
-            newAlarm.more = Settings.loudB;
+            newAlarm.more = Settings.isValumeIncreasingGradually;
             newAlarm.time = calendar.getTime().toString();
-            newAlarm.vib = Settings.vibr;
+            newAlarm.vib = Settings.isValumeCanVibr;
             newAlarm.vol = Settings.progress;
 
 
@@ -155,11 +160,13 @@ public class NewOrChangedAlarm extends AppCompatActivity {
     }
 
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     private PendingIntent getAlarmActionPendingIntent() {
         Intent intent = new Intent(this, Alarm.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         return PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
+    @SuppressLint("UnspecifiedImmutableFlag")
     private PendingIntent getAlarmInfoPendingIntent() {
         Intent alarmInfoIntent = new Intent(this, MainActivity.class);
         alarmInfoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);

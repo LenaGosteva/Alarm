@@ -5,18 +5,13 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.AudioManager;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.SimpleDateFormat;
@@ -70,12 +65,12 @@ public class Alarm extends AppCompatActivity {
         if (ringtone != null) {
             ringtone.play();
         }
-        if (Settings.vibr){
+        if (Settings.isValumeCanVibr){
             intentVibrate = new Intent(getApplicationContext(), VibrateService.class);
             startService(intentVibrate);
         }
 
-        if (Settings.loudB) {
+        if (Settings.isValumeIncreasingGradually) {
 
             Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
 
