@@ -33,7 +33,7 @@ public class Settings extends AppCompatActivity {
     public static SeekBar volumeControl, minutes;
     public static SharedPreferences prefs;
     AudioManager audioManager;
-    public static boolean vibr, loudB, minut;
+    public static boolean vibr = false, loudB = false, minut;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,11 +90,13 @@ public class Settings extends AppCompatActivity {
         loud.setChecked(loudSwitchState);
         minutes.setProgress(prefs.getInt("min", progressM));
         vib.setOnClickListener(t -> {
-            vibr = true;
+            if(vib.isChecked()) vibr = true;
+            else vibr = false;
         });
 
         loud.setOnClickListener(k->{
-            loudB = true;
+            if(loud.isChecked()) loudB = true;
+            else loudB = false;
         });
         save.setOnClickListener(save -> {
                 SharedPreferences.Editor ed = getSharedPreferences("test", Context.MODE_PRIVATE).edit();

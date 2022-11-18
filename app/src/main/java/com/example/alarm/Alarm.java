@@ -70,6 +70,10 @@ public class Alarm extends AppCompatActivity {
         if (ringtone != null) {
             ringtone.play();
         }
+        if (Settings.vibr){
+            intentVibrate = new Intent(getApplicationContext(), VibrateService.class);
+            startService(intentVibrate);
+        }
 
         if (Settings.loudB) {
 
@@ -80,7 +84,7 @@ public class Alarm extends AppCompatActivity {
                 public void run() {
                     d = ringtone.getVolume();
                     while (d <= Settings.maxVolume) {
-                        d += 1.0;
+                        d += 60.0;
                         ringtone.setVolume(d);
                         try {
                             Thread.sleep(1000);
@@ -90,7 +94,7 @@ public class Alarm extends AppCompatActivity {
                     }
                 }
 
-            }, 0, 3, TimeUnit.SECONDS);
+            },1 ,2, TimeUnit.SECONDS);
         }
 
         off.setOnClickListener(off ->{
