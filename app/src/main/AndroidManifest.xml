@@ -23,7 +23,7 @@
             android:name=".Settings"
             android:exported="false" />
         <activity
-            android:name=".newA"
+            android:name=".NewOrChangedAlarm"
             android:exported="false" />
         <activity
             android:name=".Alarm"

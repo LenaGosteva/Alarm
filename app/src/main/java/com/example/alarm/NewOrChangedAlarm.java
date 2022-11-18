@@ -23,7 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class newA extends AppCompatActivity {
+public class NewOrChangedAlarm extends AppCompatActivity {
     Button setAlarm;
     Button plus;
     @SuppressLint("StaticFieldLeak")
@@ -139,17 +139,17 @@ public class newA extends AppCompatActivity {
 
                 alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent());
                 Toast.makeText(this, "Будильник установлен на " + sdf.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
-
+                Intent intent = new Intent(NewOrChangedAlarm.this, MainActivity.class);intent.putExtra("CreatedNew", newAlarm);
+                startActivity(intent);
             } else{
                 Toast.makeText(this, "Вы не можете установить будильник без времени", Toast.LENGTH_SHORT).show();
             }
-            Intent intent = new Intent(newA.this, MainActivity.class);
+
             newAlarm.more = Settings.loudB;
             newAlarm.time = calendar.getTime().toString();
             newAlarm.vib = Settings.vibr;
             newAlarm.vol = Settings.progress;
-            intent.putExtra("CreatedNew", newAlarm);
-            startActivity(intent);
+
 
         });
     }
@@ -166,12 +166,12 @@ public class newA extends AppCompatActivity {
         return PendingIntent.getActivity(this, 0, alarmInfoIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
     public void music(View view) {
-        Intent intent = new Intent(newA.this, Music.class);
+        Intent intent = new Intent(NewOrChangedAlarm.this, Music.class);
         startActivity(intent);
     }
 
     public void back(View view) {
-        Intent intent = new Intent(newA.this, MainActivity.class);
+        Intent intent = new Intent(NewOrChangedAlarm.this, MainActivity.class);
         startActivity(intent);
     }
 

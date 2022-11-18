@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     };
     public void alarm(View view) {
         CreateNewAlarm newAlarm = new CreateNewAlarm(Settings.progress, Settings.progressM, Settings.vibr, Settings.loudB);
-        Intent intent = new Intent(MainActivity.this, newA.class);
+        Intent intent = new Intent(MainActivity.this, NewOrChangedAlarm.class);
 
         startActivity(intent);
     }

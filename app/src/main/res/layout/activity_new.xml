@@ -8,7 +8,7 @@
     android:paddingStart="20dp"
     android:paddingEnd="20dp"
     android:shape="rectangle"
-    tools:context=".newA"
+    tools:context=".NewOrChangedAlarm"
     tools:ignore="ExtraText,UseSwitchCompatOrMaterialXml">
 
     <Button
