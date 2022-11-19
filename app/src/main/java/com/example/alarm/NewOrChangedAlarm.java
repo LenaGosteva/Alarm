@@ -52,11 +52,14 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
         minute = findViewById(R.id.minuteInt);
         minute.setProgress(prefs.getInt("min", Settings.progressM));
+        minute.setMin(0);
         minute.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean f) {
                 minute.setProgress(progress);
+
+
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -140,13 +143,14 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
             if(alarm) {
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
+                Toast.makeText(NewOrChangedAlarm.this, String.valueOf(minute.getProgress()), Toast.LENGTH_SHORT).show();
                 AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent());
 
                 alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent());
                 Toast.makeText(this, "Будильник установлен на " + sdf.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(NewOrChangedAlarm.this, MainActivity.class);intent.putExtra("CreatedNew", newAlarm);
                 startActivity(intent);
+
             } else{
                 Toast.makeText(this, "Вы не можете установить будильник без времени", Toast.LENGTH_SHORT).show();
             }

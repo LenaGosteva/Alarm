@@ -23,7 +23,7 @@ public class Settings extends AppCompatActivity {
     public static SeekBar minutes;
     public SharedPreferences prefs;
     AudioManager audioManager;
-    public static boolean isValumeCanVibr, isValumeIncreasingGradually, minut = true;
+    public static boolean isValumeCanVibr = false, isValumeIncreasingGradually = false, minut = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +39,8 @@ public class Settings extends AppCompatActivity {
         curValue = audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
         volumeControl.setMax(maxVolume);
         volumeControl.setMin(0);
-        volumeControl.setProgress(curValue);
+        minutes.setMin(0);
+        volumeControl.setProgress(curValue+2);
 
         volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

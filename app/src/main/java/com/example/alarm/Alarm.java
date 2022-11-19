@@ -28,11 +28,8 @@ public class Alarm extends AppCompatActivity {
     public static Ringtone ringtone;
     TextView textView;
     Calendar date;
-    Intent intentVibrate;
-    Uri notif;
     Button off, out;
     Vibrator vibrator;
-    protected static float d;
     SharedPreferences prefs;
     long[] pattern = {0, 2000, 1000, 2000, 1000, 2000};
     AudioManager audioManager;
@@ -48,21 +45,18 @@ public class Alarm extends AppCompatActivity {
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                date = Calendar.getInstance();
-                textView.setText(sdf.format(date.getTime()));
-
-            }
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(
+                () -> {
+            date = Calendar.getInstance();
+            textView.setText(sdf.format(date.getTime()));
 
         }, 0, 1, TimeUnit.SECONDS);
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
 
-        Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
         ringtone = RingtoneManager.getRingtone(this, notificationUri);
         if (ringtone == null) {
-            notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+            notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
             ringtone = RingtoneManager.getRingtone(this, notificationUri);
             audioManager.adjustVolume(AudioManager.RINGER_MODE_NORMAL, Settings.progress);
         }
@@ -77,13 +71,12 @@ public class Alarm extends AppCompatActivity {
 
         if (Settings.isValumeIncreasingGradually) {
             audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
-            Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
-                @Override
-                public void run() {
-                    audioManager.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
-                }
+            audioManager.adjustVolume(AudioManager.RINGER_MODE_NORMAL, Settings.progress);
 
-            }, 0, 1, TimeUnit.SECONDS);
+            Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+                audioManager.adjustVolume(AudioManager.ADJUST_RAISE ,AudioManager.FLAG_PLAY_SOUND);
+
+                }, 0, 5, TimeUnit.SECONDS);
         }
 
         off.setOnClickListener(off ->{
@@ -109,8 +102,10 @@ public class Alarm extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 Settings.minut = false;
+                textView.setText(sdf.format(date.getTime()));
                 ringtone.play();
-            };
+            }
+
 
         });
     }
