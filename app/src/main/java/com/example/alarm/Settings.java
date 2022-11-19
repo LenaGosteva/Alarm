@@ -14,7 +14,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Settings extends AppCompatActivity {
-    protected static int progressM = 3;
+    protected static int progressM;
     protected static int progress;
     public static int curValue, maxVolume;
     protected static Switch vib, loud;
@@ -23,7 +23,7 @@ public class Settings extends AppCompatActivity {
     public static SeekBar minutes;
     public SharedPreferences prefs;
     AudioManager audioManager;
-    public static boolean isValumeCanVibr = false, isValumeIncreasingGradually = false, minut = true;
+    public static boolean isValumeCanVibr = false , isValumeIncreasingGradually = false , minut = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +35,8 @@ public class Settings extends AppCompatActivity {
         minutes = findViewById(R.id.minuteIntS);
 
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM);
-        curValue = audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
+        maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+        curValue = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         volumeControl.setMax(maxVolume);
         volumeControl.setMin(0);
         minutes.setMin(0);
@@ -45,7 +45,7 @@ public class Settings extends AppCompatActivity {
         volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, progress, maxVolume);
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, maxVolume);
                 volumeControl.setProgress(progress);
             }
             @Override

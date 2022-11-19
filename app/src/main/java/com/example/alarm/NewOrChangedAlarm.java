@@ -8,10 +8,12 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Bundle;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -25,7 +27,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class NewOrChangedAlarm extends AppCompatActivity {
+public class NewOrChangedAlarm extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
+    public static int CheckedMusic;
     Button setAlarm;
     Button plus;
 
@@ -36,41 +39,43 @@ public class NewOrChangedAlarm extends AppCompatActivity {
     protected boolean alarm;
     SharedPreferences prefs;
     AudioManager audioManager;
-    Spinner spinner;
+    Button music;
     int curValue;
     private ActivityNewBinding binding;
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_new);super.onCreate(savedInstanceState);
+        Click click = new Click();
 
         binding = ActivityNewBinding.inflate(getLayoutInflater());
-
+        music = findViewById(R.id.musicButton);
+        music.setOnClickListener(click);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
 
         Intent intentMain = getIntent();
         CreateNewAlarm newAlarm = (CreateNewAlarm) intentMain.getSerializableExtra("NewAlarm");
 
+
+
         minute = findViewById(R.id.minuteInt);
         minute.setProgress(prefs.getInt("min", Settings.progressM));
+
         minute.setMin(0);
         minute.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean f) {
                 minute.setProgress(progress);
-
-
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
                 if (minute.getProgress() != 0) {
                     Settings.progressM = minute.getProgress();
                     Settings.minut = true;
@@ -78,18 +83,17 @@ public class NewOrChangedAlarm extends AppCompatActivity {
             }
         });
 
-
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        curValue = audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM);
+        curValue = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         volume = findViewById(R.id.volumeControl);
         volume.setMin(0);
-        volume.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
+        volume.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
         volume.setProgress(prefs.getInt("vol", Settings.progress));
         volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progressv, boolean fromUser) {
 
-                audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, progressv, audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progressv, audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
                 volume.setProgress(progressv);
             }
 
@@ -169,10 +173,28 @@ public class NewOrChangedAlarm extends AppCompatActivity {
             newAlarm.time = calendar.getTime().toString();
             newAlarm.vib = Settings.isValumeCanVibr;
             newAlarm.vol = Settings.progress;
-//            newAlarm.textMessange = binding.textMessage.getText().toString();
+            newAlarm.textMessange = binding.textMessage.getText().toString();
 
         });
     }
+ class  Click implements View.OnClickListener{
+
+     @SuppressLint({"ResourceAsColor", "UseCompatLoadingForDrawables", "NonConstantResourceId", "DefaultLocale"})
+     @Override
+     public void onClick(View view){
+         switch (view.getId()){
+             case R.id.musicButton:
+                 PopupMenu musicMenu;
+                 musicMenu = new PopupMenu(NewOrChangedAlarm.this, music);
+                 MenuInflater menuInflater = musicMenu.getMenuInflater();
+                 menuInflater.inflate(R.menu.main_menu, musicMenu.getMenu());
+                 musicMenu.show();
+                 musicMenu.setOnMenuItemClickListener(NewOrChangedAlarm.this);
+                 break;
+         }
+     }
+    }
+
 
 
     @SuppressLint("UnspecifiedImmutableFlag")
@@ -187,12 +209,18 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         alarmInfoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         return PendingIntent.getActivity(this, 0, alarmInfoIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
-    public void music(View view) {
-
-        }
 
     public void back(View view) {
         Intent intent = new Intent(NewOrChangedAlarm.this, MainActivity.class);
         startActivity(intent);}
 
+    @Override
+    public boolean onMenuItemClick(MenuItem menuItem) {
+        switch (menuItem.getItemId()){
+            case R.raw.music:
+                CheckedMusic = R.raw.music;
+                break;
+        }
+        return false;
+    }
 }

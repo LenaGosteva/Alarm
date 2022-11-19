@@ -24,29 +24,6 @@
         android:layout_marginTop="0dp"
 
         >
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/musicButtonS"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/buttons"
-                android:onClick="music"
-                android:text="МЕЛОДИЯ"
-                app:iconTint="#E8D6D6" />
-
-            <Spinner
-                android:id="@+id/musicSpinnerS"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/musicButtonS"
-                android:layout_marginTop="30dp" /></RelativeLayout>
-
-
-
         <Switch
             android:id="@+id/vibrationS"
             android:layout_width="166dp"
