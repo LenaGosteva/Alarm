@@ -53,7 +53,7 @@ public class Alarm extends AppCompatActivity {
         }, 0, 1, TimeUnit.SECONDS);
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
 
-        Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
+        Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);
         ringtone = RingtoneManager.getRingtone(this, notificationUri);
         if (ringtone == null) {
             notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
@@ -61,6 +61,8 @@ public class Alarm extends AppCompatActivity {
             audioManager.adjustVolume(AudioManager.RINGER_MODE_NORMAL, Settings.progress);
         }
         if (ringtone != null) {
+                ringtone.play();
+                ringtone.play();
                 ringtone.play();
         }
 
@@ -89,10 +91,8 @@ public class Alarm extends AppCompatActivity {
         });
 
         out.setOnClickListener(out -> {
-
-
             if (Settings.minut) {
-
+                if (Settings.isValumeCanVibr) vibrator.cancel();
                 if (ringtone != null && ringtone.isPlaying()) {
                     ringtone.stop();
                 }
@@ -104,9 +104,8 @@ public class Alarm extends AppCompatActivity {
                 Settings.minut = false;
                 textView.setText(sdf.format(date.getTime()));
                 ringtone.play();
+                if (Settings.isValumeCanVibr) vibrator.vibrate(pattern, 2);
             }
-
-
         });
     }
     }

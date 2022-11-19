@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -29,21 +30,21 @@ public class NewOrChangedAlarm extends AppCompatActivity {
     Button plus;
 
     @SuppressLint({"StaticFieldLeak", "UseSwitchCompatOrMaterialCode"})
-    protected static Switch vibNew, loudNew;
+    protected Switch vibNew, loudNew;
     Calendar calendar;
     SeekBar volume, minute;
     protected boolean alarm;
     SharedPreferences prefs;
     AudioManager audioManager;
+    Spinner spinner;
     int curValue;
     private ActivityNewBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_new);super.onCreate(savedInstanceState);
 
         binding = ActivityNewBinding.inflate(getLayoutInflater());
 
-        setContentView(R.layout.activity_new);
-        super.onCreate(savedInstanceState);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
 
@@ -61,15 +62,19 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
 
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
 
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
-                if (minute.getProgress()!=0) {Settings.progressM = minute.getProgress();Settings.minut = true;}
-                else Settings.minut = false;
+                if (minute.getProgress() != 0) {
+                    Settings.progressM = minute.getProgress();
+                    Settings.minut = true;
+                } else Settings.minut = false;
             }
         });
 
@@ -87,10 +92,12 @@ public class NewOrChangedAlarm extends AppCompatActivity {
                 audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, progressv, audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
                 volume.setProgress(progressv);
             }
+
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
 
             }
+
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 Settings.progress = volume.getProgress();
@@ -126,32 +133,35 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         vibNew = findViewById(R.id.vibration);
         vibNew.setChecked(vibSwitchState);
         vibNew.setOnClickListener(t -> {
-            if (vibNew.isChecked()? (Settings.isValumeCanVibr = true) : (Settings.isValumeCanVibr = false));
+            if (vibNew.isChecked() ? (Settings.isValumeCanVibr = true) : (Settings.isValumeCanVibr = false))
+                ;
         });
 
 
         boolean loudSwitchState = prefs.getBoolean("loud", true);
         loudNew = findViewById(R.id.moreLoud);
         loudNew.setChecked(loudSwitchState);
-        loudNew.setOnClickListener(k->{
-            if (loudNew.isChecked()? (Settings.isValumeIncreasingGradually = true) : (Settings.isValumeIncreasingGradually = false));
+        loudNew.setOnClickListener(k -> {
+            if (loudNew.isChecked() ? (Settings.isValumeIncreasingGradually = true) : (Settings.isValumeIncreasingGradually = false))
+                ;
         });
 
 
         plus = findViewById(R.id.createdNewAlarm);
         plus.setOnClickListener(v -> {
 
-            if(alarm) {
+            if (alarm) {
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 Toast.makeText(NewOrChangedAlarm.this, String.valueOf(minute.getProgress()), Toast.LENGTH_SHORT).show();
                 AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent());
 
                 alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent());
                 Toast.makeText(this, "Будильник установлен на " + sdf.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(NewOrChangedAlarm.this, MainActivity.class);intent.putExtra("CreatedNew", newAlarm);
+                Intent intent = new Intent(NewOrChangedAlarm.this, MainActivity.class);
+                intent.putExtra("CreatedNew", newAlarm);
                 startActivity(intent);
 
-            } else{
+            } else {
                 Toast.makeText(this, "Вы не можете установить будильник без времени", Toast.LENGTH_SHORT).show();
             }
 
@@ -178,13 +188,11 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         return PendingIntent.getActivity(this, 0, alarmInfoIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
     public void music(View view) {
-        Intent intent = new Intent(NewOrChangedAlarm.this, Music.class);
-        startActivity(intent);
-    }
+
+        }
 
     public void back(View view) {
         Intent intent = new Intent(NewOrChangedAlarm.this, MainActivity.class);
-        startActivity(intent);
-    }
+        startActivity(intent);}
 
 }

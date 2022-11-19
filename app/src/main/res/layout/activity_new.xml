@@ -20,16 +20,27 @@
         android:hint="НАСТРОИТЬ ВРЕМЯ"
         android:onClick="music"
         android:textColorHint="@color/black" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/button5"
+        <Button
+        android:id="@+id/musicButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:onClick="music"
         android:background="@drawable/buttons"
+        android:onClick="music"
         android:text="МЕЛОДИЯ"
         app:iconTint="#E8D6D6" />
+
+        <Spinner
+        android:id="@+id/musicSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/musicButton"
+        android:layout_marginTop="30dp" /></RelativeLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
