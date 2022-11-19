@@ -28,7 +28,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class NewOrChangedAlarm extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
-    public static int CheckedMusic;
+    public static int CheckedMusic = R.raw.music;
     Button setAlarm;
     Button plus;
 

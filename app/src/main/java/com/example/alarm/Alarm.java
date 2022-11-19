@@ -56,8 +56,6 @@ public class Alarm extends AppCompatActivity {
 
         ringtone = MediaPlayer.create(Alarm.this, NewOrChangedAlarm.CheckedMusic);
         if (ringtone == null) {
-//            notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-//            ringtone = MediaPlayer.create(Alarm.this, notificationUri);
             audioManager.adjustVolume(AudioManager.RINGER_MODE_NORMAL, Settings.progress);
         }
         if (ringtone != null) {
