@@ -56,7 +56,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean f) {
-                if (progress!=0) Settings.minut = true;
+                minute.setProgress(progress);
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -65,6 +65,8 @@ public class NewOrChangedAlarm extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
+                if (minute.getProgress()!=0) {Settings.progressM = minute.getProgress();Settings.minut = true;}
+                else Settings.minut = false;
             }
         });
 

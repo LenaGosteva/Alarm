@@ -14,15 +14,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Settings extends AppCompatActivity {
-    protected static int progressM;
+    protected static int progressM = 3;
     protected static int progress;
     public static int curValue, maxVolume;
     protected static Switch vib, loud;
     Button save;
-    public static SeekBar volumeControl, minutes;
+    public static SeekBar volumeControl;
+    public static SeekBar minutes;
     public SharedPreferences prefs;
     AudioManager audioManager;
-    public static boolean isValumeCanVibr, isValumeIncreasingGradually, minut;
+    public static boolean isValumeCanVibr, isValumeIncreasingGradually, minut = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +60,8 @@ public class Settings extends AppCompatActivity {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progressM, boolean k) {
-                progressM = minutes.getProgress();
-                if (progressM!=0) minut = true;
+                minutes.setProgress(progressM);
+
             }
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -69,6 +70,8 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
+                if (minutes.getProgress()!=0){progressM = minutes.getProgress(); minut = true;}
+                else minut = false;
             }
         });
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
@@ -94,7 +97,7 @@ public class Settings extends AppCompatActivity {
                 ed.putBoolean("vibr", vib.isChecked());
                 ed.putBoolean("loud", loud.isChecked());
                 ed.putInt("vol", volumeControl.getProgress());
-                ed.putInt("min", progressM);
+                ed.putInt("min", minutes.getProgress());
                 ed.apply();
                 Toast.makeText(this, "Настройки по умолчанию сохранены", Toast.LENGTH_SHORT).show();
 
