@@ -13,10 +13,10 @@ public class CreateNewAlarm implements Serializable {
     public String textMessange;
 
     CreateNewAlarm (float vol, float minute, boolean vib, boolean more){
-        this.vol = Settings.progress;
-        this.minute = Settings.progressM;
-        this.vib = Settings.isValumeCanVibr;
-        this.more = Settings.isValumeIncreasingGradually;
+        this.vol = NewOrChangedAlarm.progress;
+        this.minute = NewOrChangedAlarm.progressM;
+        this.vib = NewOrChangedAlarm.isValumeCanVibr;
+        this.more = NewOrChangedAlarm.isValumeIncreasingGradually;
         this.textMessange = "";
         this.music = NewOrChangedAlarm.CheckedMusic;
     }

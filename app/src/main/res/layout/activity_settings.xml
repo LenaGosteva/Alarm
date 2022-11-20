@@ -16,77 +16,19 @@
         android:textColor="#75BFBCBC"/>
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
         android:layout_marginTop="0dp"
+        android:orientation="vertical"
 
         >
-        <Switch
-            android:id="@+id/vibrationS"
-            android:layout_width="166dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="50dp"
-            android:text="ВИБРАЦИЯ"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
-        <Switch
-        android:id="@+id/moreLoudS"
-        android:layout_width="185dp"
-        android:layout_height="48dp"
-        android:layout_marginTop="0dp"
-        android:text="УСИЛЕНИЕ ЗВУКА"
-        tools:ignore="UseSwitchCompatOrMaterialXml" />
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="16dp"
-
-            android:text="ГРОМКОСТЬ"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <SeekBar
-            android:id="@+id/volumeControlS"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:max="100"
-            android:min="0"
-            app:layout_constraintBottom_toTopOf="@+id/seekBar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.909"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="36dp"
-            android:text="ИНТЕРВАЛ ПОВТОРА ПРИ ОТКЛАДЫВАНИИ"
-            app:layout_constraintBottom_toTopOf="@+id/seekBar3"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_bias="1.0" />
-        <SeekBar
-            android:id="@+id/minuteIntS"
-            android:layout_marginTop="0dp"
-            style="@style/Widget.AppCompat.SeekBar.Discrete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:max="10"
-            android:min="1"
-            />
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="200dp"
             android:orientation="horizontal">
 
             <Button
@@ -104,8 +46,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
-                android:minHeight="48dp"
                 android:background="@drawable/buttons"
+                android:minHeight="48dp"
                 android:onClick="back"
                 android:text="НАЗАД"
                 app:layout_constraintBottom_toBottomOf="parent"

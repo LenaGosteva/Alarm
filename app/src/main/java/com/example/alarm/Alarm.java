@@ -53,8 +53,7 @@ public class Alarm extends AppCompatActivity {
 
         }, 0, 1, TimeUnit.SECONDS);
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
-
-        ringtone = MediaPlayer.create(Alarm.this, PlayingAlarm.music);
+        ringtone = MediaPlayer.create(Alarm.this, R.raw.music);
         if (ringtone == null) {
             audioManager.adjustVolume(AudioManager.RINGER_MODE_NORMAL, PlayingAlarm.vol);
         }
