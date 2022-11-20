@@ -31,7 +31,7 @@ public class NewOrChangedAlarm extends AppCompatActivity implements PopupMenu.On
     public static int CheckedMusic = R.raw.music;
     Button setAlarm;
     Button plus;
-    public static boolean isValumeCanVibr, isValumeIncreasingGradually , minut = true;
+    public static boolean isValumeCanVibr = true, isValumeIncreasingGradually = false , minut = true;
     @SuppressLint({"StaticFieldLeak", "UseSwitchCompatOrMaterialCode"})
     protected Switch vibNew, loudNew;
     Calendar calendar;
@@ -39,7 +39,7 @@ public class NewOrChangedAlarm extends AppCompatActivity implements PopupMenu.On
     protected boolean alarm;
     SharedPreferences prefs;
     AudioManager audioManager;
-    protected static int progressM, progress;
+    protected static int progressM = 2, progress;
     Button music;
     int curValue;
     private ActivityNewBinding binding;
@@ -75,7 +75,6 @@ public class NewOrChangedAlarm extends AppCompatActivity implements PopupMenu.On
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if (minute.getProgress() != 0) {progressM = minute.getProgress();}
             }
         });
 
@@ -89,7 +88,7 @@ public class NewOrChangedAlarm extends AppCompatActivity implements PopupMenu.On
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
                 volume.setProgress(progress);
             }
 
@@ -100,7 +99,7 @@ public class NewOrChangedAlarm extends AppCompatActivity implements PopupMenu.On
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                progress = volume.getProgress();
+
             }
         });
 
@@ -130,13 +129,13 @@ public class NewOrChangedAlarm extends AppCompatActivity implements PopupMenu.On
 
 
         vibNew = findViewById(R.id.vibration);
-        vibNew.setChecked(true);
+        vibNew.setChecked(isValumeCanVibr);
         vibNew.setOnClickListener(t -> {
             if (vibNew.isChecked() ? (isValumeCanVibr = true) : (isValumeCanVibr = false)) ;
         });
 
         loudNew = findViewById(R.id.moreLoud);
-        loudNew.setChecked(true);
+        loudNew.setChecked(isValumeIncreasingGradually);
         loudNew.setOnClickListener(k -> {
             if (loudNew.isChecked() ? (isValumeIncreasingGradually = true) : (isValumeIncreasingGradually = false));
         });
@@ -146,6 +145,8 @@ public class NewOrChangedAlarm extends AppCompatActivity implements PopupMenu.On
         plus.setOnClickListener(v -> {
 
             if (alarm) {
+                progressM = minute.getProgress();
+                progress = volume.getProgress();
                 newAlarm.more = isValumeIncreasingGradually;
                 newAlarm.time = calendar.getTime().toString();
                 newAlarm.vib = isValumeCanVibr;

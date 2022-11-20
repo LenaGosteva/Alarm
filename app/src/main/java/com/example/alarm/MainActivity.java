@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.plusMain:
-                    CreateNewAlarm newAlarm = new CreateNewAlarm(NewOrChangedAlarm.progress, NewOrChangedAlarm.progressM, NewOrChangedAlarm.isValumeCanVibr, NewOrChangedAlarm.isValumeIncreasingGradually);
+                    CreateNewAlarm newAlarm = new CreateNewAlarm();
                     Intent intentNew = new Intent(MainActivity.this, NewOrChangedAlarm.class);
                     intentNew.putExtra("NewAlarm", newAlarm);
                     startActivity(intentNew);

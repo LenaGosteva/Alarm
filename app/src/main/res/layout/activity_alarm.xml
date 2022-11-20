@@ -14,7 +14,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="120dp"
         android:gravity="center"
-        android:textColor="@color/white"
         android:textSize="90dp"
         tools:hint="10.02" />
 
