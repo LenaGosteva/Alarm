@@ -4,11 +4,12 @@ import java.io.Serializable;
 
 public class CreateNewAlarm implements Serializable {
 
-    private float minute;
-    public float vol;
+    public float minute;
+    public int vol;
     public String time;
     public boolean vib;
     public boolean more;
+    public int music;
     public String textMessange;
 
     CreateNewAlarm (float vol, float minute, boolean vib, boolean more){
@@ -17,5 +18,6 @@ public class CreateNewAlarm implements Serializable {
         this.vib = Settings.isValumeCanVibr;
         this.more = Settings.isValumeIncreasingGradually;
         this.textMessange = "";
+        this.music = NewOrChangedAlarm.CheckedMusic;
     }
 }

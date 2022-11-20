@@ -35,8 +35,7 @@
             android:layout_marginTop="60dp"
             android:layout_weight="1"
             android:background="@drawable/buttons"
-            android:text="ВЫКЛЮЧИТЬ"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:text="ВЫКЛЮЧИТЬ" />
 
         <Button
             android:id="@+id/outAlarm"

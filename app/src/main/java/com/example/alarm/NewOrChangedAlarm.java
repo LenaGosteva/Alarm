@@ -76,10 +76,7 @@ public class NewOrChangedAlarm extends AppCompatActivity implements PopupMenu.On
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if (minute.getProgress() != 0) {
-                    Settings.progressM = minute.getProgress();
-                    Settings.minut = true;
-                } else Settings.minut = false;
+                if (minute.getProgress() != 0) {Settings.progressM = minute.getProgress();}
             }
         });
 
@@ -132,22 +129,20 @@ public class NewOrChangedAlarm extends AppCompatActivity implements PopupMenu.On
         });
 
 
-        boolean vibSwitchState = prefs.getBoolean("vibr", true);
+        boolean vibSwitchState = prefs.getBoolean("vibr", Settings.isValumeCanVibr);
 
         vibNew = findViewById(R.id.vibration);
         vibNew.setChecked(vibSwitchState);
         vibNew.setOnClickListener(t -> {
-            if (vibNew.isChecked() ? (Settings.isValumeCanVibr = true) : (Settings.isValumeCanVibr = false))
-                ;
+            if (vibNew.isChecked() ? (Settings.isValumeCanVibr = true) : (Settings.isValumeCanVibr = false)) ;
         });
 
 
-        boolean loudSwitchState = prefs.getBoolean("loud", true);
+        boolean loudSwitchState = prefs.getBoolean("loud", Settings.isValumeIncreasingGradually);
         loudNew = findViewById(R.id.moreLoud);
         loudNew.setChecked(loudSwitchState);
         loudNew.setOnClickListener(k -> {
-            if (loudNew.isChecked() ? (Settings.isValumeIncreasingGradually = true) : (Settings.isValumeIncreasingGradually = false))
-                ;
+            if (loudNew.isChecked() ? (Settings.isValumeIncreasingGradually = true) : (Settings.isValumeIncreasingGradually = false));
         });
 
 
@@ -155,13 +150,19 @@ public class NewOrChangedAlarm extends AppCompatActivity implements PopupMenu.On
         plus.setOnClickListener(v -> {
 
             if (alarm) {
+                newAlarm.more = Settings.isValumeIncreasingGradually;
+                newAlarm.time = calendar.getTime().toString();
+                newAlarm.vib = Settings.isValumeCanVibr;
+                newAlarm.vol = Settings.progress;
+                newAlarm.textMessange = binding.textMessage.getText().toString();
+                newAlarm.music = NewOrChangedAlarm.CheckedMusic;
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 Toast.makeText(NewOrChangedAlarm.this, String.valueOf(minute.getProgress()), Toast.LENGTH_SHORT).show();
                 AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent());
 
                 alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent());
                 Toast.makeText(this, "Будильник установлен на " + sdf.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(NewOrChangedAlarm.this, MainActivity.class);
+                Intent intent = new Intent(NewOrChangedAlarm.this, Alarm.class);
                 intent.putExtra("CreatedNew", newAlarm);
                 startActivity(intent);
 
@@ -169,11 +170,7 @@ public class NewOrChangedAlarm extends AppCompatActivity implements PopupMenu.On
                 Toast.makeText(this, "Вы не можете установить будильник без времени", Toast.LENGTH_SHORT).show();
             }
 
-            newAlarm.more = Settings.isValumeIncreasingGradually;
-            newAlarm.time = calendar.getTime().toString();
-            newAlarm.vib = Settings.isValumeCanVibr;
-            newAlarm.vol = Settings.progress;
-            newAlarm.textMessange = binding.textMessage.getText().toString();
+
 
         });
     }

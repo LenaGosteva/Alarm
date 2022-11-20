@@ -23,7 +23,7 @@ public class Settings extends AppCompatActivity {
     public static SeekBar minutes;
     public SharedPreferences prefs;
     AudioManager audioManager;
-    public static boolean isValumeCanVibr = false , isValumeIncreasingGradually = false , minut = true;
+    public static boolean isValumeCanVibr, isValumeIncreasingGradually , minut = true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,8 +71,7 @@ public class Settings extends AppCompatActivity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
-                if (minutes.getProgress()!=0){progressM = minutes.getProgress(); minut = true;}
-                else minut = false;
+                if (minutes.getProgress()!=0){progressM = minutes.getProgress();}
             }
         });
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
@@ -83,14 +82,12 @@ public class Settings extends AppCompatActivity {
         loud.setChecked(loudSwitchState);
         minutes.setProgress(prefs.getInt("min", progressM));
         vib.setOnClickListener(t -> {
-            if(vib.isChecked()) isValumeCanVibr= true;
-            else isValumeCanVibr= false;
+            isValumeCanVibr= vib.isChecked();
         });
 
         loud.setOnClickListener(k->{
 
-            if(loud.isChecked()) isValumeIncreasingGradually = true;
-            else isValumeIncreasingGradually = false;
+            isValumeIncreasingGradually = loud.isChecked();
         });
         save.setOnClickListener(save -> {
                 SharedPreferences.Editor ed = getSharedPreferences("test", Context.MODE_PRIVATE).edit();
@@ -106,10 +103,6 @@ public class Settings extends AppCompatActivity {
 
     }
 
-    public void music(View view) {
-        Intent intent = new Intent(Settings.this, Music.class);
-        startActivity(intent);
-    }
     public void back(View view) {
         Intent intent = new Intent(Settings.this, MainActivity.class);
         startActivity(intent);}

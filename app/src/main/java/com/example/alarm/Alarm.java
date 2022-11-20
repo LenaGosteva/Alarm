@@ -40,7 +40,8 @@ public class Alarm extends AppCompatActivity {
         textView = findViewById(R.id.text);
         off = findViewById(R.id.offAlarm);
         out = findViewById(R.id.outAlarm);
-
+        Intent intent = new Intent();
+        CreateNewAlarm PlayingAlarm = (CreateNewAlarm) intent.getSerializableExtra("CreatedNew") ;
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
@@ -53,23 +54,22 @@ public class Alarm extends AppCompatActivity {
         }, 0, 1, TimeUnit.SECONDS);
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
 
-
-        ringtone = MediaPlayer.create(Alarm.this, NewOrChangedAlarm.CheckedMusic);
+        ringtone = MediaPlayer.create(Alarm.this, PlayingAlarm.music);
         if (ringtone == null) {
-            audioManager.adjustVolume(AudioManager.RINGER_MODE_NORMAL, Settings.progress);
+            audioManager.adjustVolume(AudioManager.RINGER_MODE_NORMAL, PlayingAlarm.vol);
         }
         if (ringtone != null) {
                 ringtone.start();
         }
 
-        if (Settings.isValumeCanVibr){
+        if (PlayingAlarm.vib){
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vibrator.vibrate(pattern, 2);
         }
 
-        if (Settings.isValumeIncreasingGradually) {
+        if (PlayingAlarm.more) {
             audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
-            audioManager.adjustVolume(AudioManager.RINGER_MODE_NORMAL, Settings.progress);
+            audioManager.adjustVolume(AudioManager.RINGER_MODE_NORMAL, PlayingAlarm.vol);
 
             Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
                 audioManager.adjustVolume(AudioManager.ADJUST_RAISE ,AudioManager.FLAG_PLAY_SOUND);
@@ -78,30 +78,30 @@ public class Alarm extends AppCompatActivity {
         }
 
         off.setOnClickListener(off ->{
-            if (Settings.isValumeCanVibr) vibrator.cancel();
+            if (PlayingAlarm.vib) vibrator.cancel();
             if (ringtone != null && ringtone.isPlaying()) {
                 ringtone.pause();
             }
-            Intent intent = new Intent(Alarm.this, MainActivity.class);
-            startActivity(intent);
+            Intent intent1 = new Intent(Alarm.this, MainActivity.class);
+            startActivity(intent1);
         });
 
         out.setOnClickListener(out -> {
-            if (Settings.minut) {
-                if (Settings.isValumeCanVibr) vibrator.cancel();
+            if (PlayingAlarm.minute !=0) {
+                if (PlayingAlarm.vib) vibrator.cancel();
                 if (ringtone != null && ringtone.isPlaying()) {
                     ringtone.pause();
                 }
                 try {
-                    Thread.sleep((long) Settings.progressM *1000*60);
+                    Thread.sleep((long) PlayingAlarm.minute*1000*60);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                Settings.minut = false;
                 textView.setText(sdf.format(date.getTime()));
                 ringtone.start();
-                if (Settings.isValumeCanVibr) vibrator.vibrate(pattern, 2);
+                if (PlayingAlarm.vib) vibrator.vibrate(pattern, 2);
             }
+
         });
     }
     }
