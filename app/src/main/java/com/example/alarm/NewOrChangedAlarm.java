@@ -7,16 +7,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.PopupMenu;
 import android.widget.SeekBar;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alarm.databinding.ActivityNewBinding;
@@ -27,11 +28,12 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class NewOrChangedAlarm extends AppCompatActivity implements PopupMenu.OnMenuItemClickListener {
-    public static int CheckedMusic = R.raw.music;
+public class NewOrChangedAlarm extends AppCompatActivity{
+    public static MediaPlayer CheckedMusic = new MediaPlayer();
+    private static String mSound;
     Button setAlarm;
     Button plus;
-    public static boolean isValumeCanVibr = true, isValumeIncreasingGradually = false , minut = true;
+    public static boolean isValumeCanVibr = true, isValumeIncreasingGradually = false;
     @SuppressLint({"StaticFieldLeak", "UseSwitchCompatOrMaterialCode"})
     protected Switch vibNew, loudNew;
     Calendar calendar;
@@ -48,7 +50,7 @@ public class NewOrChangedAlarm extends AppCompatActivity implements PopupMenu.On
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_new);super.onCreate(savedInstanceState);
         Click click = new Click();
-
+        CheckedMusic = MediaPlayer.create(NewOrChangedAlarm.this,R.raw.music);
         binding = ActivityNewBinding.inflate(getLayoutInflater());
         music = findViewById(R.id.musicButton);
         music.setOnClickListener(click);
@@ -174,23 +176,24 @@ public class NewOrChangedAlarm extends AppCompatActivity implements PopupMenu.On
     }
  class  Click implements View.OnClickListener{
 
-     @SuppressLint({"ResourceAsColor", "UseCompatLoadingForDrawables", "NonConstantResourceId", "DefaultLocale"})
+
+     @RequiresApi(api = Build.VERSION_CODES.Q)
+     @SuppressLint({"ResourceAsColor", "UseCompatLoadingForDrawables", "NonConstantResourceId", "DefaultLocale", "WrongConstant"})
      @Override
      public void onClick(View view){
          switch (view.getId()){
              case R.id.musicButton:
-                 PopupMenu musicMenu;
-                 musicMenu = new PopupMenu(NewOrChangedAlarm.this, music);
-                 MenuInflater menuInflater = musicMenu.getMenuInflater();
-                 menuInflater.inflate(R.menu.main_menu, musicMenu.getMenu());
-                 musicMenu.show();
-                 musicMenu.setOnMenuItemClickListener(NewOrChangedAlarm.this);
+                 Intent intent = new Intent("android.intent.action.RINGTONE_PICKER");
+                 intent.putExtra("android.intent.extra.ringtone.SHOW_SILENT", false);
+                 intent.putExtra("android.intent.extra.ringtone.TYPE", 4);
+                 String string2 = NewOrChangedAlarm.mSound;
+                 Uri uri = string2 != null ? Uri.parse(string2) : null;
+                 CheckedMusic = MediaPlayer.create(NewOrChangedAlarm.this, uri);
+                 startActivity(intent);
                  break;
          }
      }
     }
-
-
 
     @SuppressLint("UnspecifiedImmutableFlag")
     private PendingIntent getAlarmActionPendingIntent() {
@@ -209,16 +212,4 @@ public class NewOrChangedAlarm extends AppCompatActivity implements PopupMenu.On
         Intent intent = new Intent(NewOrChangedAlarm.this, MainActivity.class);
         startActivity(intent);}
 
-    @Override
-    public boolean onMenuItemClick(MenuItem menuItem) {
-        switch (menuItem.getItemId()){
-            case R.id.plus:
-                Toast.makeText(NewOrChangedAlarm.this, "jj", Toast.LENGTH_SHORT).show();
-                break;
-            default:
-                CheckedMusic = R.raw.music;
-                break;
-        }
-        return false;
-    }
 }

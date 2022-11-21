@@ -22,7 +22,8 @@
             android:exported="false" />
         <activity
             android:name=".NewOrChangedAlarm"
-            android:exported="false" />
+            android:exported="true">
+        </activity>
         <activity
             android:name=".Alarm"
             android:exported="false" />

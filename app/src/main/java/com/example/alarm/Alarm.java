@@ -55,10 +55,9 @@ public class Alarm extends AppCompatActivity {
 
         }, 0, 1, TimeUnit.SECONDS);
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
-        ringtone = MediaPlayer.create(Alarm.this, R.raw.music);
+        ringtone = NewOrChangedAlarm.CheckedMusic;
         audioManager.adjustVolume(AudioManager.MODE_NORMAL, NewOrChangedAlarm.progress);
-        if (ringtone!=null) ringtone.start();
-
+        ringtone.start();
 
         if (NewOrChangedAlarm.isValumeCanVibr){
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -77,9 +76,8 @@ public class Alarm extends AppCompatActivity {
 
         off.setOnClickListener(off ->{
             if (NewOrChangedAlarm.isValumeCanVibr) vibrator.cancel();
-            if (ringtone != null && ringtone.isPlaying()) {
-                ringtone.stop();
-            }
+                ringtone = null;
+
             Intent intent1 = new Intent(Alarm.this, MainActivity.class);
             startActivity(intent1);
         });
@@ -88,7 +86,7 @@ public class Alarm extends AppCompatActivity {
             if (NewOrChangedAlarm.progressM !=0) {
                 if (NewOrChangedAlarm.isValumeCanVibr) vibrator.cancel();
                 if (ringtone != null && ringtone.isPlaying()) {
-                    ringtone.stop();
+                    ringtone = null;
                 }
                 try {
                     Thread.sleep((long) NewOrChangedAlarm.progressM*1000*60);
