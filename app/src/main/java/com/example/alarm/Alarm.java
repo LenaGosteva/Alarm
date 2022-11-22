@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
+import android.media.Ringtone;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.widget.Button;
@@ -23,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Alarm extends AppCompatActivity {
 
-    MediaPlayer ringtone;
+    Ringtone ringtone;
     TextView textView;
     Calendar date;
     Button off, out;
@@ -44,6 +46,7 @@ public class Alarm extends AppCompatActivity {
 
         Intent intent = new Intent();
         CreateNewAlarm PlayingAlarm = (CreateNewAlarm) intent.getSerializableExtra("CreatedNew") ;
+
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
@@ -55,9 +58,14 @@ public class Alarm extends AppCompatActivity {
 
         }, 0, 1, TimeUnit.SECONDS);
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
+//        ringtone = MediaPlayer.create(Alarm.this, R.raw.music);
         ringtone = NewOrChangedAlarm.CheckedMusic;
+        if(ringtone == null){
+            Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+            ringtone = RingtoneManager.getRingtone(this, notificationUri);
+        }
         audioManager.adjustVolume(AudioManager.MODE_NORMAL, NewOrChangedAlarm.progress);
-        ringtone.start();
+        ringtone.play();
 
         if (NewOrChangedAlarm.isValumeCanVibr){
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -66,7 +74,7 @@ public class Alarm extends AppCompatActivity {
 
         if (NewOrChangedAlarm.isValumeIncreasingGradually) {
             audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
-            audioManager.adjustVolume(AudioManager.RINGER_MODE_NORMAL, NewOrChangedAlarm.progress);
+            audioManager.adjustVolume(AudioManager.MODE_NORMAL, NewOrChangedAlarm.progress);
 
             Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
                 audioManager.adjustVolume(AudioManager.ADJUST_RAISE ,AudioManager.FLAG_PLAY_SOUND);
@@ -76,7 +84,7 @@ public class Alarm extends AppCompatActivity {
 
         off.setOnClickListener(off ->{
             if (NewOrChangedAlarm.isValumeCanVibr) vibrator.cancel();
-                ringtone = null;
+                ringtone.stop();
 
             Intent intent1 = new Intent(Alarm.this, MainActivity.class);
             startActivity(intent1);
@@ -86,7 +94,7 @@ public class Alarm extends AppCompatActivity {
             if (NewOrChangedAlarm.progressM !=0) {
                 if (NewOrChangedAlarm.isValumeCanVibr) vibrator.cancel();
                 if (ringtone != null && ringtone.isPlaying()) {
-                    ringtone = null;
+                    ringtone.stop();
                 }
                 try {
                     Thread.sleep((long) NewOrChangedAlarm.progressM*1000*60);
@@ -94,7 +102,7 @@ public class Alarm extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 textView.setText(sdf.format(date.getTime()));
-                ringtone.start();
+                ringtone.play();
                 if (NewOrChangedAlarm.isValumeCanVibr) vibrator.vibrate(pattern, 2);
             }
 

@@ -14,13 +14,5 @@ public class CreateNewAlarm implements Serializable {
     public MediaPlayer music;
     public String textMessange;
 
-    CreateNewAlarm (){
-        this.vol = NewOrChangedAlarm.progress;
-        this.minute = NewOrChangedAlarm.progressM;
-        this.vib = true;
-        this.more = NewOrChangedAlarm.isValumeIncreasingGradually;
-        this.textMessange = "";
-        this.music = NewOrChangedAlarm.CheckedMusic;
-    }
 
 }

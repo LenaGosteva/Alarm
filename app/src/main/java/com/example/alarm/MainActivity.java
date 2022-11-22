@@ -5,11 +5,11 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.alarm.databinding.ActivityMainBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -20,20 +20,17 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
     TextView text;
     public static Calendar date;
-
+    Button plusmain, settings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        com.example.alarm.databinding.ActivityMainBinding binding;
+        setContentView(R.layout.activity_main);
         super.onCreate(savedInstanceState);
 
-
-        setContentView(R.layout.activity_main);
-
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(binding.getRoot());
         Click click = new Click();
-        binding.settingsMain.setOnClickListener(click);
-        binding.plusMain.setOnClickListener(click);
+        plusmain = findViewById(R.id.plusMain);
+        settings = findViewById(R.id.settings);
+        settings.setOnClickListener(click);
+        plusmain.setOnClickListener(click);
         text = findViewById(R.id.textt);
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
@@ -52,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View view){
             switch (view.getId()){
-                case R.id.settingsMain:
+                case R.id.settings:
                     Intent intentSettings = new Intent(MainActivity.this, Settings.class);
                     startActivity(intentSettings);
                     break;
