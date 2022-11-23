@@ -43,8 +43,8 @@ public class NewOrChangedAlarm extends AppCompatActivity {
     protected static int progressM = 2, progress;
     Button music;
     int curValue;
+    EditText text;
     ToggleButton Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday;
-    public static String textM;
 
     @SuppressLint("ResourceType")
     @Override
@@ -70,10 +70,10 @@ public class NewOrChangedAlarm extends AppCompatActivity {
             Intent intent = new Intent("android.intent.action.RINGTONE_PICKER");
             startActivityForResult(intent, 1);
         });
-        EditText text = findViewById(R.id.textMessage);
+        text = findViewById(R.id.textMessage);
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-        prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
+//        prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
 
         Intent intentMain = getIntent();
         CreateNewAlarm newAlarm = (CreateNewAlarm)intentMain.getSerializableExtra("NewAlarm");
@@ -177,7 +177,8 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
                 if (Saturday.isChecked()) AlarmDay(7, calendar, getAlarmActionPendingIntent(), alarmManager);
                 if (Sunday.isChecked()) AlarmDay(1, calendar, getAlarmActionPendingIntent(), alarmManager);
-                textM = text.getText().toString();
+                Intent alarm = new Intent(getApplicationContext(), Alarm.class);
+                alarm.putExtra("textMessage", text.getText().toString());
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             } else {

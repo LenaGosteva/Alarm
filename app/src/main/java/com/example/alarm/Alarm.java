@@ -42,12 +42,13 @@ public class Alarm extends AppCompatActivity {
         textView = findViewById(R.id.text);
         Message = findViewById(R.id.messageT);
         Message.setTextSize(20);
-        Message.setText(NewOrChangedAlarm.textM);
+
         off = findViewById(R.id.offAlarm);
         out = findViewById(R.id.outAlarm);
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
-
+        Intent intent = getIntent();
+        Message.setText(intent.getStringExtra("textMessage"));
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {

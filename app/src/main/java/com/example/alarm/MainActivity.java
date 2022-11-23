@@ -55,9 +55,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
 
                 case R.id.plusMain:
-                    CreateNewAlarm newAlarm = new CreateNewAlarm();
+
                     Intent intentNew = new Intent(MainActivity.this, NewOrChangedAlarm.class);
-                    intentNew.putExtra("NewAlarm", newAlarm);
+                    CreateNewAlarm newAlarm = new CreateNewAlarm();intentNew.putExtra("NewAlarm", newAlarm);
                     startActivity(intentNew);
                     break;
                 default:
