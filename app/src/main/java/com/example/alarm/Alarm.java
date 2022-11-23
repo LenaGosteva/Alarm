@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 public class Alarm extends AppCompatActivity {
 
     Ringtone ringtone;
-    TextView textView;
+    TextView textView, Message;
     Calendar date;
     Button off, out;
     Vibrator vibrator;
@@ -40,12 +40,13 @@ public class Alarm extends AppCompatActivity {
         setContentView(R.layout.activity_alarm);
 
         textView = findViewById(R.id.text);
+        Message = findViewById(R.id.messageT);
+        Message.setTextSize(20);
+        Message.setText(NewOrChangedAlarm.textM);
         off = findViewById(R.id.offAlarm);
         out = findViewById(R.id.outAlarm);
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
-        Intent intent = new Intent();
-        CreateNewAlarm PlayingAlarm = (CreateNewAlarm) intent.getSerializableExtra("CreatedNew") ;
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
@@ -64,6 +65,7 @@ public class Alarm extends AppCompatActivity {
             Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
             ringtone = RingtoneManager.getRingtone(this, notificationUri);
         }
+        if (audioManager.isMusicActive())
         audioManager.adjustVolume(AudioManager.MODE_NORMAL, NewOrChangedAlarm.progress);
         ringtone.play();
 
@@ -108,4 +110,5 @@ public class Alarm extends AppCompatActivity {
 
         });
     }
+
     }
