@@ -7,8 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.timepicker.MaterialTimePicker;
@@ -35,10 +34,8 @@ public class NewOrChangedAlarm extends AppCompatActivity{
     public static EditText text;
     Button setAlarm;
     Button plus;
-    
-    public static boolean isValumeCanVibr = true, isValumeIncreasingGradually = false;
     @SuppressLint({"StaticFieldLeak", "UseSwitchCompatOrMaterialCode"})
-    protected Switch vibNew, loudNew;
+    protected static Switch vibNew, loudNew;
     SeekBar volume, minute;
     protected boolean alarm;
     AudioManager audioManager;
@@ -71,6 +68,7 @@ public class NewOrChangedAlarm extends AppCompatActivity{
 //        music.setOnClickListener(click);
         music.setOnClickListener(h ->{
             intent = new Intent("android.intent.action.RINGTONE_PICKER");
+            intent.setType("audio/mpeg");
             startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI), 1);
         });
 
@@ -130,17 +128,10 @@ public class NewOrChangedAlarm extends AppCompatActivity{
 
 
         vibNew = findViewById(R.id.vibration);
-        vibNew.setChecked(isValumeCanVibr);
-        vibNew.setOnClickListener(t -> {
-            if (vibNew.isChecked() ? (isValumeCanVibr = true) : (isValumeCanVibr = false)) ;
-        });
+
 
         loudNew = findViewById(R.id.moreLoud);
-        loudNew.setChecked(isValumeIncreasingGradually);
-        loudNew.setOnClickListener(k -> {
-            if (loudNew.isChecked() ? (isValumeIncreasingGradually = true) : (isValumeIncreasingGradually = false))
-                ;
-        });
+
 
 
         plus = findViewById(R.id.createdNewAlarm);
@@ -154,18 +145,23 @@ public class NewOrChangedAlarm extends AppCompatActivity{
 
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 24*60 * 60 * 1000, pendingIntent);
     }
-    @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
-        switch (requestCode) {
-            case 1:
-                Uri uri = intent.getData();
+        if(resultCode==RESULT_OK) {
+            switch (requestCode) {
+                case 1:
+                    Uri uri = intent.getData();
 
-                CheckedMusic = MediaPlayer.create(NewOrChangedAlarm.this, uri);
-                nameOfMusic = findViewById(R.id.nameOfCheckedMusic);
-                nameOfMusic.setText(uri.getEncodedUserInfo());
-                break;
+                    CheckedMusic = MediaPlayer.create(NewOrChangedAlarm.this, uri);
+                    nameOfMusic = findViewById(R.id.nameOfCheckedMusic);
+                    nameOfMusic.setText(uri.getEncodedUserInfo());
+                    break;
+            }
+        }
+        else{
+            Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+            CheckedMusic = MediaPlayer.create(this, notificationUri);
         }
 
     }
@@ -203,7 +199,7 @@ class  Click extends NewOrChangedAlarm implements View.OnClickListener{
                     calendar.set(Calendar.MILLISECOND, 0);
                     calendar.set(Calendar.MINUTE, materialTimePicker.getMinute());
                     calendar.set(Calendar.HOUR_OF_DAY, materialTimePicker.getHour());
-                    newAlarm.time = sdf.format(calendar.getTime());
+                    newAlarm.timeName = sdf.format(calendar.getTime());
                     alarmManager= (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
                     alarmClockInfo= new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent());
@@ -222,16 +218,20 @@ class  Click extends NewOrChangedAlarm implements View.OnClickListener{
                 if (alarm) {
                     progressM = minute.getProgress();
                     progress = volume.getProgress();
-                    newAlarm.more = isValumeIncreasingGradually;
-//
-                    newAlarm.vib = isValumeCanVibr;
+                    newAlarm.time = calendar.getTimeInMillis();
+                    newAlarm.timeName= sdf.format(calendar.getTime());
+                    newAlarm.more = loudNew.isChecked();
+                    newAlarm.music = CheckedMusic;
+                    newAlarm.vib = vibNew.isChecked();
                     newAlarm.vol = progress;
                     newAlarm.textMessange = text.getText().toString();
                     newAlarm.minute = progressM;
 
                     alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent());
-                    Intent intent1 = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent1);
+                    Intent intent1 = new Intent();
+                    intent1.putExtra("NEW", newAlarm);
+                    setResult(RESULT_OK, intent1);
+                    finish();
                 } else {
                     Toast.makeText(getApplicationContext(), "Вы не можете установить будильник без времени", Toast.LENGTH_SHORT).show();
                 }

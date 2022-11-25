@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import org.jetbrains.annotations.Nullable;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     TextView text;
     public static Calendar date;
     Button plusmain, settings;
+    Intent intentNew;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_main);
@@ -40,6 +43,18 @@ public class MainActivity extends AppCompatActivity {
             text.setText(sdf.format(date.getTime()));
         }, 0, 1, TimeUnit.MILLISECONDS);
 
+
+}
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intentNew);
+        if (resultCode == RESULT_OK) {
+            switch (requestCode) {
+                case 3:
+                    CreateNewAlarm newA = (CreateNewAlarm) intent.getSerializableExtra("NEW");
+
+            }
+        }
     }
 
 
@@ -56,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
 
                 case R.id.plusMain:
 
-                    Intent intentNew = new Intent(MainActivity.this, NewOrChangedAlarm.class);
-                    startActivity(intentNew);
+                    intentNew = new Intent(MainActivity.this, NewOrChangedAlarm.class);
+                    startActivityForResult(intentNew, 3);
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + view.getId());

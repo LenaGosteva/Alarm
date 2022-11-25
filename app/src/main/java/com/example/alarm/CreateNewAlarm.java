@@ -8,7 +8,8 @@ public class CreateNewAlarm implements Serializable {
 
     public float minute;
     public int vol;
-    public String time;
+    public String timeName;
+    public long time;
     public boolean vib;
     public boolean more;
     public MediaPlayer music;

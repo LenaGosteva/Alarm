@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.widget.Button;
@@ -49,40 +47,31 @@ public class Alarm extends AppCompatActivity {
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
-            @Override
-            public void run() {
-                date = Calendar.getInstance();
-                textView.setText(sdf.format(date.getTime()));
-            }
-
+        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+            date = Calendar.getInstance();
+            textView.setText(sdf.format(date.getTime()));
         }, 0, 1, TimeUnit.SECONDS);
 
         ringtone = NewOrChangedAlarm.CheckedMusic;
-        if(ringtone == null){
-            Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-            ringtone = MediaPlayer.create(this, notificationUri);
-        }
+
         audioManager.adjustVolume(AudioManager.MODE_NORMAL, NewOrChangedAlarm.progress);
         ringtone.start();
 
-        if (NewOrChangedAlarm.isValumeCanVibr){
+        if (NewOrChangedAlarm.vibNew.isChecked()){
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vibrator.vibrate(pattern, 2);
         }
 
-        if (NewOrChangedAlarm.isValumeIncreasingGradually) {
+        if (NewOrChangedAlarm.loudNew.isChecked()) {
             audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
             audioManager.adjustVolume(AudioManager.MODE_NORMAL, NewOrChangedAlarm.progress);
 
-            Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
-                audioManager.adjustVolume(AudioManager.ADJUST_RAISE ,AudioManager.FLAG_PLAY_SOUND);
-
-                }, 0, 5, TimeUnit.SECONDS);
+            Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() ->
+                    audioManager.adjustVolume(AudioManager.ADJUST_RAISE ,AudioManager.FLAG_PLAY_SOUND), 0, 5, TimeUnit.SECONDS);
         }
 
         off.setOnClickListener(off ->{
-            if (NewOrChangedAlarm.isValumeCanVibr) vibrator.cancel();
+            if (NewOrChangedAlarm.vibNew.isChecked()) vibrator.cancel();
                 ringtone.stop();
 
             Intent intent1 = new Intent(Alarm.this, MainActivity.class);
@@ -91,7 +80,7 @@ public class Alarm extends AppCompatActivity {
 
         out.setOnClickListener(out -> {
             if (NewOrChangedAlarm.progressM !=0) {
-                if (NewOrChangedAlarm.isValumeCanVibr) vibrator.cancel();
+                if (NewOrChangedAlarm.vibNew.isChecked()) vibrator.cancel();
                 if (ringtone != null && ringtone.isPlaying()) {
                     ringtone.stop();
                 }
@@ -102,7 +91,7 @@ public class Alarm extends AppCompatActivity {
                 }
                 textView.setText(sdf.format(date.getTime()));
                 ringtone.start();
-                if (NewOrChangedAlarm.isValumeCanVibr) vibrator.vibrate(pattern, 2);
+                if (NewOrChangedAlarm.vibNew.isChecked()) vibrator.vibrate(pattern, 2);
             }
 
         });
