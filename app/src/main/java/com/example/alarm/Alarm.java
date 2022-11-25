@@ -4,9 +4,8 @@ package com.example.alarm;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.AudioManager;
-import android.media.Ringtone;
+import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,12 +24,11 @@ import java.util.concurrent.TimeUnit;
 
 public class Alarm extends AppCompatActivity {
 
-    Ringtone ringtone;
-    TextView textView, Message;
+    MediaPlayer ringtone;
+    TextView textView, message;
     Calendar date;
     Button off, out;
     Vibrator vibrator;
-    SharedPreferences prefs;
     long[] pattern = {0, 1000, 1000, 1000, 1000, 1000};
     AudioManager audioManager;
     @SuppressLint("NewApi")
@@ -39,16 +37,16 @@ public class Alarm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
 
+
+
         textView = findViewById(R.id.text);
-        Message = findViewById(R.id.messageT);
-        Message.setTextSize(20);
+        message = findViewById(R.id.messageT);
+        message.setTextSize(20);
 
         off = findViewById(R.id.offAlarm);
         out = findViewById(R.id.outAlarm);
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
-        Intent intent = getIntent();
-        Message.setText(intent.getStringExtra("textMessage"));
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(new Runnable() {
@@ -59,16 +57,14 @@ public class Alarm extends AppCompatActivity {
             }
 
         }, 0, 1, TimeUnit.SECONDS);
-        prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
-//        ringtone = MediaPlayer.create(Alarm.this, R.raw.music);
+
         ringtone = NewOrChangedAlarm.CheckedMusic;
         if(ringtone == null){
             Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-            ringtone = RingtoneManager.getRingtone(this, notificationUri);
+            ringtone = MediaPlayer.create(this, notificationUri);
         }
-        if (audioManager.isMusicActive())
         audioManager.adjustVolume(AudioManager.MODE_NORMAL, NewOrChangedAlarm.progress);
-        ringtone.play();
+        ringtone.start();
 
         if (NewOrChangedAlarm.isValumeCanVibr){
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -105,7 +101,7 @@ public class Alarm extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 textView.setText(sdf.format(date.getTime()));
-                ringtone.play();
+                ringtone.start();
                 if (NewOrChangedAlarm.isValumeCanVibr) vibrator.vibrate(pattern, 2);
             }
 
