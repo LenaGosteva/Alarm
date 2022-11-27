@@ -12,17 +12,19 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right" >
+        android:layout_gravity="right">
 
         <Button
             android:id="@+id/plusMain"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_gravity="right"
-            android:layout_marginLeft="150dp"
+
+            android:layout_marginStart="150dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/buttons"
             android:text="+" />
+
         <Button
             android:id="@+id/settings"
             android:layout_width="wrap_content"
@@ -45,15 +47,6 @@
         android:inputType="time"
         android:textSize="90dp"
         tools:hint="10.02" />
-    <AnalogClock
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:theme="@style/MaterialAlertDialog.Material3.Title.Icon.CenterStacked"
-        android:layout_marginTop="30dp"
-        android:layout_height="wrap_content"/>
-
-
-
 
 
 </LinearLayout>

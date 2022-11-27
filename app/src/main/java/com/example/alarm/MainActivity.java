@@ -5,11 +5,10 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.alarm.databinding.ActivityMainBinding;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -20,27 +19,24 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
-    TextView text;
+    ActivityMainBinding binding;
     Calendar date;
-    Button plusmain, settings;
     Intent intentNew;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
         super.onCreate(savedInstanceState);
 
         Click click = new Click();
-        plusmain = findViewById(R.id.plusMain);
-        settings = findViewById(R.id.settings);
-        settings.setOnClickListener(click);
-        plusmain.setOnClickListener(click);
-        text = findViewById(R.id.textt);
+        binding.settings.setOnClickListener(click);
+        binding.plusMain.setOnClickListener(click);
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
 
             date = Calendar.getInstance();
-            text.setText(sdf.format(date.getTime()));
+            binding.textt.setText(sdf.format(date.getTime()));
         }, 0, 1, TimeUnit.MILLISECONDS);
 
 

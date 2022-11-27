@@ -10,17 +10,13 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.SeekBar;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.alarm.databinding.ActivityNewBinding;
 import com.google.android.material.timepicker.MaterialTimePicker;
 import com.google.android.material.timepicker.TimeFormat;
 
@@ -30,58 +26,38 @@ import java.util.Locale;
 
 public class NewOrChangedAlarm extends AppCompatActivity{
     public static MediaPlayer CheckedMusic;
-    public EditText text;
     MaterialTimePicker materialTimePicker;
-    Button setAlarm, back;
-    Button plus;
-    @SuppressLint({"StaticFieldLeak", "UseSwitchCompatOrMaterialCode"})
-    protected static Switch vibNew, loudNew;
-    SeekBar volume, minute;
+    SeekBar volume;
     protected boolean alarm;
+    public static boolean vibNew = false, loudNew = false;
     AudioManager audioManager;
     protected static int progressM = 2, progress;
-    Button music;
     public static String message = "";
     AlarmManager alarmManager;
     AlarmManager.AlarmClockInfo alarmClockInfo;
-    ToggleButton Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday;
     CreateNewAlarm newAlarm;
     SimpleDateFormat sdf;
     Calendar calendar;
     Intent intent;TextView nameOfMusic;
+    ActivityNewBinding binding;
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setContentView(R.layout.activity_new);
+
         super.onCreate(savedInstanceState);
-        Click click = new Click();
+        binding = ActivityNewBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        Monday = findViewById(R.id.line1);
-        Tuesday = findViewById(R.id.line2);
-        Wednesday = findViewById(R.id.line3);
-        Thursday = findViewById(R.id.line4);
-        Friday = findViewById(R.id.line5);
-        Saturday = findViewById(R.id.line6);
-        Sunday = findViewById(R.id.line7);
 
-        volume = findViewById(R.id.volumeControl);
-        music = findViewById(R.id.musicButton);
-        back = findViewById(R.id.backToMain);
-        minute = findViewById(R.id.minuteInt);
-        text = findViewById(R.id.textMessage);
-        setAlarm = findViewById(R.id.alarm_button);
-        vibNew = findViewById(R.id.vibration);
-        loudNew = findViewById(R.id.moreLoud);
-        plus = findViewById(R.id.createdNewAlarm);
+
 
         sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         newAlarm = new CreateNewAlarm();
-        message += text.getText().toString();
+        message += binding.textMessage.getText().toString();
 
-        music.setOnClickListener(h ->{
+        binding.musicButton.setOnClickListener(h ->{
             intent = new Intent("android.intent.action.RINGTONE_PICKER");
-            intent.setType("audio/mpeg");
             startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI), 1);
         });
 
@@ -90,14 +66,16 @@ public class NewOrChangedAlarm extends AppCompatActivity{
 
 
 
-        back.setOnClickListener(click);
+        binding.backToMain.setOnClickListener( f -> {
+            finish();
+        });
 
-        minute.setMin(3);
-        minute.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        binding.minuteInt.setMin(3);
+        binding.minuteInt.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean f) {
-                minute.setProgress(progress);
+                binding.minuteInt.setProgress(progress);
             }
 
             @Override
@@ -110,15 +88,15 @@ public class NewOrChangedAlarm extends AppCompatActivity{
         });
 
 
-        volume.setMin(0);
-        volume.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-        volume.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
-        volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        binding.volumeControl.setMin(0);
+        binding.volumeControl.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
+        binding.volumeControl.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
+        binding.volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
                 audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-                volume.setProgress(progress);
+                binding.volumeControl.setProgress(progress);
             }
 
             @Override
@@ -135,7 +113,7 @@ public class NewOrChangedAlarm extends AppCompatActivity{
 
 
 
-        setAlarm.setOnClickListener( n -> {
+        binding.alarmButton.setOnClickListener( n -> {
             calendar = Calendar.getInstance();
             materialTimePicker = new MaterialTimePicker.Builder()
                     .setTimeFormat(TimeFormat.CLOCK_24H)
@@ -155,8 +133,8 @@ public class NewOrChangedAlarm extends AppCompatActivity{
 
                 alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent());
 
-                setAlarm.setTextSize(90);
-                setAlarm.setText(sdf.format(calendar.getTime()));
+                binding.alarmButton.setTextSize(90);
+                binding.alarmButton.setText(sdf.format(calendar.getTime()));
 
                 alarm = true;
                 Toast.makeText(this, "Будильник установлен на " + sdf.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
@@ -166,19 +144,39 @@ public class NewOrChangedAlarm extends AppCompatActivity{
         });
 
 
-        plus.setOnClickListener(c -> {
+        binding.createdNewAlarm.setOnClickListener(c -> {
             if (alarm) {
+                if (binding.line1.isChecked()){
+                    AlarmDay(2, calendar, getAlarmActionPendingIntent(), alarmManager);}
+
+                if (binding.line2.isChecked())
+                    AlarmDay(3, calendar, getAlarmActionPendingIntent(), alarmManager);
+                if (binding.line3.isChecked())
+                    AlarmDay(4, calendar, getAlarmActionPendingIntent(), alarmManager);
+
+                if (binding.line4.isChecked())
+                    AlarmDay(5, calendar, getAlarmActionPendingIntent(), alarmManager);
+
+                if (binding.line5.isChecked())
+                    AlarmDay(6, calendar, getAlarmActionPendingIntent(), alarmManager);
+
+                if (binding.line6.isChecked())
+                    AlarmDay(7, calendar, getAlarmActionPendingIntent(), alarmManager);
+                if (binding.line7.isChecked())
+                    AlarmDay(1, calendar, getAlarmActionPendingIntent(), alarmManager);
+
 
                 if (CheckedMusic == null) CheckedMusic = MediaPlayer.create(getApplicationContext(), R.raw.music);
-
+                if (binding.moreLoud.isChecked()) loudNew = true;
+                if (binding.vibration.isChecked()) vibNew = true;
                 // заполнение параметров будильника; после передачи по ключу они все равны нулл
-                progressM = minute.getProgress();
+                progressM = binding.minuteInt.getProgress();
                 progress = volume.getProgress();
                 newAlarm.time = calendar.getTimeInMillis();
                 newAlarm.timeName= sdf.format(calendar.getTime());
-                newAlarm.more = loudNew.isChecked();
+                newAlarm.more = binding.moreLoud.isChecked();
                 newAlarm.music = CheckedMusic;
-                newAlarm.vib = vibNew.isChecked();
+                newAlarm.vib = binding.vibration.isChecked();
                 newAlarm.vol = progress;
                 newAlarm.textMessange = message;
                 newAlarm.minute = progressM;
@@ -186,28 +184,13 @@ public class NewOrChangedAlarm extends AppCompatActivity{
                 alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent());
                 Intent intent1 = new Intent(NewOrChangedAlarm.this, MainActivity.class);
                 startActivity(intent1);
+
+
             }
             else{
                 Toast.makeText(this, "Вы не можете установить будильник без времени", Toast.LENGTH_SHORT).show();
             }
-            if (Monday.isChecked()){
-                AlarmDay(2, calendar, getAlarmActionPendingIntent(), alarmManager);}
 
-            if (Tuesday.isChecked())
-                AlarmDay(3, calendar, getAlarmActionPendingIntent(), alarmManager);
-            if (Wednesday.isChecked())
-                AlarmDay(4, calendar, getAlarmActionPendingIntent(), alarmManager);
-
-            if (Thursday.isChecked())
-                AlarmDay(5, calendar, getAlarmActionPendingIntent(), alarmManager);
-
-            if (Friday.isChecked())
-                AlarmDay(6, calendar, getAlarmActionPendingIntent(), alarmManager);
-
-            if (Saturday.isChecked())
-                AlarmDay(7, calendar, getAlarmActionPendingIntent(), alarmManager);
-            if (Sunday.isChecked())
-                AlarmDay(1, calendar, getAlarmActionPendingIntent(), alarmManager);
 
         });
     }
@@ -250,20 +233,6 @@ public class NewOrChangedAlarm extends AppCompatActivity{
     }
 }
 
-class  Click extends NewOrChangedAlarm implements View.OnClickListener{
-
-    @SuppressLint({"ResourceAsColor", "UseCompatLoadingForDrawables", "NonConstantResourceId", "DefaultLocale"})
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-
-            case R.id.backToMain:
-                finish();
-                break;
-        }
-    }
-
-}
 
 
 
