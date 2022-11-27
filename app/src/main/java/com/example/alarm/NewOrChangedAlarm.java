@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -31,8 +30,9 @@ import java.util.Locale;
 
 public class NewOrChangedAlarm extends AppCompatActivity{
     public static MediaPlayer CheckedMusic;
-    public static EditText text;
-    Button setAlarm;
+    public EditText text;
+    MaterialTimePicker materialTimePicker;
+    Button setAlarm, back;
     Button plus;
     @SuppressLint({"StaticFieldLeak", "UseSwitchCompatOrMaterialCode"})
     protected static Switch vibNew, loudNew;
@@ -41,9 +41,9 @@ public class NewOrChangedAlarm extends AppCompatActivity{
     AudioManager audioManager;
     protected static int progressM = 2, progress;
     Button music;
+    public static String message = "";
     AlarmManager alarmManager;
     AlarmManager.AlarmClockInfo alarmClockInfo;
-    int curValue;
     ToggleButton Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday;
     CreateNewAlarm newAlarm;
     SimpleDateFormat sdf;
@@ -54,6 +54,7 @@ public class NewOrChangedAlarm extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_new);
         super.onCreate(savedInstanceState);
+        Click click = new Click();
 
         Monday = findViewById(R.id.line1);
         Tuesday = findViewById(R.id.line2);
@@ -63,9 +64,21 @@ public class NewOrChangedAlarm extends AppCompatActivity{
         Saturday = findViewById(R.id.line6);
         Sunday = findViewById(R.id.line7);
 
-        Click click = new Click();
+        volume = findViewById(R.id.volumeControl);
         music = findViewById(R.id.musicButton);
-//        music.setOnClickListener(click);
+        back = findViewById(R.id.backToMain);
+        minute = findViewById(R.id.minuteInt);
+        text = findViewById(R.id.textMessage);
+        setAlarm = findViewById(R.id.alarm_button);
+        vibNew = findViewById(R.id.vibration);
+        loudNew = findViewById(R.id.moreLoud);
+        plus = findViewById(R.id.createdNewAlarm);
+
+        sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        newAlarm = new CreateNewAlarm();
+        message += text.getText().toString();
+
         music.setOnClickListener(h ->{
             intent = new Intent("android.intent.action.RINGTONE_PICKER");
             intent.setType("audio/mpeg");
@@ -73,13 +86,13 @@ public class NewOrChangedAlarm extends AppCompatActivity{
         });
 
 
-        sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-
-        newAlarm = new CreateNewAlarm();
 
 
-        minute = findViewById(R.id.minuteInt);
-        minute.setMin(0);
+
+
+        back.setOnClickListener(click);
+
+        minute.setMin(3);
         minute.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -96,12 +109,10 @@ public class NewOrChangedAlarm extends AppCompatActivity{
             }
         });
 
-        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        curValue = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
-        volume = findViewById(R.id.volumeControl);
+
         volume.setMin(0);
         volume.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
-        volume.setProgress(curValue);
+        volume.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
         volume.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -121,23 +132,84 @@ public class NewOrChangedAlarm extends AppCompatActivity{
             }
         });
 
-        text = findViewById(R.id.textMessage);
-        setAlarm = findViewById(R.id.alarm_button);
-//        click.onClick(setAlarm);
-        setAlarm.setOnClickListener(click);
-
-
-        vibNew = findViewById(R.id.vibration);
-
-
-        loudNew = findViewById(R.id.moreLoud);
 
 
 
-        plus = findViewById(R.id.createdNewAlarm);
-        plus.setOnClickListener(click);
+        setAlarm.setOnClickListener( n -> {
+            calendar = Calendar.getInstance();
+            materialTimePicker = new MaterialTimePicker.Builder()
+                    .setTimeFormat(TimeFormat.CLOCK_24H)
+                    .setHour(calendar.getTime().getHours())
+                    .setMinute(calendar.getTime().getMinutes())
+                    .setTitleText("Выберите время для будильника")
+                    .build();
+
+            materialTimePicker.addOnPositiveButtonClickListener(view -> {
+
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.MILLISECOND, 0);
+                calendar.set(Calendar.MINUTE, materialTimePicker.getMinute());
+                calendar.set(Calendar.HOUR_OF_DAY, materialTimePicker.getHour());
+                newAlarm.timeName = sdf.format(calendar.getTime());
+                alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+                alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent());
+
+                setAlarm.setTextSize(90);
+                setAlarm.setText(sdf.format(calendar.getTime()));
+
+                alarm = true;
+                Toast.makeText(this, "Будильник установлен на " + sdf.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
+            });
+
+            materialTimePicker.show(getSupportFragmentManager(), "tag_picker");
+        });
 
 
+        plus.setOnClickListener(c -> {
+            if (alarm) {
+
+                if (CheckedMusic == null) CheckedMusic = MediaPlayer.create(getApplicationContext(), R.raw.music);
+
+                // заполнение параметров будильника; после передачи по ключу они все равны нулл
+                progressM = minute.getProgress();
+                progress = volume.getProgress();
+                newAlarm.time = calendar.getTimeInMillis();
+                newAlarm.timeName= sdf.format(calendar.getTime());
+                newAlarm.more = loudNew.isChecked();
+                newAlarm.music = CheckedMusic;
+                newAlarm.vib = vibNew.isChecked();
+                newAlarm.vol = progress;
+                newAlarm.textMessange = message;
+                newAlarm.minute = progressM;
+
+                alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent());
+                Intent intent1 = new Intent(NewOrChangedAlarm.this, MainActivity.class);
+                startActivity(intent1);
+            }
+            else{
+                Toast.makeText(this, "Вы не можете установить будильник без времени", Toast.LENGTH_SHORT).show();
+            }
+            if (Monday.isChecked()){
+                AlarmDay(2, calendar, getAlarmActionPendingIntent(), alarmManager);}
+
+            if (Tuesday.isChecked())
+                AlarmDay(3, calendar, getAlarmActionPendingIntent(), alarmManager);
+            if (Wednesday.isChecked())
+                AlarmDay(4, calendar, getAlarmActionPendingIntent(), alarmManager);
+
+            if (Thursday.isChecked())
+                AlarmDay(5, calendar, getAlarmActionPendingIntent(), alarmManager);
+
+            if (Friday.isChecked())
+                AlarmDay(6, calendar, getAlarmActionPendingIntent(), alarmManager);
+
+            if (Saturday.isChecked())
+                AlarmDay(7, calendar, getAlarmActionPendingIntent(), alarmManager);
+            if (Sunday.isChecked())
+                AlarmDay(1, calendar, getAlarmActionPendingIntent(), alarmManager);
+
+        });
     }
 
     public void AlarmDay(int week, Calendar cal, PendingIntent pendingIntent, AlarmManager alarmManager) {
@@ -153,19 +225,17 @@ public class NewOrChangedAlarm extends AppCompatActivity{
                 case 1:
                     Uri uri = intent.getData();
 
-                    CheckedMusic = MediaPlayer.create(NewOrChangedAlarm.this, uri);
+                    CheckedMusic = MediaPlayer.create(getApplicationContext(), uri);
                     nameOfMusic = findViewById(R.id.nameOfCheckedMusic);
                     nameOfMusic.setText(uri.getEncodedUserInfo());
                     break;
             }
         }
         else{
-            Uri notificationUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-            CheckedMusic = MediaPlayer.create(this, notificationUri);
+            CheckedMusic = MediaPlayer.create(getApplicationContext(), R.raw.music);
         }
 
     }
-
 
     PendingIntent getAlarmInfoPendingIntent() {
         Intent alarmInfoIntent = new Intent(this, MainActivity.class);
@@ -181,81 +251,15 @@ public class NewOrChangedAlarm extends AppCompatActivity{
 }
 
 class  Click extends NewOrChangedAlarm implements View.OnClickListener{
+
     @SuppressLint({"ResourceAsColor", "UseCompatLoadingForDrawables", "NonConstantResourceId", "DefaultLocale"})
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.alarm_button:
-                MaterialTimePicker materialTimePicker = new MaterialTimePicker.Builder()
-                        .setTimeFormat(TimeFormat.CLOCK_24H)
-                        .setHour(12)
-                        .setMinute(0)
-                        .setTitleText("Выберите время для будильника")
-                        .build();
 
-                materialTimePicker.addOnPositiveButtonClickListener(view -> {
-                    calendar = Calendar.getInstance();
-                    calendar.set(Calendar.SECOND, 0);
-                    calendar.set(Calendar.MILLISECOND, 0);
-                    calendar.set(Calendar.MINUTE, materialTimePicker.getMinute());
-                    calendar.set(Calendar.HOUR_OF_DAY, materialTimePicker.getHour());
-                    newAlarm.timeName = sdf.format(calendar.getTime());
-                    alarmManager= (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-
-                    alarmClockInfo= new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent());
-                    alarm = true;
-                    setAlarm.setTextSize(90);
-                    setAlarm.setText(sdf.format(calendar.getTime()));
-                    Toast.makeText(this, "Будильник установлен на " + sdf.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
-                });
-
-                materialTimePicker.show(getSupportFragmentManager(), "tag_picker");
-                break;
             case R.id.backToMain:
                 finish();
                 break;
-            case R.id.createdNewAlarm:
-                if (alarm) {
-                    progressM = minute.getProgress();
-                    progress = volume.getProgress();
-                    newAlarm.time = calendar.getTimeInMillis();
-                    newAlarm.timeName= sdf.format(calendar.getTime());
-                    newAlarm.more = loudNew.isChecked();
-                    newAlarm.music = CheckedMusic;
-                    newAlarm.vib = vibNew.isChecked();
-                    newAlarm.vol = progress;
-                    newAlarm.textMessange = text.getText().toString();
-                    newAlarm.minute = progressM;
-
-                    alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent());
-                    Intent intent1 = new Intent();
-                    intent1.putExtra("NEW", newAlarm);
-                    setResult(RESULT_OK, intent1);
-                    finish();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Вы не можете установить будильник без времени", Toast.LENGTH_SHORT).show();
-                }
-
-                if (Monday.isChecked()){
-                    AlarmDay(2, calendar, getAlarmActionPendingIntent(), alarmManager);}
-
-
-                if (Tuesday.isChecked())
-                    AlarmDay(3, calendar, getAlarmActionPendingIntent(), alarmManager);
-                if (Wednesday.isChecked())
-                    AlarmDay(4, calendar, getAlarmActionPendingIntent(), alarmManager);
-
-                if (Thursday.isChecked())
-                    AlarmDay(5, calendar, getAlarmActionPendingIntent(), alarmManager);
-
-                if (Friday.isChecked())
-                    AlarmDay(6, calendar, getAlarmActionPendingIntent(), alarmManager);
-
-                if (Saturday.isChecked())
-                    AlarmDay(7, calendar, getAlarmActionPendingIntent(), alarmManager);
-                if (Sunday.isChecked())
-                    AlarmDay(1, calendar, getAlarmActionPendingIntent(), alarmManager);
-               break;
         }
     }
 

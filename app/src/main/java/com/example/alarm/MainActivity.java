@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     TextView text;
-    public static Calendar date;
+    Calendar date;
     Button plusmain, settings;
     Intent intentNew;
     @Override
@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 3:
-                    CreateNewAlarm newA = (CreateNewAlarm) intent.getSerializableExtra("NEW");
 
             }
         }

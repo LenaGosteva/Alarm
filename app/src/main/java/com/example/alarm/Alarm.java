@@ -39,7 +39,9 @@ public class Alarm extends AppCompatActivity {
 
         textView = findViewById(R.id.text);
         message = findViewById(R.id.messageT);
-        message.setTextSize(20);
+            message.setTextSize(20);
+            message.setText(NewOrChangedAlarm.message);
+
 
         off = findViewById(R.id.offAlarm);
         out = findViewById(R.id.outAlarm);
@@ -51,15 +53,15 @@ public class Alarm extends AppCompatActivity {
             date = Calendar.getInstance();
             textView.setText(sdf.format(date.getTime()));
         }, 0, 1, TimeUnit.SECONDS);
-
-        ringtone = NewOrChangedAlarm.CheckedMusic;
+        if (NewOrChangedAlarm.CheckedMusic != null) ringtone = NewOrChangedAlarm.CheckedMusic;
+        else ringtone = MediaPlayer.create(getApplicationContext(), R.raw.music);
 
         audioManager.adjustVolume(AudioManager.MODE_NORMAL, NewOrChangedAlarm.progress);
         ringtone.start();
 
         if (NewOrChangedAlarm.vibNew.isChecked()){
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            vibrator.vibrate(pattern, 2);
+            vibrator.vibrate(pattern, 6);
         }
 
         if (NewOrChangedAlarm.loudNew.isChecked()) {
@@ -79,7 +81,6 @@ public class Alarm extends AppCompatActivity {
         });
 
         out.setOnClickListener(out -> {
-            if (NewOrChangedAlarm.progressM !=0) {
                 if (NewOrChangedAlarm.vibNew.isChecked()) vibrator.cancel();
                 if (ringtone != null && ringtone.isPlaying()) {
                     ringtone.stop();
@@ -91,8 +92,7 @@ public class Alarm extends AppCompatActivity {
                 }
                 textView.setText(sdf.format(date.getTime()));
                 ringtone.start();
-                if (NewOrChangedAlarm.vibNew.isChecked()) vibrator.vibrate(pattern, 2);
-            }
+                if (NewOrChangedAlarm.vibNew.isChecked()) vibrator.vibrate(pattern, 5);
 
         });
     }

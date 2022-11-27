@@ -3,15 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2665" />
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/drawable/button.xml" value="0.2285" />
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/drawable/buttons.xml" value="0.2285" />
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2285" />
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/drawable/mask.xml" value="0.2285" />
+        <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/drawable/toggle.xml" value="0.1" />
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/drawable/toggle_button.xml" value="0.271" />
+        <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/drawable/toggle_state_off.xml" value="0.186" />
+        <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/drawable/toggle_state_on.xml" value="0.186" />
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/drawable/toggle_status_off.xml" value="0.2505" />
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/drawable/toggle_status_on.xml" value="0.2505" />
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/layout/activity_alarm.xml" value="0.264" />
-        <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/layout/activity_main.xml" value="0.17088607594936708" />
+        <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/layout/activity_music.xml" value="0.2604166666666667" />
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/layout/activity_new.xml" value="0.22530996152201796" />
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/layout/activity_settings.xml" value="0.176" />
@@ -21,6 +25,7 @@
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/menu/activity_menu_music.xml" value="0.27447916666666666" />
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/menu/main_menu.xml" value="0.22435897435897437" />
         <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/menu/popup.xml" value="0.205859375" />
+        <entry key="..\:/Users/Lyudmila/Alarm/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2665" />
       </map>
     </option>
   </component>
