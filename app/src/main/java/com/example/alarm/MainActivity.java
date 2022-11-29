@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -47,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode) {
                 case 3:
-
+                    CreateNewAlarm alarm = (CreateNewAlarm) getIntent().getSerializableExtra("NEW");
+                    Toast.makeText(this, alarm.textMessange, Toast.LENGTH_SHORT).show();
             }
         }
     }

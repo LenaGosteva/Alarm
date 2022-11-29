@@ -181,9 +181,12 @@ public class NewOrChangedAlarm extends AppCompatActivity{
                 newAlarm.textMessange = message;
                 newAlarm.minute = progressM;
 
+
                 alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent());
                 Intent intent1 = new Intent(NewOrChangedAlarm.this, MainActivity.class);
-                startActivity(intent1);
+                intent1.putExtra("NEW", newAlarm);
+                setResult(3, intent1);
+                startActivityForResult(intent1, 3);
 
 
             }
