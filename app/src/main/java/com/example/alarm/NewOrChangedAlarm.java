@@ -32,7 +32,7 @@ public class NewOrChangedAlarm extends AppCompatActivity{
     public static boolean vibNew = false, loudNew = false;
     AudioManager audioManager;
     protected static int progressM = 2, progress;
-    public static String message = "";
+    public static String message = "", days = "";
     AlarmManager alarmManager;
     AlarmManager.AlarmClockInfo alarmClockInfo;
     CreateNewAlarm newAlarm;
@@ -147,23 +147,37 @@ public class NewOrChangedAlarm extends AppCompatActivity{
         binding.createdNewAlarm.setOnClickListener(c -> {
             if (alarm) {
                 if (binding.line1.isChecked()){
+                    days += "M ";
                     AlarmDay(2, calendar, getAlarmActionPendingIntent(), alarmManager);}
 
-                if (binding.line2.isChecked())
+                if (binding.line2.isChecked()){
+                    days += "TU ";
                     AlarmDay(3, calendar, getAlarmActionPendingIntent(), alarmManager);
-                if (binding.line3.isChecked())
+                }
+
+                if (binding.line3.isChecked()) {
+                    days +="W ";
                     AlarmDay(4, calendar, getAlarmActionPendingIntent(), alarmManager);
+                }
 
-                if (binding.line4.isChecked())
+                if (binding.line4.isChecked()) {
+                    days +="TH ";
                     AlarmDay(5, calendar, getAlarmActionPendingIntent(), alarmManager);
+                }
 
-                if (binding.line5.isChecked())
+                if (binding.line5.isChecked()) {
+                    days +="F ";
                     AlarmDay(6, calendar, getAlarmActionPendingIntent(), alarmManager);
+                }
 
-                if (binding.line6.isChecked())
+                if (binding.line6.isChecked()) {
+                    days +="SA ";
                     AlarmDay(7, calendar, getAlarmActionPendingIntent(), alarmManager);
-                if (binding.line7.isChecked())
+                }
+                if (binding.line7.isChecked()) {
+                    days +="SU ";
                     AlarmDay(1, calendar, getAlarmActionPendingIntent(), alarmManager);
+                }
 
 
                 if (CheckedMusic == null) CheckedMusic = MediaPlayer.create(getApplicationContext(), R.raw.music);
@@ -176,6 +190,7 @@ public class NewOrChangedAlarm extends AppCompatActivity{
                 newAlarm.timeName= sdf.format(calendar.getTime());
                 newAlarm.more = binding.moreLoud.isChecked();
                 newAlarm.music = CheckedMusic;
+                newAlarm.days = days;
                 newAlarm.vib = binding.vibration.isChecked();
                 newAlarm.vol = progress;
                 newAlarm.textMessange = message;

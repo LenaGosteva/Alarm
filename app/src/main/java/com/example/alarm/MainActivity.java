@@ -5,15 +5,16 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.alarm.databinding.ActivityMainBinding;
 
 import org.jetbrains.annotations.Nullable;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.concurrent.Executors;
@@ -23,11 +24,19 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     Calendar date;
     Intent intentNew;
+    ArrayList<CreateNewAlarm> news;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         super.onCreate(savedInstanceState);
+
+        Adapter createNewAlarmAdapter = new Adapter(this, news);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        binding.recyclerView.setLayoutManager(linearLayoutManager);
+        binding.recyclerView.setAdapter(createNewAlarmAdapter);
+
 
         Click click = new Click();
         binding.settings.setOnClickListener(click);
@@ -49,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             switch (requestCode) {
                 case 3:
                     CreateNewAlarm alarm = (CreateNewAlarm) getIntent().getSerializableExtra("NEW");
-                    Toast.makeText(this, alarm.textMessange, Toast.LENGTH_SHORT).show();
+                    news.add(alarm);
             }
         }
     }
