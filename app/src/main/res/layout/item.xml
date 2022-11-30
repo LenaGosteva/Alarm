@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/buttons"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextClock
+                android:id="@+id/time"
+                android:layout_width="200dp"
+                android:layout_height="60dp"
+                android:textSize="50dp"
+                tools:hint="10.03" />
+
+            <TextView
+                android:id="@+id/textM"
+                android:layout_width="150dp"
+                android:layout_height="20dp"
+                android:textSize="15dp"
+                tools:hint="jvuvb" />
+            \
+            android:layout_below="@+id/time" />
+
+            <TextView
+                android:id="@+id/days"
+                android:layout_width="150dp"
+                android:layout_height="20dp"
+                android:layout_below="@+id/textM"
+                android:textSize="15dp"
+                tools:hint="jvuvb" />
+        </LinearLayout>
+
+        <Switch
+            android:id="@+id/OnOff"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="50dp" />
+    </LinearLayout>
+</RelativeLayout>
