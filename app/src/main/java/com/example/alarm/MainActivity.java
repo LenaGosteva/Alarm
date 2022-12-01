@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
         super.onCreate(savedInstanceState);
 
         Adapter createNewAlarmAdapter = new Adapter(this, news);

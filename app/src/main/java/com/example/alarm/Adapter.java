@@ -13,8 +13,7 @@ import java.util.ArrayList;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHolder>{
     ArrayList<CreateNewAlarm> list;
-    TextView time, days, message;
-    Switch OnOff;
+
     public Adapter(MainActivity mainActivity, ArrayList<CreateNewAlarm> news) {
         this.list = news;
     }
@@ -22,16 +21,18 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
     @NonNull
     @Override
     public Adapter.CreateNewAlarmViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item,  parent, false);
         CreateNewAlarmViewHolder c = new CreateNewAlarmViewHolder(view);
         return c;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull Adapter.CreateNewAlarmViewHolder holder, int position) {
-        time.setText(list.get(position).timeName);
-        message.setText(list.get(position).textMessange);
-        days.setText(list.get(position).days);
+    public void onBindViewHolder(Adapter.CreateNewAlarmViewHolder holder, int position) {
+        holder.time.setText(list.get(position).timeName);
+        holder.message.setText(list.get(position).textMessange);
+        holder.days.setText(list.get(position).days);
+
     }
 
     @Override
@@ -44,13 +45,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
         super.onAttachedToRecyclerView(recyclerView);
     }
     public class CreateNewAlarmViewHolder extends RecyclerView.ViewHolder{
-        public CreateNewAlarmViewHolder(@NonNull View itemView) {
+        TextView time, days, message;
+        Switch OnOff;
+        public CreateNewAlarmViewHolder(View itemView) {
             super(itemView);
+
             time = itemView.findViewById(R.id.time);
             message = itemView.findViewById(R.id.textM);
             days = itemView.findViewById(R.id.days);
-
-
 
         }
     }
