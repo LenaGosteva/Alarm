@@ -13,7 +13,7 @@
         android:id="@+id/alarm_button"
         android:padding="20dp"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="20dp"
         android:background="#00000000"
@@ -66,10 +66,8 @@
             <TextView
                 android:id="@+id/text56"
                 android:layout_width="wrap_content"
-
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:padding="20dp"
                 android:text="ПОВТОР ПО ДНЯМ НЕДЕЛИ" />
 
             <LinearLayout
@@ -155,9 +153,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:orientation="horizontal"
-
-                android:padding="20dp">
+                android:orientation="vertical">
 
                 <Switch
                     android:id="@+id/vibration"
@@ -170,8 +166,6 @@
                     android:id="@+id/moreLoud"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="0dp"
                     android:minHeight="48dp"
                     android:text="УСИЛЕНИЕ ЗВУКА"
                     tools:ignore="UseSwitchCompatOrMaterialXml" />
@@ -184,7 +178,6 @@
 
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:padding="20dp"
                 android:text="ГРОМКОСТЬ" />
 
             <SeekBar
@@ -203,7 +196,6 @@
                 android:layout_marginTop="40dp"
 
                 android:layout_marginBottom="16dp"
-                android:padding="20dp"
                 android:text="ИНТЕРВАЛ ПОВТОРА ПРИ ОТКЛАДЫВАНИИ" />
 
             <SeekBar
@@ -223,35 +215,31 @@
                 android:layout_marginTop="20dp"
                 android:hint="ПРИМЕЧАНИЕ"
                 android:padding="20dp"
-                android:text="   "
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:orientation="horizontal"
-
-                android:padding="20dp">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <Button
                     android:id="@+id/createdNewAlarm"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_marginLeft="140dp"
-                    android:layout_marginTop="20dp"
                     android:background="@drawable/buttons"
-                    android:text="+" />
+                    android:text= "+" />
 
                 <Button
                     android:id="@+id/backToMain"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="30dp"
-                    android:layout_marginTop="20dp"
                     android:background="@drawable/buttons"
                     android:text="НАЗАД" />
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

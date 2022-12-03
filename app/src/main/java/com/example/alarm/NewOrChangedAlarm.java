@@ -23,6 +23,8 @@ import com.google.android.material.timepicker.TimeFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class NewOrChangedAlarm extends AppCompatActivity{
     public static MediaPlayer CheckedMusic;
@@ -185,7 +187,7 @@ public class NewOrChangedAlarm extends AppCompatActivity{
                 if (binding.vibration.isChecked()) vibNew = true;
                 // заполнение параметров будильника; после передачи по ключу они все равны нулл
                 progressM = binding.minuteInt.getProgress();
-                progress = volume.getProgress();
+                progress = binding.volumeControl.getProgress();
                 newAlarm.time = calendar.getTimeInMillis();
                 newAlarm.timeName= sdf.format(calendar.getTime());
                 newAlarm.more = binding.moreLoud.isChecked();
@@ -196,20 +198,23 @@ public class NewOrChangedAlarm extends AppCompatActivity{
                 newAlarm.textMessange = message;
                 newAlarm.minute = progressM;
 
+                Timer myTimer;
+                myTimer = new Timer();
 
-                alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent());
+                myTimer.schedule(new TimerTask() {
+                    public void run() {
+                        alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent());
+
+                    }
+                }, 0);
                 Intent intent1 = new Intent(NewOrChangedAlarm.this, MainActivity.class);
                 intent1.putExtra("NEW", newAlarm);
-                setResult(3, intent1);
+                setResult(RESULT_OK, intent1);
                 startActivityForResult(intent1, 3);
-
-
             }
-            else{
+            else {
                 Toast.makeText(this, "Вы не можете установить будильник без времени", Toast.LENGTH_SHORT).show();
             }
-
-
         });
     }
 
