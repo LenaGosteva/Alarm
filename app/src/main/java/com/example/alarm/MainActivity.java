@@ -56,11 +56,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
         super.onActivityResult(requestCode, resultCode, intentNew);
         if (resultCode == RESULT_OK) {
-            switch (requestCode) {
-                case 3:
                     CreateNewAlarm alarm = (CreateNewAlarm) getIntent().getSerializableExtra("NEW");
                     news.add(alarm);
-            }
         }
     }
 

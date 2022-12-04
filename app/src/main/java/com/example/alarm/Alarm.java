@@ -50,8 +50,7 @@ public class Alarm extends AppCompatActivity {
             date = Calendar.getInstance();
             binding.text.setText(sdf.format(date.getTime()));
         }, 0, 1, TimeUnit.SECONDS);
-        if (NewOrChangedAlarm.CheckedMusic != null) ringtone = NewOrChangedAlarm.CheckedMusic;
-        else ringtone = MediaPlayer.create(getApplicationContext(), R.raw.music);
+        ringtone = MediaPlayer.create(getApplicationContext(), NewOrChangedAlarm.CheckedMusic);
 
         audioManager.adjustVolume(AudioManager.MODE_NORMAL, NewOrChangedAlarm.progress);
         ringtone.start();

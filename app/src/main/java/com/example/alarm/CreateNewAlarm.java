@@ -1,6 +1,6 @@
 package com.example.alarm;
 
-import android.media.MediaPlayer;
+import android.net.Uri;
 
 import java.io.Serializable;
 
@@ -12,7 +12,7 @@ public class CreateNewAlarm implements Serializable {
     public long time;
     public boolean vib;
     public boolean more;
-    public MediaPlayer music;
+    public Uri music;
     public String textMessange;
 
 

@@ -6,7 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -27,9 +27,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class NewOrChangedAlarm extends AppCompatActivity{
-    public static MediaPlayer CheckedMusic;
     MaterialTimePicker materialTimePicker;
-    SeekBar volume;
     protected boolean alarm;
     public static boolean vibNew = false, loudNew = false;
     AudioManager audioManager;
@@ -42,6 +40,8 @@ public class NewOrChangedAlarm extends AppCompatActivity{
     Calendar calendar;
     Intent intent;TextView nameOfMusic;
     ActivityNewBinding binding;
+    public static Uri CheckedMusic = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);
+
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,6 @@ public class NewOrChangedAlarm extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         binding = ActivityNewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
 
 
 
@@ -113,7 +112,7 @@ public class NewOrChangedAlarm extends AppCompatActivity{
         });
 
 
-
+        final  int id = (int) System.currentTimeMillis();
 
         binding.alarmButton.setOnClickListener( n -> {
             calendar = Calendar.getInstance();
@@ -133,7 +132,7 @@ public class NewOrChangedAlarm extends AppCompatActivity{
                 newAlarm.timeName = sdf.format(calendar.getTime());
                 alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-                alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent());
+                alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent(id));
 
                 binding.alarmButton.setTextSize(90);
                 binding.alarmButton.setText(sdf.format(calendar.getTime()));
@@ -150,39 +149,37 @@ public class NewOrChangedAlarm extends AppCompatActivity{
             if (alarm) {
                 if (binding.line1.isChecked()){
                     days += "M ";
-                    AlarmDay(2, calendar, getAlarmActionPendingIntent(), alarmManager);}
+                    AlarmDay(2, calendar, getAlarmActionPendingIntent(id), alarmManager);}
 
                 if (binding.line2.isChecked()){
                     days += "TU ";
-                    AlarmDay(3, calendar, getAlarmActionPendingIntent(), alarmManager);
+                    AlarmDay(3, calendar, getAlarmActionPendingIntent(id), alarmManager);
                 }
 
                 if (binding.line3.isChecked()) {
                     days +="W ";
-                    AlarmDay(4, calendar, getAlarmActionPendingIntent(), alarmManager);
+                    AlarmDay(4, calendar, getAlarmActionPendingIntent(id), alarmManager);
                 }
 
                 if (binding.line4.isChecked()) {
                     days +="TH ";
-                    AlarmDay(5, calendar, getAlarmActionPendingIntent(), alarmManager);
+                    AlarmDay(5, calendar, getAlarmActionPendingIntent(id), alarmManager);
                 }
 
                 if (binding.line5.isChecked()) {
                     days +="F ";
-                    AlarmDay(6, calendar, getAlarmActionPendingIntent(), alarmManager);
+                    AlarmDay(6, calendar, getAlarmActionPendingIntent(id), alarmManager);
                 }
 
                 if (binding.line6.isChecked()) {
                     days +="SA ";
-                    AlarmDay(7, calendar, getAlarmActionPendingIntent(), alarmManager);
+                    AlarmDay(7, calendar, getAlarmActionPendingIntent(id), alarmManager);
                 }
                 if (binding.line7.isChecked()) {
                     days +="SU ";
-                    AlarmDay(1, calendar, getAlarmActionPendingIntent(), alarmManager);
+                    AlarmDay(1, calendar, getAlarmActionPendingIntent(id), alarmManager);
                 }
 
-
-                if (CheckedMusic == null) CheckedMusic = MediaPlayer.create(getApplicationContext(), R.raw.music);
                 if (binding.moreLoud.isChecked()) loudNew = true;
                 if (binding.vibration.isChecked()) vibNew = true;
                 // заполнение параметров будильника; после передачи по ключу они все равны нулл
@@ -203,13 +200,12 @@ public class NewOrChangedAlarm extends AppCompatActivity{
 
                 myTimer.schedule(new TimerTask() {
                     public void run() {
-                        alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent());
+                        alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent(id));
 
                     }
                 }, 0);
                 Intent intent1 = new Intent(NewOrChangedAlarm.this, MainActivity.class);
                 intent1.putExtra("NEW", newAlarm);
-                setResult(RESULT_OK, intent1);
                 startActivityForResult(intent1, 3);
             }
             else {
@@ -231,28 +227,27 @@ public class NewOrChangedAlarm extends AppCompatActivity{
                 case 1:
                     Uri uri = intent.getData();
 
-                    CheckedMusic = MediaPlayer.create(getApplicationContext(), uri);
+                    CheckedMusic = uri;
                     nameOfMusic = findViewById(R.id.nameOfCheckedMusic);
                     nameOfMusic.setText(uri.getEncodedUserInfo());
                     break;
             }
         }
         else{
-            CheckedMusic = MediaPlayer.create(getApplicationContext(), R.raw.music);
+            CheckedMusic = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);
         }
-
     }
 
-    PendingIntent getAlarmInfoPendingIntent() {
+    PendingIntent getAlarmInfoPendingIntent(int id) {
         Intent alarmInfoIntent = new Intent(this, MainActivity.class);
         alarmInfoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        return PendingIntent.getActivity(this, 0, alarmInfoIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(this, id, alarmInfoIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-    PendingIntent getAlarmActionPendingIntent() {
+    PendingIntent getAlarmActionPendingIntent(int id) {
         Intent intent = new Intent(this, Alarm.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        return PendingIntent.getActivity(this, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return PendingIntent.getActivity(this, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
 
