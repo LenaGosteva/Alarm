@@ -1,7 +1,6 @@
 package com.example.alarm;
 
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -64,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
     public class Click implements View.OnClickListener{
 
-        @SuppressLint({"ResourceAsColor", "UseCompatLoadingForDrawables", "NonConstantResourceId", "DefaultLocale"})
         @Override
         public void onClick(View view){
             switch (view.getId()){
