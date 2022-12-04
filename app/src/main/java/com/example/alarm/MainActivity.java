@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     public class Click implements View.OnClickListener{
 
-        @Override
+
         public void onClick(View view){
             switch (view.getId()){
                 case R.id.settings:
