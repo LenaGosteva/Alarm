@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity {
                     Intent intentSettings = new Intent(MainActivity.this, Settings.class);
                     startActivity(intentSettings);
                     break;
-
                 case R.id.plusMain:
 
                     intentNew = new Intent(MainActivity.this, NewOrChangedAlarm.class);
