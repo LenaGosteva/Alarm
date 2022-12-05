@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,8 +22,6 @@ import com.google.android.material.timepicker.TimeFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
 public class NewOrChangedAlarm extends AppCompatActivity{
     MaterialTimePicker materialTimePicker;
@@ -38,7 +35,7 @@ public class NewOrChangedAlarm extends AppCompatActivity{
     CreateNewAlarm newAlarm;
     SimpleDateFormat sdf;
     Calendar calendar;
-    Intent intent;TextView nameOfMusic;
+    Intent intent;
     ActivityNewBinding binding;
     public static Uri CheckedMusic = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);
 
@@ -68,7 +65,8 @@ public class NewOrChangedAlarm extends AppCompatActivity{
 
 
         binding.backToMain.setOnClickListener( f -> {
-            finish();
+            Intent intent1 = new Intent(NewOrChangedAlarm.this, MainActivity.class);
+            startActivity(intent1);
         });
 
         binding.minuteInt.setMin(3);
@@ -194,19 +192,12 @@ public class NewOrChangedAlarm extends AppCompatActivity{
                 newAlarm.vol = progress;
                 newAlarm.textMessange = message;
                 newAlarm.minute = progressM;
+                newAlarm.id = id;
+                alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent(id));
 
-                Timer myTimer;
-                myTimer = new Timer();
-
-                myTimer.schedule(new TimerTask() {
-                    public void run() {
-                        alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent(id));
-
-                    }
-                }, 0);
                 Intent intent1 = new Intent(NewOrChangedAlarm.this, MainActivity.class);
                 intent1.putExtra("NEW", newAlarm);
-                startActivityForResult(intent1, 3);
+                startActivity(intent1);
             }
             else {
                 Toast.makeText(this, "Вы не можете установить будильник без времени", Toast.LENGTH_SHORT).show();
@@ -226,10 +217,8 @@ public class NewOrChangedAlarm extends AppCompatActivity{
             switch (requestCode) {
                 case 1:
                     Uri uri = intent.getData();
-
                     CheckedMusic = uri;
-                    nameOfMusic = findViewById(R.id.nameOfCheckedMusic);
-                    nameOfMusic.setText(uri.getEncodedUserInfo());
+                    binding.nameOfCheckedMusic.setText(uri.getPath());
                     break;
             }
         }

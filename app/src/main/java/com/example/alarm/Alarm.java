@@ -5,7 +5,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
+import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Alarm extends AppCompatActivity {
 
-    MediaPlayer ringtone;
+    Ringtone ringtone;
     Calendar date;
     Vibrator vibrator;
     long[] pattern = {0, 1000, 1000, 1000, 1000, 1000};
@@ -52,13 +52,13 @@ public class Alarm extends AppCompatActivity {
             date = Calendar.getInstance();
             binding.text.setText(sdf.format(date.getTime()));
         }, 0, 1, TimeUnit.SECONDS);
-        ringtone = MediaPlayer.create(getApplicationContext(), NewOrChangedAlarm.CheckedMusic);
-        if (ringtone == null){
+        ringtone = RingtoneManager.getRingtone(this, NewOrChangedAlarm.CheckedMusic);
+        if (ringtone == null) {
             Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-            ringtone = MediaPlayer.create(getApplicationContext(), uri);
+            ringtone = RingtoneManager.getRingtone(this, uri);
         }
         audioManager.adjustVolume(AudioManager.MODE_NORMAL, NewOrChangedAlarm.progress);
-        ringtone.start();
+        ringtone.play();
 
         if (NewOrChangedAlarm.vibNew){
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -92,10 +92,8 @@ public class Alarm extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 binding.text.setText(sdf.format(date.getTime()));
-                ringtone.start();
+                ringtone.play();
                 if (NewOrChangedAlarm.vibNew) vibrator.vibrate(pattern, 5);
 
         });
-    }
-
-    }
+    }}

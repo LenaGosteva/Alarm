@@ -9,33 +9,16 @@
 
     tools:context=".MainActivity">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right">
-
-        <Button
-            android:id="@+id/plusMain"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="right"
-
-            android:layout_marginStart="150dp"
-            android:layout_marginTop="30dp"
-            android:background="@drawable/buttons"
-            android:text="+" />
 
         <Button
             android:id="@+id/settings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:layout_marginTop="30dp"
-            android:layout_marginRight="70dp"
             android:background="@drawable/buttons"
             android:text="   НАСТРОЙКИ   " />
 
-
-    </RelativeLayout>
 
     <TextView
         android:id="@+id/textt"
@@ -47,10 +30,28 @@
         android:inputType="time"
         android:textSize="90dp"
         tools:hint="10.02" />
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layoutManager="LinearLayoutManager"/>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layoutManager="LinearLayoutManager" />
+
+        <Button
+            android:id="@+id/plusMain"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/recycler_view"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/buttons"
+            android:text="+" />
+    </RelativeLayout>
 </LinearLayout>
