@@ -220,8 +220,7 @@ public class NewOrChangedAlarm extends AppCompatActivity{
                     CheckedMusic = uri;
                     binding.nameOfCheckedMusic.setText(uri.getPath());
                     break;
-            }
-        }
+            }}
         else{
             CheckedMusic = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);
         }
