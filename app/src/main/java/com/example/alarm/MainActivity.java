@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     Calendar date;
     Intent intentNew;
     ArrayList<CreateNewAlarm> news;
-
+    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     public class Click implements View.OnClickListener{
 
-
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         public void onClick(View view){
             switch (view.getId()){
                 case R.id.settings:

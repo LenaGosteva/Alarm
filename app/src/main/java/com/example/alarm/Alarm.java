@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
 
@@ -51,7 +53,10 @@ public class Alarm extends AppCompatActivity {
             binding.text.setText(sdf.format(date.getTime()));
         }, 0, 1, TimeUnit.SECONDS);
         ringtone = MediaPlayer.create(getApplicationContext(), NewOrChangedAlarm.CheckedMusic);
-
+        if (ringtone == null){
+            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+            ringtone = MediaPlayer.create(getApplicationContext(), uri);
+        }
         audioManager.adjustVolume(AudioManager.MODE_NORMAL, NewOrChangedAlarm.progress);
         ringtone.start();
 
