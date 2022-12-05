@@ -231,7 +231,6 @@ public class NewOrChangedAlarm extends AppCompatActivity{
         alarmInfoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         return PendingIntent.getActivity(this, id, alarmInfoIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
-
     PendingIntent getAlarmActionPendingIntent(int id) {
         Intent intent = new Intent(this, Alarm.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
