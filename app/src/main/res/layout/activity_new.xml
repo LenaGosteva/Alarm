@@ -83,7 +83,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/buttons"
+                    android:background="@drawable/toggle"
                     android:textOff="M"
                     android:textOn="M"
                     android:textSize="13sp" />
@@ -93,7 +93,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/buttons"
+                    android:background="@drawable/toggle"
                     android:textOff="Tu"
                     android:textOn="Tu"
                     android:textSize="13sp" />
@@ -103,7 +103,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/buttons"
+                    android:background="@drawable/toggle"
                     android:textOff="W"
                     android:textOn="W"
                     android:textSize="13sp"
@@ -114,7 +114,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/buttons"
+                    android:background="@drawable/toggle"
                     android:textOff="Th"
                     android:textOn="Th"
                     android:textSize="13sp" />
@@ -124,7 +124,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/buttons"
+                    android:background="@drawable/toggle"
                     android:textOff="F"
                     android:textOn="F"
                     android:textSize="13sp" />
@@ -134,7 +134,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/buttons"
+                    android:background="@drawable/toggle"
                     android:textOff="Sa"
                     android:textOn="Sa"
                     android:textSize="13sp" />
@@ -144,7 +144,7 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/buttons"
+                    android:background="@drawable/toggle"
                     android:textOff="Su"
                     android:textOn="Su"
                     android:textSize="13sp" />

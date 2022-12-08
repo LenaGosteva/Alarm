@@ -8,11 +8,11 @@ public class CreateNewAlarm implements Serializable {
 
     public float minute;
     public int vol, id;
-    public String timeName, days;
+    public String timeName = " ", days;
     public long time;
     public boolean vib;
     public boolean more;
-    public Uri music;
+    transient public Uri music;
     public String textMessange;
 
 

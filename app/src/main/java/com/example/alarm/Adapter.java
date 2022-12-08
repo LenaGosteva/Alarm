@@ -14,7 +14,8 @@ import java.util.ArrayList;
 public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHolder>{
     ArrayList<CreateNewAlarm> list;
 
-    public Adapter(MainActivity mainActivity, ArrayList<CreateNewAlarm> news) {
+
+    public Adapter(ArrayList<CreateNewAlarm> news) {
         this.list = news;
     }
 
@@ -37,7 +38,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
 
     @Override
     public int getItemCount() {
-        return 0;
+        return list.size();
     }
 
     @Override

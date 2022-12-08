@@ -30,6 +30,7 @@ public class Alarm extends AppCompatActivity {
     long[] pattern = {0, 1000, 1000, 1000, 1000, 1000};
     AudioManager audioManager;
     ActivityAlarmBinding binding;
+
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,10 +39,8 @@ public class Alarm extends AppCompatActivity {
         setContentView(binding.getRoot());
 
 
-
-
         binding.messageT.setTextSize(20);
-        binding.messageT.setText(NewOrChangedAlarm.message);
+        binding.messageT.setText(getIntent().getStringExtra("Message"));
 
 
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -60,7 +59,7 @@ public class Alarm extends AppCompatActivity {
         audioManager.adjustVolume(AudioManager.MODE_NORMAL, NewOrChangedAlarm.progress);
         ringtone.play();
 
-        if (NewOrChangedAlarm.vibNew){
+        if (NewOrChangedAlarm.vibNew) {
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
             vibrator.vibrate(pattern, 6);
         }
@@ -70,30 +69,31 @@ public class Alarm extends AppCompatActivity {
             audioManager.adjustVolume(AudioManager.MODE_NORMAL, NewOrChangedAlarm.progress);
 
             Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() ->
-                    audioManager.adjustVolume(AudioManager.ADJUST_RAISE ,AudioManager.FLAG_PLAY_SOUND), 0, 5, TimeUnit.SECONDS);
+                    audioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND), 0, 5, TimeUnit.SECONDS);
         }
 
-        binding.offAlarm.setOnClickListener(off ->{
+        binding.offAlarm.setOnClickListener(off -> {
             if (NewOrChangedAlarm.vibNew) vibrator.cancel();
-                ringtone.stop();
+            ringtone.stop();
 
             Intent intent1 = new Intent(Alarm.this, MainActivity.class);
             startActivity(intent1);
         });
 
         binding.outAlarm.setOnClickListener(out -> {
-                if (NewOrChangedAlarm.vibNew) vibrator.cancel();
-                if (ringtone != null && ringtone.isPlaying()) {
-                    ringtone.stop();
-                }
-                try {
-                    Thread.sleep((long) NewOrChangedAlarm.progressM*1000*60);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                binding.text.setText(sdf.format(date.getTime()));
-                ringtone.play();
-                if (NewOrChangedAlarm.vibNew) vibrator.vibrate(pattern, 5);
+            if (NewOrChangedAlarm.vibNew) vibrator.cancel();
+            if (ringtone != null && ringtone.isPlaying()) {
+                ringtone.stop();
+            }
+            try {
+                Thread.sleep((long) NewOrChangedAlarm.progressM * 1000 * 60);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            binding.text.setText(sdf.format(date.getTime()));
+            ringtone.play();
+            if (NewOrChangedAlarm.vibNew) vibrator.vibrate(pattern, 5);
 
         });
-    }}
+    }
+}

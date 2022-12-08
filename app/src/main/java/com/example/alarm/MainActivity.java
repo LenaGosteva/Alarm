@@ -23,8 +23,10 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     Calendar date;
     Intent intentNew;
+    Adapter createNewAlarmAdapter;
     ArrayList<CreateNewAlarm> news;
-    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    LinearLayoutManager linearLayoutManager;
+    final static int REQUEST_L = 9876;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -32,10 +34,11 @@ public class MainActivity extends AppCompatActivity {
         news = new ArrayList<CreateNewAlarm>(){};
         super.onCreate(savedInstanceState);
 
-        Adapter createNewAlarmAdapter = new Adapter(this, news);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        createNewAlarmAdapter = new Adapter(news);
+        linearLayoutManager = new LinearLayoutManager(this);
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(createNewAlarmAdapter);
+
 
 
         Click click = new Click();
@@ -44,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
-
             date = Calendar.getInstance();
             binding.textt.setText(sdf.format(date.getTime()));
         }, 0, 1, TimeUnit.MILLISECONDS);
@@ -53,17 +55,21 @@ public class MainActivity extends AppCompatActivity {
 }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intentNew);
+        super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == RESULT_OK) {
+            switch (requestCode){
+                case REQUEST_L:
                     CreateNewAlarm alarm = (CreateNewAlarm) getIntent().getSerializableExtra("NEW");
                     news.add(alarm);
+                    break;
+            }
+
         }
     }
 
 
     public class Click implements View.OnClickListener{
 
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         public void onClick(View view){
             switch (view.getId()){
                 case R.id.settings:
@@ -71,9 +77,8 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intentSettings);
                     break;
                 case R.id.plusMain:
-
                     intentNew = new Intent(MainActivity.this, NewOrChangedAlarm.class);
-                    startActivityForResult(intentNew, 3);
+                    startActivityForResult(intentNew, REQUEST_L);
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + view.getId());
