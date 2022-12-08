@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             switch (requestCode){
                 case REQUEST_L:
-                    CreateNewAlarm alarm = (CreateNewAlarm) getIntent().getSerializableExtra("NEW");
+                    CreateNewAlarm alarm = (CreateNewAlarm) intent.getSerializableExtra("NEW");
                     news.add(alarm);
                     binding.recyclerView.setLayoutManager(linearLayoutManager);
                     binding.recyclerView.setAdapter(createNewAlarmAdapter);

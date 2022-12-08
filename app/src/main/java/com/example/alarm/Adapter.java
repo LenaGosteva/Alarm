@@ -41,10 +41,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
         return list.size();
     }
 
-    @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-    }
     public class CreateNewAlarmViewHolder extends RecyclerView.ViewHolder{
         TextView time, days, message;
         Switch OnOff;
