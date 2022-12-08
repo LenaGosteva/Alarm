@@ -31,8 +31,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
     protected static int progressM = 2, progress;
     public String message = "";
     public String days = "";
-    AlarmManager alarmManager;
-    AlarmManager.AlarmClockInfo alarmClockInfo;
+
     CreateNewAlarm newAlarm;
     SimpleDateFormat sdf;
     Calendar calendar;
@@ -137,6 +136,9 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
         binding.createdNewAlarm.setOnClickListener(c -> {
             if (alarm) {
+                AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+                AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent(id));
                 if (binding.line1.isChecked()) {
                     days += "M ";
                     AlarmDay(2, calendar, getAlarmActionPendingIntent(id), alarmManager);
@@ -177,9 +179,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
                 newAlarm = new CreateNewAlarm(binding.minuteInt.getProgress(), id, binding.volumeControl.getProgress(), message,
                         sdf.format(calendar.getTime()), days,calendar.getTimeInMillis(), CheckedMusic, binding.moreLoud.isChecked(), binding.vibration.isChecked() );
 
-                alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-                alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent(id));
                 alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent(id));
 
             } else {
@@ -190,7 +190,6 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
     public void AlarmDay(int week, Calendar cal, PendingIntent pendingIntent, AlarmManager alarmManager) {
         cal.set(Calendar.DAY_OF_WEEK, week);
-
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 24 * 60 * 60 * 1000, pendingIntent);
     }
 
