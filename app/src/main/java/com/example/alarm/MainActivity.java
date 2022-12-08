@@ -3,6 +3,7 @@ package com.example.alarm;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,15 +32,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        news = new ArrayList<CreateNewAlarm>(){};
+
         super.onCreate(savedInstanceState);
+
+
+        news = new ArrayList<CreateNewAlarm>(){};
 
         createNewAlarmAdapter = new Adapter(news);
         linearLayoutManager = new LinearLayoutManager(this);
-        binding.recyclerView.setLayoutManager(linearLayoutManager);
-        binding.recyclerView.setAdapter(createNewAlarmAdapter);
-
-
 
         Click click = new Click();
         binding.settings.setOnClickListener(click);
@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
                 case REQUEST_L:
                     CreateNewAlarm alarm = (CreateNewAlarm) getIntent().getSerializableExtra("NEW");
                     news.add(alarm);
+                    binding.recyclerView.setLayoutManager(linearLayoutManager);
+                    binding.recyclerView.setAdapter(createNewAlarmAdapter);
                     break;
             }
 

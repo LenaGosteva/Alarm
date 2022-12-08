@@ -51,7 +51,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
         sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-        newAlarm = new CreateNewAlarm();
+
 
 
         binding.musicButton.setOnClickListener(h -> {
@@ -122,10 +122,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
                 calendar.set(Calendar.MILLISECOND, 0);
                 calendar.set(Calendar.MINUTE, materialTimePicker.getMinute());
                 calendar.set(Calendar.HOUR_OF_DAY, materialTimePicker.getHour());
-                newAlarm.timeName = sdf.format(calendar.getTime());
-                alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-                alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent(id));
 
                 binding.alarmButton.setTextSize(90);
                 binding.alarmButton.setText(sdf.format(calendar.getTime()));
@@ -176,23 +173,15 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
                 if (binding.moreLoud.isChecked()) loudNew = true;
                 if (binding.vibration.isChecked()) vibNew = true;
-                // заполнение параметров будильника; после передачи по ключу они все равны нулл
-                progressM = binding.minuteInt.getProgress();
-                progress = binding.volumeControl.getProgress();
-                newAlarm.time = calendar.getTimeInMillis();
                 message += binding.textMessage.getText().toString();
-                newAlarm.more = binding.moreLoud.isChecked();
-                newAlarm.music = CheckedMusic;
-                newAlarm.days = days;
-                newAlarm.vib = binding.vibration.isChecked();
-                newAlarm.vol = progress;
-                newAlarm.textMessange = message;
-                newAlarm.minute = progressM;
-                newAlarm.id = id;
+                newAlarm = new CreateNewAlarm(binding.minuteInt.getProgress(), id, binding.volumeControl.getProgress(), message,
+                        sdf.format(calendar.getTime()), days,calendar.getTimeInMillis(), CheckedMusic, binding.moreLoud.isChecked(), binding.vibration.isChecked() );
+
+                alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+                alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent(id));
                 alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent(id));
-                Intent intent1 = new Intent(NewOrChangedAlarm.this, MainActivity.class);
-                setResult(RESULT_OK, intent1);
-                finish();
+
             } else {
                 Toast.makeText(this, "Вы не можете установить будильник без времени", Toast.LENGTH_SHORT).show();
             }
@@ -224,6 +213,8 @@ public class NewOrChangedAlarm extends AppCompatActivity {
     PendingIntent getAlarmInfoPendingIntent(int id) {
         Intent alarmInfoIntent = new Intent(this, MainActivity.class);
         alarmInfoIntent.putExtra("NEW", newAlarm);
+        setResult(RESULT_OK, alarmInfoIntent);
+        finish();
         alarmInfoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         return PendingIntent.getActivity(this, id, alarmInfoIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
