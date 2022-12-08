@@ -219,6 +219,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         return PendingIntent.getActivity(this, id, alarmInfoIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
+
     PendingIntent getAlarmActionPendingIntent(int id) {
         Intent intent = new Intent(this, Alarm.class);
         intent.putExtra("Message", message);
