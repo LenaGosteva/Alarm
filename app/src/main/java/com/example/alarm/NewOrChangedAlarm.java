@@ -138,7 +138,6 @@ public class NewOrChangedAlarm extends AppCompatActivity {
             if (alarm) {
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-                AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), getAlarmInfoPendingIntent(id));
                 if (binding.line1.isChecked()) {
                     days += "M ";
                     AlarmDay(2, calendar, getAlarmActionPendingIntent(id), alarmManager);
@@ -179,9 +178,15 @@ public class NewOrChangedAlarm extends AppCompatActivity {
                 newAlarm = new CreateNewAlarm(binding.minuteInt.getProgress(), id, binding.volumeControl.getProgress(), message,
                         sdf.format(calendar.getTime()), days,calendar.getTimeInMillis(), CheckedMusic, binding.moreLoud.isChecked(), binding.vibration.isChecked() );
 
+                Intent alarmInfoIntent = new Intent(this, MainActivity.class);
+                alarmInfoIntent.putExtra("NEW", newAlarm);
+                alarmInfoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 
+                AlarmManager.AlarmClockInfo alarmClockInfo = new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), PendingIntent.getActivity(this, id, alarmInfoIntent, PendingIntent.FLAG_UPDATE_CURRENT));
                 alarmManager.setAlarmClock(alarmClockInfo, getAlarmActionPendingIntent(id));
 
+                setResult(RESULT_OK, alarmInfoIntent);
+                finish();
             } else {
                 Toast.makeText(this, "Вы не можете установить будильник без времени", Toast.LENGTH_SHORT).show();
             }
@@ -207,15 +212,6 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         } else {
             CheckedMusic = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);
         }
-    }
-
-    PendingIntent getAlarmInfoPendingIntent(int id) {
-        Intent alarmInfoIntent = new Intent(this, MainActivity.class);
-        alarmInfoIntent.putExtra("NEW", newAlarm);
-        setResult(RESULT_OK, alarmInfoIntent);
-        finish();
-        alarmInfoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        return PendingIntent.getActivity(this, id, alarmInfoIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
 
