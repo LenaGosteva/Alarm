@@ -33,6 +33,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
         holder.time.setText(list.get(position).timeName);
         holder.message.setText(list.get(position).textMessange);
         holder.days.setText(list.get(position).days);
+        holder.OnOff.isChecked();
 
     }
 
@@ -46,7 +47,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
         Switch OnOff;
         public CreateNewAlarmViewHolder(View itemView) {
             super(itemView);
-
+            OnOff = itemView.findViewById(R.id.OnOff);
             time = itemView.findViewById(R.id.time);
             message = itemView.findViewById(R.id.textM);
             days = itemView.findViewById(R.id.days);
