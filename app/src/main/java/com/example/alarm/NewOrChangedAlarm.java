@@ -30,11 +30,11 @@ public class NewOrChangedAlarm extends AppCompatActivity {
     AudioManager audioManager;
     protected static int progressM = 2, progress;
     public String message = "";
-    public String days = "";
+    public String days = "Tomorrow";
 
     CreateNewAlarm newAlarm;
     SimpleDateFormat sdf;
-    Calendar calendar;
+    Calendar calendar = Calendar.getInstance();
     Intent intent;
     ActivityNewBinding binding;
     public static Uri CheckedMusic = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);
@@ -105,7 +105,6 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
 
         final int id = (int) System.currentTimeMillis();
-
         binding.alarmButton.setOnClickListener(n -> {
             materialTimePicker = new MaterialTimePicker.Builder()
                     .setTimeFormat(TimeFormat.CLOCK_24H)
@@ -115,7 +114,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
                     .build();
 
             materialTimePicker.addOnPositiveButtonClickListener(view -> {
-                calendar = Calendar.getInstance();
+
                 calendar.set(Calendar.SECOND, 0);
                 calendar.set(Calendar.MILLISECOND, 0);
                 calendar.set(Calendar.MINUTE, materialTimePicker.getMinute());
@@ -137,37 +136,44 @@ public class NewOrChangedAlarm extends AppCompatActivity {
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 final String t = binding.alarmButton.getText().toString();
                 if (binding.line1.isChecked()) {
+                    days = "";
                     days += "M ";
-                    AlarmDay(2, calendar, getAlarmActionPendingIntent(id), alarmManager);
+                    AlarmDay(2, getAlarmActionPendingIntent(id), alarmManager);
                 }
 
                 if (binding.line2.isChecked()) {
+                    days = "";
                     days += "TU ";
-                    AlarmDay(3, calendar, getAlarmActionPendingIntent(id), alarmManager);
+                    AlarmDay(3, getAlarmActionPendingIntent(id), alarmManager);
                 }
 
                 if (binding.line3.isChecked()) {
+                    days = "";
                     days += "W ";
-                    AlarmDay(4, calendar, getAlarmActionPendingIntent(id), alarmManager);
+                    AlarmDay(4, getAlarmActionPendingIntent(id), alarmManager);
                 }
 
                 if (binding.line4.isChecked()) {
+                    days = "";
                     days += "TH ";
-                    AlarmDay(5, calendar, getAlarmActionPendingIntent(id), alarmManager);
+                    AlarmDay(5, getAlarmActionPendingIntent(id), alarmManager);
                 }
 
                 if (binding.line5.isChecked()) {
+                    days = "";
                     days += "F ";
-                    AlarmDay(6, calendar, getAlarmActionPendingIntent(id), alarmManager);
+                    AlarmDay(6, getAlarmActionPendingIntent(id), alarmManager);
                 }
 
                 if (binding.line6.isChecked()) {
+                    days = "";
                     days += "SA ";
-                    AlarmDay(7, calendar, getAlarmActionPendingIntent(id), alarmManager);
+                    AlarmDay(7, getAlarmActionPendingIntent(id), alarmManager);
                 }
                 if (binding.line7.isChecked()) {
+                    days = "";
                     days += "SU ";
-                    AlarmDay(1, calendar, getAlarmActionPendingIntent(id), alarmManager);
+                    AlarmDay(1, getAlarmActionPendingIntent(id), alarmManager);
                 }
 
                 if (binding.moreLoud.isChecked()) loudNew = true;
@@ -190,9 +196,11 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         });
     }
 
-    public void AlarmDay(int week, Calendar cal, PendingIntent pendingIntent, AlarmManager alarmManager) {
-        cal.set(Calendar.DAY_OF_WEEK, week);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), 7 * 24 * 60 * 60 * 1000, pendingIntent);
+    public void AlarmDay(int week, PendingIntent pendingIntent, AlarmManager alarmManager) {
+        calendar.set(Calendar.DAY_OF_WEEK, week);
+        long i = calendar.getTimeInMillis();
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 7 * 24 * 60 * 60 * 1000, pendingIntent);
+
     }
 
     @Override

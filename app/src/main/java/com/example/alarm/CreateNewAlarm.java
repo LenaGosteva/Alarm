@@ -1,5 +1,6 @@
 package com.example.alarm;
 
+import android.media.RingtoneManager;
 import android.net.Uri;
 
 import java.io.Serializable;
@@ -26,6 +27,16 @@ public class CreateNewAlarm implements Serializable {
         this.time = time;
         this.more = more;
         this.vib = vib;
+    }
+    public CreateNewAlarm(){
+        this.id = 1244555;
+        this.days = "TH FR";
+        this.music = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+        this.vol = 67;
+        this.textMessange = "Hello";
+        this.minute = 123112;
+        this.time = 123456;
+        this.timeName = "11:02";
     }
 
 }

@@ -12,19 +12,13 @@ import com.example.alarm.databinding.ActivityMainBinding;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Locale;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
-    Calendar date;
     Intent intentNew;
     Adapter createNewAlarmAdapter;
-    ArrayList<CreateNewAlarm> news;
+    public static final ArrayList<CreateNewAlarm> news = new ArrayList<CreateNewAlarm>(){};
     LinearLayoutManager linearLayoutManager;
     final static int REQUEST_L = 9876;
     @Override
@@ -34,21 +28,14 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-
-        news = new ArrayList<CreateNewAlarm>(){};
-
         createNewAlarmAdapter = new Adapter(news);
         linearLayoutManager = new LinearLayoutManager(this);
+        binding.recyclerView.setLayoutManager(linearLayoutManager);
+        binding.recyclerView.setAdapter(createNewAlarmAdapter);
 
         Click click = new Click();
         binding.settings.setOnClickListener(click);
         binding.plusMain.setOnClickListener(click);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
-            date = Calendar.getInstance();
-            binding.textt.setText(sdf.format(date.getTime()));
-        }, 0, 1, TimeUnit.MILLISECONDS);
 
 
     }

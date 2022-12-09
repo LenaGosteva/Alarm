@@ -18,7 +18,6 @@
         android:background="@drawable/buttons"
         android:hint="НАСТРОИТЬ ВРЕМЯ"
         android:textColor="@android:color/darker_gray"
-        android:textColorHint="@android:color/darker_gray"
         android:textSize="30dp"
 
         tools:hint="НАСТРОИТЬ ВРЕМЯ" />
@@ -230,7 +229,6 @@
                     android:layout_height="50dp"
                     android:layout_marginLeft="140dp"
                     android:background="@drawable/buttons"
-                    android:backgroundTint="@color/black"
                     android:text="+" />
 
                 <Button
