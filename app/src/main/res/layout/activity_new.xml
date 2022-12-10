@@ -6,8 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:shape="rectangle"
-    tools:context=".NewOrChangedAlarm"
-    tools:ignore="ExtraText,UseSwitchCompatOrMaterialXml">
+    tools:context=".NewOrChangedAlarm">
 
     <Button
         android:id="@+id/alarm_button"
@@ -15,16 +14,15 @@
         android:layout_width="match_parent"
         android:layout_height="160dp"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/buttons"
+        android:background="@drawable/buttons_off"
         android:hint="НАСТРОИТЬ ВРЕМЯ"
-        android:textColor="@android:color/darker_gray"
         android:textSize="30dp"
-
         tools:hint="НАСТРОИТЬ ВРЕМЯ" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="10dp"
         android:background="@drawable/buttons">
 
         <LinearLayout
@@ -62,6 +60,11 @@
                     tools:hint="dfghjnbhjkkjhg"></TextView>
             </RelativeLayout>
 
+            <Switch
+                android:id="@+id/today"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Установить на сегодня"/>
             <TextView
                 android:id="@+id/text56"
                 android:layout_width="wrap_content"
@@ -182,7 +185,6 @@
 
             <SeekBar
                 android:id="@+id/volumeControl"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="0dp"

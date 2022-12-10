@@ -16,12 +16,13 @@ public class CreateNewAlarm implements Serializable {
     transient public Uri music;
     public String textMessange;
 
-    public CreateNewAlarm (float minute, int id, int vol, String textMessange,
+    public CreateNewAlarm (String timeName,float minute, int id, int vol, String textMessange,
                            String days, long time, Uri music, boolean more, boolean vib){
         this.id = id;
         this.days = days;
         this.music = music;
         this.vol = vol;
+        this.timeName = timeName;
         this.textMessange = textMessange;
         this.minute = minute;
         this.time = time;
