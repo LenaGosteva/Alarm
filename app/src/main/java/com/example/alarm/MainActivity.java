@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        createNewAlarmAdapter = new Adapter(news);
+        createNewAlarmAdapter = new Adapter(MainActivity.this ,news);
         linearLayoutManager = new LinearLayoutManager(this);
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(createNewAlarmAdapter);
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         Click click = new Click();
         binding.settings.setOnClickListener(click);
         binding.plusMain.setOnClickListener(click);
+
 
 
     }
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.plusMain:
                     intentNew = new Intent(MainActivity.this, NewOrChangedAlarm.class);
+                    CreateNewAlarm c = new CreateNewAlarm();
+                    intentNew.putExtra("Cr", c);
                     startActivityForResult(intentNew, REQUEST_L);
                     break;
                 default:

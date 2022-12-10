@@ -1,5 +1,8 @@
 package com.example.alarm;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +16,10 @@ import java.util.ArrayList;
 
 public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHolder>{
     ArrayList<CreateNewAlarm> list;
+    Context context;
 
-
-    public Adapter(ArrayList<CreateNewAlarm> news) {
+    public Adapter(Context context, ArrayList<CreateNewAlarm> news) {
+        this.context = context;
         this.list = news;
     }
 
@@ -29,11 +33,22 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
     }
 
     @Override
-    public void onBindViewHolder(Adapter.CreateNewAlarmViewHolder holder, int position) {
+    public void onBindViewHolder(Adapter.CreateNewAlarmViewHolder holder,
+                                 @SuppressLint("RecyclerView") int position) {
         holder.time.setText(list.get(position).timeName);
         holder.message.setText(list.get(position).textMessange);
         holder.days.setText(list.get(position).days);
         holder.OnOff.isChecked();
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, NewOrChangedAlarm.class);
+                intent.putExtra("Cr", list.get(position));
+                context.startActivity(intent);
+                Adapter.this.notify();
+            }
+        });
 
     }
 
@@ -51,6 +66,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
             time = itemView.findViewById(R.id.time);
             message = itemView.findViewById(R.id.textM);
             days = itemView.findViewById(R.id.days);
+
+        }
+    }
+
+    public class Click implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
 
         }
     }

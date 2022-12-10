@@ -43,11 +43,13 @@ public class NewOrChangedAlarm extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        Intent intent1 = new Intent();
+        newAlarm = (CreateNewAlarm) intent1.getSerializableExtra("Cr");
         super.onCreate(savedInstanceState);
         binding = ActivityNewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
+        CheckedMusic = newAlarm.music;
         sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
@@ -63,7 +65,9 @@ public class NewOrChangedAlarm extends AppCompatActivity {
             finish();
         });
 
+
         binding.minuteInt.setMin(3);
+        binding.minuteInt.setProgress(newAlarm.minute);
         binding.minuteInt.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
@@ -83,7 +87,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
         binding.volumeControl.setMin(0);
         binding.volumeControl.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
-        binding.volumeControl.setProgress(audioManager.getStreamVolume(AudioManager.STREAM_SYSTEM));
+        binding.volumeControl.setProgress(newAlarm.vol);
         binding.volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -103,13 +107,16 @@ public class NewOrChangedAlarm extends AppCompatActivity {
             }
         });
 
+        binding.vibration.setChecked(newAlarm.vib);
+        binding.moreLoud.setChecked(newAlarm.more);
+
 
         final int id = (int) System.currentTimeMillis();
         binding.alarmButton.setOnClickListener(n -> {
             materialTimePicker = new MaterialTimePicker.Builder()
                     .setTimeFormat(TimeFormat.CLOCK_24H)
-                    .setHour(calendar.getTime().getHours())
-                    .setMinute(calendar.getTime().getMinutes())
+                    .setHour(newAlarm.hours)
+                    .setMinute(newAlarm.minutes)
                     .setTitleText("Выберите время для будильника")
                     .build();
 
@@ -172,7 +179,11 @@ public class NewOrChangedAlarm extends AppCompatActivity {
                 if (binding.moreLoud.isChecked()) loudNew = true;
                 if (binding.vibration.isChecked()) vibNew = true;
                 message += binding.textMessage.getText().toString();
-                newAlarm = new CreateNewAlarm(binding.alarmButton.getText().toString(), binding.minuteInt.getProgress(), id, binding.volumeControl.getProgress(), message, days,calendar.getTimeInMillis(), CheckedMusic, binding.moreLoud.isChecked(), binding.vibration.isChecked() );
+                newAlarm = new CreateNewAlarm(binding.alarmButton.getText().toString(), binding.minuteInt.getProgress(),
+                        id, binding.volumeControl.getProgress(), message,
+                        days,calendar.getTimeInMillis(), CheckedMusic,
+                        binding.moreLoud.isChecked(), binding.vibration.isChecked(),
+                        calendar.getTime().getHours(), calendar.getTime().getMinutes());
                 if (!binding.today.isChecked() && calendar.getTimeInMillis() < System.currentTimeMillis()){
                     setAlarm(alarmManager, id, calendar.getTimeInMillis() + 1000*60*60*24);
                 }
