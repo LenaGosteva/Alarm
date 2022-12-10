@@ -173,7 +173,6 @@ public class NewOrChangedAlarm extends AppCompatActivity {
                 if (binding.vibration.isChecked()) vibNew = true;
                 message += binding.textMessage.getText().toString();
                 newAlarm = new CreateNewAlarm(binding.alarmButton.getText().toString(), binding.minuteInt.getProgress(), id, binding.volumeControl.getProgress(), message, days,calendar.getTimeInMillis(), CheckedMusic, binding.moreLoud.isChecked(), binding.vibration.isChecked() );
-
                 if (!binding.today.isChecked() && calendar.getTimeInMillis() < System.currentTimeMillis()){
                     setAlarm(alarmManager, id, calendar.getTimeInMillis() + 1000*60*60*24);
                 }
