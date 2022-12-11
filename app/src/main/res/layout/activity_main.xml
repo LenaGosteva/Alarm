@@ -21,12 +21,11 @@
 
     <TextClock
         android:id="@+id/textt"
-        android:layout_width="300dp"
-        android:layout_height="150dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp"
         android:gravity="center"
-        android:inputType="time"
         android:textSize="90dp"
         tools:hint="10.02" />
 
@@ -49,6 +48,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
+            android:backgroundTintMode="@color/white"
             android:background="@drawable/buttons"
             android:text="+" />
     </RelativeLayout>

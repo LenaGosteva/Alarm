@@ -42,14 +42,17 @@ public class NewOrChangedAlarm extends AppCompatActivity {
     @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        Intent intent1 = new Intent();
-        newAlarm = (CreateNewAlarm) intent1.getSerializableExtra("Cr");
-        super.onCreate(savedInstanceState);
         binding = ActivityNewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        CheckedMusic = newAlarm.music;
+        newAlarm = (CreateNewAlarm) getIntent().getSerializableExtra("Cr");
+        if (newAlarm == null){
+            newAlarm = new CreateNewAlarm();
+        }
+        super.onCreate(savedInstanceState);
+        binding.alarmButton.setText(newAlarm.timeName);
+
+//        CheckedMusic = newAlarm.music;
         sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
@@ -141,7 +144,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         binding.createdNewAlarm.setOnClickListener(c -> {
             if (alarm) {
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                days = binding.today.isChecked()?"Today": "Tomorrow";
+
                 if (binding.line1.isChecked()) {
                     days += "M ";
                     AlarmDay(2, getAlarmActionPendingIntent(id), alarmManager);
@@ -175,7 +178,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
                     days += "SU ";
                     AlarmDay(1, getAlarmActionPendingIntent(id), alarmManager);
                 }
-
+                if (days.isEmpty())  days = binding.today.isChecked()?"Today": "Tomorrow";
                 if (binding.moreLoud.isChecked()) loudNew = true;
                 if (binding.vibration.isChecked()) vibNew = true;
                 message += binding.textMessage.getText().toString();
@@ -184,14 +187,12 @@ public class NewOrChangedAlarm extends AppCompatActivity {
                         days,calendar.getTimeInMillis(), CheckedMusic,
                         binding.moreLoud.isChecked(), binding.vibration.isChecked(),
                         calendar.getTime().getHours(), calendar.getTime().getMinutes());
-                if (!binding.today.isChecked() && calendar.getTimeInMillis() < System.currentTimeMillis()){
-                    setAlarm(alarmManager, id, calendar.getTimeInMillis() + 1000*60*60*24);
-                }
-                if (binding.today.isChecked() && calendar.getTimeInMillis() < System.currentTimeMillis()){
-                    Toast.makeText(this, "Вы не можете установить будильник на сегодня на время " + sdf.format(calendar.getTime())+ ", т.к. это время уже прошло", Toast.LENGTH_SHORT).show();
-                }
-                if (binding.today.isChecked() && (calendar.getTimeInMillis() >= System.currentTimeMillis())){
-                    setAlarm(alarmManager, id,calendar.getTimeInMillis() );
+                if (!binding.today.isChecked() && calendar.getTimeInMillis() < System.currentTimeMillis()) {
+                    setAlarm(alarmManager, id, calendar.getTimeInMillis() + 1000 * 60 * 60 * 24);
+                } else if (binding.today.isChecked() && calendar.getTimeInMillis() < System.currentTimeMillis()) {
+                    Toast.makeText(this, "Вы не можете установить будильник на сегодня на время " + sdf.format(calendar.getTime()) + ", т.к. это время уже прошло", Toast.LENGTH_SHORT).show();
+                } else if (binding.today.isChecked() && (calendar.getTimeInMillis() >= System.currentTimeMillis())) {
+                    setAlarm(alarmManager, id, calendar.getTimeInMillis());
                 }
 
             } else {
@@ -202,9 +203,17 @@ public class NewOrChangedAlarm extends AppCompatActivity {
     }
 
     public void AlarmDay(int week, PendingIntent pendingIntent, AlarmManager alarmManager) {
-        calendar.set(Calendar.DAY_OF_WEEK, week);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 7 * 24 * 60 * 60 * 1000, pendingIntent);
 
+        if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) < week){
+            calendar.set(Calendar.WEEK_OF_MONTH, Calendar.getInstance().get(Calendar.WEEK_OF_MONTH)+1);
+            calendar.set(Calendar.DAY_OF_WEEK, week);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 7 * 24 * 60 * 60 * 1000, pendingIntent);
+
+        }
+        else {
+            calendar.set(Calendar.DAY_OF_WEEK, week);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 7 * 24 * 60 * 60 * 1000, pendingIntent);
+        }
     }
     public void setAlarm(AlarmManager alarmManager, int id, long time){
         Toast.makeText(this, "Будильник установлен на " + sdf.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
@@ -240,6 +249,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         return PendingIntent.getActivity(this, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
+
     
 }
 

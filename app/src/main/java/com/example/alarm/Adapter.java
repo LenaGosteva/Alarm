@@ -46,7 +46,6 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
                 Intent intent = new Intent(context, NewOrChangedAlarm.class);
                 intent.putExtra("Cr", list.get(position));
                 context.startActivity(intent);
-                Adapter.this.notify();
             }
         });
 

@@ -13,7 +13,7 @@ public class CreateNewAlarm implements Serializable {
     public long time, id;
     public boolean vib;
     public boolean more;
-    transient public Uri music = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);
+    transient public Uri music = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);;
     public String textMessange;
 
     public CreateNewAlarm (String timeName, int minute, long id, int vol, String textMessange,
@@ -38,8 +38,8 @@ public class CreateNewAlarm implements Serializable {
         this.vol = 67;
         this.textMessange = "Hello";
         this.minute = 2;
-        this.time = 123456;
-        this.timeName = "";
+        this.time = 2;
+        this.timeName = "Настроить время";
     }
 
 }
