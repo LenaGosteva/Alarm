@@ -146,39 +146,32 @@ public class NewOrChangedAlarm extends AppCompatActivity {
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
                 if (binding.line1.isChecked()) {
-                    days += "M ";
-                    AlarmDay(2, getAlarmActionPendingIntent(id), alarmManager);
+                    AlarmDay(2, getAlarmActionPendingIntent(id), alarmManager, "M ");
                 }
 
                 if (binding.line2.isChecked()) {
-                    days += "TU ";
-                    AlarmDay(3, getAlarmActionPendingIntent(id), alarmManager);
+                    AlarmDay(3, getAlarmActionPendingIntent(id), alarmManager, "TU ");
                 }
 
                 if (binding.line3.isChecked()) {
-                    days += "W ";
-                    AlarmDay(4, getAlarmActionPendingIntent(id), alarmManager);
+                    AlarmDay(4, getAlarmActionPendingIntent(id), alarmManager, "W ");
                 }
 
                 if (binding.line4.isChecked()) {
-                    days += "TH ";
-                    AlarmDay(5, getAlarmActionPendingIntent(id), alarmManager);
+                    AlarmDay(5, getAlarmActionPendingIntent(id), alarmManager,"TH " );
                 }
 
                 if (binding.line5.isChecked()) {
-                    days += "F ";
-                    AlarmDay(6, getAlarmActionPendingIntent(id), alarmManager);
+                    AlarmDay(6, getAlarmActionPendingIntent(id), alarmManager, "F ");
                 }
 
                 if (binding.line6.isChecked()) {
-                    days += "SA ";
-                    AlarmDay(7, getAlarmActionPendingIntent(id), alarmManager);
+                    AlarmDay(7, getAlarmActionPendingIntent(id), alarmManager, "SA ");
                 }
                 if (binding.line7.isChecked()) {
-                    days += "SU ";
-                    AlarmDay(1, getAlarmActionPendingIntent(id), alarmManager);
+                    AlarmDay(1, getAlarmActionPendingIntent(id), alarmManager, "SU ");
                 }
-                if (days.isEmpty())  days = binding.today.isChecked()?"Today": "Tomorrow";
+                if (days.isEmpty()) days = binding.today.isChecked()?"Today": "Tomorrow";
                 if (binding.moreLoud.isChecked()) loudNew = true;
                 if (binding.vibration.isChecked()) vibNew = true;
                 message += binding.textMessage.getText().toString();
@@ -202,18 +195,11 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
     }
 
-    public void AlarmDay(int week, PendingIntent pendingIntent, AlarmManager alarmManager) {
 
-        if (Calendar.getInstance().get(Calendar.DAY_OF_WEEK) < week){
-            calendar.set(Calendar.WEEK_OF_MONTH, Calendar.getInstance().get(Calendar.WEEK_OF_MONTH)+1);
-            calendar.set(Calendar.DAY_OF_WEEK, week);
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 7 * 24 * 60 * 60 * 1000, pendingIntent);
-
-        }
-        else {
-            calendar.set(Calendar.DAY_OF_WEEK, week);
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 7 * 24 * 60 * 60 * 1000, pendingIntent);
-        }
+    public void AlarmDay(int week, PendingIntent pendingIntent, AlarmManager alarmManager, String day) {
+        if (!days.contains(day)) days += day;
+        calendar.set(Calendar.DAY_OF_WEEK, week);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 7 * 24 * 60 * 60 * 1000, pendingIntent);
     }
     public void setAlarm(AlarmManager alarmManager, int id, long time){
         Toast.makeText(this, "Будильник установлен на " + sdf.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
