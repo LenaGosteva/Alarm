@@ -43,6 +43,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                notifyDataSetChanged();
                 Intent intent = new Intent(context, NewOrChangedAlarm.class);
                 intent.putExtra("Cr", list.get(position));
                 context.startActivity(intent);
