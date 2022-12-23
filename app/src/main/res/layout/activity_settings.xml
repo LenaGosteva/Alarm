@@ -15,6 +15,35 @@
         android:hint="НАСТРОЙКИ"
         android:textColor="#75BFBCBC"/>
 
+    <Switch
+        android:id="@+id/theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Установить темную тему" />
+
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+        <Button
+            android:id="@+id/ringtone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/buttons"
+            android:backgroundTintMode="@color/black"
+            android:text="Рингтон по умолчанию" />
+        <TextView
+            android:id="@+id/nameOfCheckedMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:layout_marginLeft="10dp"
+            android:textSize="15dp"
+            tools:hint="dfghjnbhjkkjhg"></TextView>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

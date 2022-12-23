@@ -54,14 +54,14 @@ public class Alarm extends AppCompatActivity {
         ringtone = RingtoneManager.getRingtone(this, NewOrChangedAlarm.CheckedMusic);
         if (ringtone == null) {
             Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-            ringtone = RingtoneManager.getRingtone(this, uri);
+            ringtone = RingtoneManager.getRingtone(this, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL));
         }
         audioManager.adjustVolume(AudioManager.MODE_NORMAL, NewOrChangedAlarm.progress);
         ringtone.play();
 
         if (NewOrChangedAlarm.vibNew) {
             vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            vibrator.vibrate(pattern, 6);
+            vibrator.vibrate(pattern, 3);
         }
 
         if (NewOrChangedAlarm.loudNew) {
@@ -76,8 +76,7 @@ public class Alarm extends AppCompatActivity {
             if (NewOrChangedAlarm.vibNew) vibrator.cancel();
             ringtone.stop();
 
-            Intent intent1 = new Intent(Alarm.this, MainActivity.class);
-            startActivity(intent1);
+            finish();
         });
 
         binding.outAlarm.setOnClickListener(out -> {

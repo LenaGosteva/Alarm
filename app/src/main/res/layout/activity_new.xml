@@ -227,11 +227,11 @@
 
                 <Button
                     android:id="@+id/createdNewAlarm"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:layout_marginLeft="140dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="90dp"
                     android:background="@drawable/buttons"
-                    android:text="+" />
+                    android:text="СОХРАНИТЬ" />
 
                 <Button
                     android:id="@+id/backToMain"
@@ -244,6 +244,4 @@
 
         </LinearLayout>
     </ScrollView>
-
-
 </LinearLayout>

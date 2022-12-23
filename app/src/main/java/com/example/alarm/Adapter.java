@@ -38,16 +38,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
         holder.time.setText(list.get(position).timeName);
         holder.message.setText(list.get(position).textMessange);
         holder.days.setText(list.get(position).days);
-        holder.OnOff.isChecked();
+        holder.OnOff.setOnClickListener(b ->{
+            if (holder.OnOff.isChecked()?list.get(position).on = true: false);
+        });
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                notifyDataSetChanged();
-                Intent intent = new Intent(context, NewOrChangedAlarm.class);
-                intent.putExtra("Cr", list.get(position));
-                context.startActivity(intent);
-            }
+        holder.itemView.setOnClickListener(v -> {
+            notifyDataSetChanged();
+            Intent intent = new Intent(context, NewOrChangedAlarm.class);
+            intent.putExtra("Cr", list.get(position));
+            context.startActivity(intent);
         });
 
     }

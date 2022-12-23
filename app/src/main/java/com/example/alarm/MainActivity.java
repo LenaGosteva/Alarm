@@ -18,9 +18,11 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     Intent intentNew;
     Adapter createNewAlarmAdapter;
-    public static final ArrayList<CreateNewAlarm> news = new ArrayList<CreateNewAlarm>(){};
+    public static final ArrayList<CreateNewAlarm> news = new ArrayList<CreateNewAlarm>() {
+    };
     LinearLayoutManager linearLayoutManager;
     final static int REQUEST_L = 9876;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -28,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
 
-        createNewAlarmAdapter = new Adapter(MainActivity.this ,news);
+        createNewAlarmAdapter = new Adapter(MainActivity.this, news);
         linearLayoutManager = new LinearLayoutManager(this);
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(createNewAlarmAdapter);
@@ -38,18 +40,29 @@ public class MainActivity extends AppCompatActivity {
         binding.plusMain.setOnClickListener(click);
 
 
-
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == RESULT_OK) {
-            switch (requestCode){
+            switch (requestCode) {
                 case REQUEST_L:
                     CreateNewAlarm alarm = (CreateNewAlarm) intent.getSerializableExtra("NEW");
-                    news.add(alarm);
-                    binding.recyclerView.setLayoutManager(linearLayoutManager);
-                    binding.recyclerView.setAdapter(createNewAlarmAdapter);
+                    int foundedAlarmIndex = -1;
+                    for (int i = 0; i < news.size(); i++) {
+                        if (news.get(i).id == alarm.id) {
+                            foundedAlarmIndex = i;
+                            break;
+                        }
+                    }
+                    if (foundedAlarmIndex == -1) {
+                        news.add(alarm);
+                        foundedAlarmIndex = news.size() - 1;
+                    } else {
+                        news.set(foundedAlarmIndex, alarm);
+                    }
+                    binding.recyclerView.getAdapter().notifyItemChanged(foundedAlarmIndex);
                     break;
             }
 
@@ -57,10 +70,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public class Click implements View.OnClickListener{
+    public class Click implements View.OnClickListener {
 
-        public void onClick(View view){
-            switch (view.getId()){
+        public void onClick(View view) {
+            switch (view.getId()) {
                 case R.id.settings:
                     Intent intentSettings = new Intent(MainActivity.this, Settings.class);
                     startActivity(intentSettings);
