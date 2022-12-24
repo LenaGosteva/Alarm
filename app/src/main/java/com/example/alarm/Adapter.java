@@ -1,8 +1,9 @@
 package com.example.alarm;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
+import android.app.Activity;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHolder>{
+public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHolder> {
     ArrayList<CreateNewAlarm> list;
-    Context context;
+    Activity activity;
+    final static int REQUEST_L = 9876;
 
-    public Adapter(Context context, ArrayList<CreateNewAlarm> news) {
-        this.context = context;
+
+    public Adapter(Activity activity, ArrayList<CreateNewAlarm> news) {
+        this.activity = activity;
         this.list = news;
     }
 
@@ -27,7 +30,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
     @Override
     public Adapter.CreateNewAlarmViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item,  parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item, parent, false);
         CreateNewAlarmViewHolder c = new CreateNewAlarmViewHolder(view);
         return c;
     }
@@ -36,17 +39,21 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
     public void onBindViewHolder(Adapter.CreateNewAlarmViewHolder holder,
                                  @SuppressLint("RecyclerView") int position) {
         holder.time.setText(list.get(position).timeName);
+        holder.OnOff.setChecked(list.get(position).on);
         holder.message.setText(list.get(position).textMessange);
         holder.days.setText(list.get(position).days);
         holder.OnOff.setOnClickListener(b ->{
-            if (holder.OnOff.isChecked()?list.get(position).on = true: false);
+            list.get(position).on = holder.OnOff.isChecked()?true:false;
+            Log.d("ONTRUEAD", String.valueOf(list.get(position).on));
+            Log.d("ONTRUEAD", String.valueOf(list.get(position).id));
+
+
         });
 
         holder.itemView.setOnClickListener(v -> {
-            notifyDataSetChanged();
-            Intent intent = new Intent(context, NewOrChangedAlarm.class);
+            Intent intent = new Intent(activity, NewOrChangedAlarm.class);
             intent.putExtra("Cr", list.get(position));
-            context.startActivity(intent);
+            activity.startActivityForResult(intent, REQUEST_L);
         });
 
     }
@@ -56,9 +63,10 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
         return list.size();
     }
 
-    public class CreateNewAlarmViewHolder extends RecyclerView.ViewHolder{
+    public class CreateNewAlarmViewHolder extends RecyclerView.ViewHolder {
         TextView time, days, message;
         Switch OnOff;
+
         public CreateNewAlarmViewHolder(View itemView) {
             super(itemView);
             OnOff = itemView.findViewById(R.id.OnOff);
@@ -69,7 +77,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
         }
     }
 
-    public class Click implements View.OnClickListener{
+    public class Click implements View.OnClickListener {
 
         @Override
         public void onClick(View v) {

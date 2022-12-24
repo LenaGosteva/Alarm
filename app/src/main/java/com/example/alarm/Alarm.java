@@ -10,6 +10,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -29,6 +30,7 @@ public class Alarm extends AppCompatActivity {
     Vibrator vibrator;
     long[] pattern = {0, 1000, 1000, 1000, 1000, 1000};
     AudioManager audioManager;
+    boolean on = false;
     ActivityAlarmBinding binding;
 
     @SuppressLint("NewApi")
@@ -38,61 +40,73 @@ public class Alarm extends AppCompatActivity {
         binding = ActivityAlarmBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
-        binding.messageT.setTextSize(20);
-        binding.messageT.setText(getIntent().getStringExtra("Message"));
-
-
-        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
-
-        Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
-            date = Calendar.getInstance();
-            binding.text.setText(sdf.format(date.getTime()));
-        }, 0, 1, TimeUnit.SECONDS);
-        ringtone = RingtoneManager.getRingtone(this, NewOrChangedAlarm.CheckedMusic);
-        if (ringtone == null) {
-            Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
-            ringtone = RingtoneManager.getRingtone(this, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL));
+        int id = getIntent().getExtras().getInt("ALARM");
+        Log.d("IDI",String.valueOf(id));
+        for (CreateNewAlarm i : MainActivity.news) {
+            if(id == i.id){
+                on = i.on;
+                break;
+            }
         }
-        audioManager.adjustVolume(AudioManager.MODE_NORMAL, NewOrChangedAlarm.progress);
-        ringtone.play();
+        if (on) {
+            binding.messageT.setTextSize(20);
+            binding.messageT.setText(getIntent().getStringExtra("Message"));
 
-        if (NewOrChangedAlarm.vibNew) {
-            vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-            vibrator.vibrate(pattern, 3);
-        }
 
-        if (NewOrChangedAlarm.loudNew) {
-            audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+            audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+            Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() -> {
+                date = Calendar.getInstance();
+                binding.text.setText(sdf.format(date.getTime()));
+            }, 0, 1, TimeUnit.SECONDS);
+            ringtone = RingtoneManager.getRingtone(this, NewOrChangedAlarm.CheckedMusic);
+            if (ringtone == null) {
+                Uri uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+                ringtone = RingtoneManager.getRingtone(this, RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL));
+            }
             audioManager.adjustVolume(AudioManager.MODE_NORMAL, NewOrChangedAlarm.progress);
-
-            Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() ->
-                    audioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND), 0, 5, TimeUnit.SECONDS);
-        }
-
-        binding.offAlarm.setOnClickListener(off -> {
-            if (NewOrChangedAlarm.vibNew) vibrator.cancel();
-            ringtone.stop();
-
-            finish();
-        });
-
-        binding.outAlarm.setOnClickListener(out -> {
-            if (NewOrChangedAlarm.vibNew) vibrator.cancel();
-            if (ringtone != null && ringtone.isPlaying()) {
-                ringtone.stop();
-            }
-            try {
-                Thread.sleep((long) NewOrChangedAlarm.progressM * 1000 * 60);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            binding.text.setText(sdf.format(date.getTime()));
             ringtone.play();
-            if (NewOrChangedAlarm.vibNew) vibrator.vibrate(pattern, 5);
 
-        });
+            if (NewOrChangedAlarm.vibNew) {
+                vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                vibrator.vibrate(pattern, 3);
+            }
+
+            if (NewOrChangedAlarm.loudNew) {
+                audioManager = (AudioManager) getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+                audioManager.adjustVolume(AudioManager.MODE_NORMAL, NewOrChangedAlarm.progress);
+
+                Executors.newSingleThreadScheduledExecutor().scheduleAtFixedRate(() ->
+                        audioManager.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND), 0, 5, TimeUnit.SECONDS);
+            }
+
+            binding.offAlarm.setOnClickListener(off -> {
+                if (NewOrChangedAlarm.vibNew) vibrator.cancel();
+                ringtone.stop();
+
+                finish();
+            });
+
+            binding.outAlarm.setOnClickListener(out -> {
+                if (NewOrChangedAlarm.vibNew) vibrator.cancel();
+                if (ringtone != null && ringtone.isPlaying()) {
+                    ringtone.stop();
+                }
+                try {
+                    Thread.sleep((long) NewOrChangedAlarm.progressM * 1000 * 60);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                binding.text.setText(sdf.format(date.getTime()));
+                ringtone.play();
+                if (NewOrChangedAlarm.vibNew) vibrator.vibrate(pattern, 5);
+
+            });
+        }
+        else{
+            startActivity(new Intent(this, MainActivity.class));
+        }
     }
 }

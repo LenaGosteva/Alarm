@@ -1,9 +1,19 @@
 package com.example.alarm;
 
+import static android.app.Activity.RESULT_OK;
 import static com.example.alarm.Settings.uriOfMusic;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.core.content.SharedPreferencesKt;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -11,7 +21,6 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class CreateNewAlarm implements Serializable {
-
     public int minute;
     public int vol, hours, minutes;
     public String timeName = " ", days;
@@ -26,8 +35,10 @@ public class CreateNewAlarm implements Serializable {
     public boolean thursday;
     public boolean friday,saturday, sunday;
     public boolean more;
-    transient public String music;
+    public String music;
     public String textMessange;
+    public boolean alarmCanPlay;
+
 
     public CreateNewAlarm(int minute, int vol, int hours,
                           int minutes, String timeName,
@@ -36,7 +47,7 @@ public class CreateNewAlarm implements Serializable {
                           boolean vib, boolean on, boolean today,
                           boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday,
                           boolean saturday, boolean sunday, boolean more, String music,
-                          String textMessange) {
+                          String textMessange, boolean alarmCanPlay) {
         this.minute = minute;
         this.vol = vol;
         this.hours = hours;
@@ -56,41 +67,20 @@ public class CreateNewAlarm implements Serializable {
         this.saturday = saturday;
         this.sunday = sunday;
         this.more = more;
-        this.music = String.valueOf(music);
-        this.textMessange = textMessange;
-    }
-
-    public CreateNewAlarm (String timeName, int minute, int id, int vol, String textMessange,
-                           String days, long time, String music, boolean more, boolean vib, int hours, int minutes){
-        this.id = id;
-        this.days = days;
-        this.on = true;
-        this.today = false;
         this.music = music;
-        this.vol = vol;
-        this.saturday = false;
-        this.thursday = false;
-        this.monday = true;
-        this.wednesday = false;
-        this.sunday = false;
-        this.friday = false;
-        this.tuesday = false;
-        this.timeName = timeName;
         this.textMessange = textMessange;
-        this.minute = minute;
-        this.time = time;
-        this.more = more;
-        this.vib = vib;
-        this.hours = hours;
-        this.minutes = minutes;
-
+        this.alarmCanPlay = alarmCanPlay;
     }
+
+
     public CreateNewAlarm(){
         Calendar c = Calendar.getInstance();
         c.set(Calendar.HOUR_OF_DAY, 12);
         c.set(Calendar.MINUTE, 30);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
         this.id = (int)System.currentTimeMillis();
+        this.alarmCanPlay = false;
         this.days = "Tomorrow";
         this.saturday = false;
         this.thursday = false;
@@ -100,7 +90,7 @@ public class CreateNewAlarm implements Serializable {
         this.friday = false;
         this.tuesday = false;
         this.on = true;
-        this.music = String.valueOf(uriOfMusic);
+        this.music = uriOfMusic.toString();
         this.vol = 67;
 
         this.textMessange = "Hello";
@@ -108,4 +98,30 @@ public class CreateNewAlarm implements Serializable {
         this.time = 2;
         this.timeName = sdf.format(c.getTime());
     }
+    public CreateNewAlarm(Uri music){
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.HOUR_OF_DAY, 12);
+        c.set(Calendar.MINUTE, 30);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
+
+        this.id = (int)System.currentTimeMillis();
+        this.alarmCanPlay = false;
+        this.days = "Tomorrow";
+        this.saturday = false;
+        this.thursday = false;
+        this.monday = false;
+        this.wednesday = false;
+        this.sunday = false;
+        this.friday = false;
+        this.tuesday = false;
+        this.on = true;
+        this.music = music.toString();
+        this.vol = 67;
+
+        this.textMessange = "Hello";
+        this.minute = 2;
+        this.time = 2;
+        this.timeName = sdf.format(c.getTime());
+    }
+
 }

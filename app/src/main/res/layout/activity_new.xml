@@ -38,7 +38,7 @@
 
                 <Button
                     android:id="@+id/musicButton"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="#00000000" />
 
@@ -66,13 +66,14 @@
                 android:text="Установить на сегодня" />
 
             <TextView
-                android:id="@+id/text56"
+                android:id="@+id/repeat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="ПОВТОР ПО ДНЯМ НЕДЕЛИ" />
 
             <LinearLayout
+                android:id="@+id/mtrl_calendar_days_of_week"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"

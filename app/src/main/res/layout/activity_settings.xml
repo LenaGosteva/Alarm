@@ -5,44 +5,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Settings"
-    android:padding="40dp">
+    android:padding="40dp"
+    tools:context=".Settings">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="40dp"
         android:hint="НАСТРОЙКИ"
-        android:textColor="#75BFBCBC"/>
+        android:textColor="#75BFBCBC"
+        android:textSize="40dp" />
 
-    <Switch
-        android:id="@+id/theme"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Установить темную тему" />
+        android:layout_marginTop="20dp"
 
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TЁМНАЯ ТЕМА"
+            android:textSize="20sp" />
+
+        <Switch
+            android:id="@+id/theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:backgroundTint="#00000000" />
+    </LinearLayout>
 
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
+
         <Button
             android:id="@+id/ringtone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00000000"
+            android:textAlignment="gravity" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/buttons"
-            android:backgroundTintMode="@color/black"
-            android:text="Рингтон по умолчанию" />
+            android:layout_marginTop="20dp"
+            android:gravity="left"
+            android:text="РИНГТОН ПО УМОЛЧАНИЮ"
+            android:textSize="20sp" />
+
         <TextView
             android:id="@+id/nameOfCheckedMusic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="45dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginTop="45dp"
             android:textSize="15dp"
-            tools:hint="dfghjnbhjkkjhg"></TextView>
+            tools:hint="dfghjnbhjkkjhg" />
     </RelativeLayout>
 
     <LinearLayout
@@ -52,7 +74,6 @@
         android:orientation="vertical"
 
         >
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -78,10 +99,7 @@
                 android:background="@drawable/buttons"
                 android:minHeight="48dp"
                 android:onClick="back"
-                android:text="НАЗАД"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:text="НАЗАД" />
         </LinearLayout>
     </LinearLayout>
 

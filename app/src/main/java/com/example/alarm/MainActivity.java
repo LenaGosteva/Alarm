@@ -1,11 +1,17 @@
 package com.example.alarm;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.SharedPreferencesKt;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.alarm.databinding.ActivityMainBinding;
@@ -16,18 +22,20 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
+    SharedPreferences prefs;
     Intent intentNew;
     Adapter createNewAlarmAdapter;
-    public static final ArrayList<CreateNewAlarm> news = new ArrayList<CreateNewAlarm>() {
+    public static ArrayList<CreateNewAlarm> news = new ArrayList<CreateNewAlarm>() {
     };
     LinearLayoutManager linearLayoutManager;
+    Uri uri;
     final static int REQUEST_L = 9876;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
         super.onCreate(savedInstanceState);
 
         createNewAlarmAdapter = new Adapter(MainActivity.this, news);
@@ -35,9 +43,12 @@ public class MainActivity extends AppCompatActivity {
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(createNewAlarmAdapter);
 
+        Log.d("MUSICINSTOM", Settings.uriOfMusic.toString());
+
         Click click = new Click();
         binding.settings.setOnClickListener(click);
         binding.plusMain.setOnClickListener(click);
+
 
 
     }
@@ -80,7 +91,8 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.plusMain:
                     intentNew = new Intent(MainActivity.this, NewOrChangedAlarm.class);
-                    CreateNewAlarm c = new CreateNewAlarm();
+                    CreateNewAlarm c = new CreateNewAlarm(Settings.uriOfMusic);
+                    Log.d("MUSICINSTOM", c.music.toString());
                     intentNew.putExtra("Cr", c);
                     startActivityForResult(intentNew, REQUEST_L);
                     break;
