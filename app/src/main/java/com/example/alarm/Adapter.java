@@ -38,6 +38,8 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
     @Override
     public void onBindViewHolder(Adapter.CreateNewAlarmViewHolder holder,
                                  @SuppressLint("RecyclerView") int position) {
+        Log.d("ONTRUEAD", String.valueOf(list.get(position).timeName));
+
         holder.time.setText(list.get(position).timeName);
         holder.OnOff.setChecked(list.get(position).on);
         holder.message.setText(list.get(position).textMessange);
