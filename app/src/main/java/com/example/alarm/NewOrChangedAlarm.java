@@ -82,6 +82,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         binding.today.setChecked(newAlarm.today);
 
         binding.textMessage.setText(newAlarm.textMessange);
+        binding.nameOfCheckedMusic.setText(newAlarm.music);
 
         binding.line1.setChecked(newAlarm.monday);
         binding.line2.setChecked(newAlarm.tuesday);
@@ -110,10 +111,20 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         });
 
 
+
+
         binding.today.setOnClickListener(v ->{
             if(binding.today.isChecked()){
                 binding.repeat.setVisibility(View.GONE);
                 binding.mtrlCalendarDaysOfWeek.setVisibility(View.GONE);
+                binding.line1.setChecked(false);
+                binding.line2.setChecked(false);
+                binding.line3.setChecked(false);
+                binding.line4.setChecked(false);
+                binding.line5.setChecked(false);
+                binding.line6.setChecked(false);
+                binding.line7.setChecked(false);
+
             } else{
                 binding.repeat.setVisibility(View.VISIBLE);
                 binding.mtrlCalendarDaysOfWeek.setVisibility(View.VISIBLE);
@@ -173,6 +184,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
             materialTimePicker.show(getSupportFragmentManager(), "tag_picker");
         });
 
+        binding.line1.setOnClickListener(c ->{});
 
         binding.createdNewAlarm.setOnClickListener(c -> {
             if (alarm) {
@@ -224,6 +236,11 @@ public class NewOrChangedAlarm extends AppCompatActivity {
                         newAlarm.monday,  newAlarm.tuesday,  newAlarm.wednesday,  newAlarm.thursday,
                         newAlarm.friday, newAlarm.saturday,  newAlarm.sunday,binding.moreLoud.isChecked(),
                         CheckedMusic.toString(), binding.textMessage.getText().toString(), alarm);
+
+                if (!binding.line1.isChecked()&&!binding.line2.isChecked()
+                        &&!binding.line3.isChecked()&&!binding.line4.isChecked()
+                        &&!binding.line5.isChecked()&&!binding.line6.isChecked()
+                        &&!binding.line7.isChecked()) {
                     if (!binding.today.isChecked()) {
                         setAlarm(alarmManager, id, calendar.getTimeInMillis() + 1000 * 60 * 60 * 24);
                     } else if (binding.today.isChecked() && calendar.getTimeInMillis() < System.currentTimeMillis()) {
@@ -234,6 +251,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
                         setAlarm(alarmManager, id, calendar.getTimeInMillis());
                     }
+                }
 
             } else {
                 Toast.makeText(this, "Вы не можете установить будильник без времени", Toast.LENGTH_SHORT).show();
@@ -244,11 +262,19 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
 
     public void AlarmDay(int week, PendingIntent pendingIntent, AlarmManager alarmManager, String day) {
+        Calendar c = Calendar.getInstance();
         if (!days.contains(day)) days += day;
         if (week < Calendar.DAY_OF_WEEK)
-            calendar.set(Calendar.WEEK_OF_MONTH, Calendar.getInstance().get(Calendar.WEEK_OF_MONTH) + 1);
-        calendar.set(Calendar.DAY_OF_WEEK, week);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 7 * 24 * 60 * 60 * 1000, pendingIntent);
+            c.set(Calendar.WEEK_OF_YEAR, Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) +1);
+        c.set(Calendar.DAY_OF_WEEK, week);
+        c.setTime(calendar.getTime());
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), AlarmManager.INTERVAL_DAY*7, pendingIntent);
+        Toast.makeText(this, "Будильник установлен на " + sdf.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
+        Intent alarmInfoIntent = new Intent(this, MainActivity.class);
+        alarmInfoIntent.putExtra("NEW", alarmNew);
+        alarmInfoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        setResult(RESULT_OK, alarmInfoIntent);
+        finish();
     }
 
     public void setAlarm(AlarmManager alarmManager, int id, long time) {
@@ -283,7 +309,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
     PendingIntent getAlarmActionPendingIntent(int id) {
         Intent intent = new Intent(this, Alarm.class);
         intent.putExtra("Message", binding.textMessage.getText().toString());
-        intent.putExtra("ALARM", alarmNew.id);
+        intent.putExtra("ALARM", id);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         return PendingIntent.getActivity(this, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }

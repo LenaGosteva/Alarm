@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.plusMain:
                     intentNew = new Intent(MainActivity.this, NewOrChangedAlarm.class);
                     CreateNewAlarm c = new CreateNewAlarm(Settings.uriOfMusic);
-                    Log.d("MUSICINSTOM", c.music.toString());
+                    Log.d("MUSICINSTOM", c.music);
                     intentNew.putExtra("Cr", c);
                     startActivityForResult(intentNew, REQUEST_L);
                     break;

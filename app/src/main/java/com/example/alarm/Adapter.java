@@ -43,7 +43,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
         holder.message.setText(list.get(position).textMessange);
         holder.days.setText(list.get(position).days);
         holder.OnOff.setOnClickListener(b ->{
-            list.get(position).on = holder.OnOff.isChecked()?true:false;
+            list.get(position).on = holder.OnOff.isChecked();
             Log.d("ONTRUEAD", String.valueOf(list.get(position).on));
             Log.d("ONTRUEAD", String.valueOf(list.get(position).id));
 

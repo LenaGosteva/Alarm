@@ -20,7 +20,8 @@ public class Settings extends AppCompatActivity {
     ActivitySettingsBinding binding;
     public boolean th = false;
     public String music;
-    public static Uri uriOfMusic =  RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);;
+    public static Uri uriOfMusic =  RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +46,8 @@ public class Settings extends AppCompatActivity {
         binding.theme.setOnClickListener(b ->{
             AppCompatDelegate.setDefaultNightMode((binding.theme.isChecked())?AppCompatDelegate.MODE_NIGHT_YES:AppCompatDelegate.MODE_NIGHT_NO);
 //            th = binding.theme.isChecked()?true:false;
-            Log.d("DFGHJK", String.valueOf(binding.theme.isChecked()?true:false));
-            ed.putBoolean("theme",th = binding.theme.isChecked()?true:false);
+            Log.d("DFGHJK", String.valueOf(binding.theme.isChecked()));
+            ed.putBoolean("theme",th = binding.theme.isChecked());
             ed.apply();
 
         });
