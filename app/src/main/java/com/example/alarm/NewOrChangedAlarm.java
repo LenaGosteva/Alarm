@@ -114,9 +114,12 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         if (binding.today.isChecked()) {
             binding.repeat.setVisibility(View.GONE);
             binding.mtrlCalendarDaysOfWeek.setVisibility(View.GONE);
-
         }
-
+        if (newAlarm.sunday ||newAlarm.saturday ||newAlarm.friday ||newAlarm.thursday
+                ||newAlarm.wednesday ||newAlarm.tuesday
+                ||newAlarm.monday) {
+            binding.today.setVisibility(View.GONE);
+        }
 
         binding.today.setOnClickListener(v -> {
             if (binding.today.isChecked()) {
@@ -162,6 +165,8 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         binding.moreLoud.setChecked(newAlarm.more);
 
         alarm = newAlarm.alarmCanPlay;
+
+
         binding.alarmButton.setOnClickListener(n -> {
             materialTimePicker = new MaterialTimePicker.Builder()
                     .setTimeFormat(TimeFormat.CLOCK_24H)
@@ -191,38 +196,45 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
         binding.line1.setOnClickListener(c -> {
             newAlarm.monday = binding.line1.isChecked();
-            if (!days.contains("M ")) days += "M ";
+            binding.today.setVisibility(binding.line1.isChecked()?View.GONE:View.VISIBLE);
         });
         binding.line2.setOnClickListener(c -> {
             newAlarm.tuesday = binding.line2.isChecked();
-            if (!days.contains("TU ")) days += "TU ";
+            binding.today.setVisibility(binding.line2.isChecked()?View.GONE:View.VISIBLE);
+
         });
         binding.line3.setOnClickListener(c -> {
             newAlarm.wednesday = binding.line3.isChecked();
-            if (!days.contains("W ")) days += "W ";
+            binding.today.setVisibility(binding.line3.isChecked()?View.GONE:View.VISIBLE);
+
         });
         binding.line4.setOnClickListener(c -> {
             newAlarm.thursday = binding.line4.isChecked();
-            if (!days.contains("TH ")) days += "TH ";
-
+            binding.today.setVisibility(binding.line4.isChecked()?View.GONE:View.VISIBLE);
         });
         binding.line5.setOnClickListener(c -> {
             newAlarm.friday = binding.line5.isChecked();
-            if (!days.contains("F ")) days += "F ";
-
+            binding.today.setVisibility(binding.line5.isChecked()?View.GONE:View.VISIBLE);
         });
         binding.line6.setOnClickListener(c -> {
             newAlarm.saturday = binding.line6.isChecked();
-            if (!days.contains("SA ")) days += "SA ";
-
+            binding.today.setVisibility(binding.line6.isChecked()?View.GONE:View.VISIBLE);
         });
         binding.line7.setOnClickListener(c -> {
+            binding.today.setVisibility(binding.line7.isChecked()?View.GONE:View.VISIBLE);
             newAlarm.sunday = binding.line7.isChecked();
-            if (!days.contains("SU ")) days += "SU ";
-
         });
+
+
         binding.createdNewAlarm.setOnClickListener(c -> {
             if (alarm) {
+                if (binding.line1.isChecked()&&!days.contains("M ")) days += "M ";
+                if (binding.line2.isChecked()&&!days.contains("TU ")) days += "TU ";
+                if (binding.line3.isChecked()&&!days.contains("W ")) days += "W ";
+                if (binding.line4.isChecked()&& !days.contains("TH ")) days += "TH ";
+                if (binding.line5.isChecked()&&!days.contains("F ")) days += "F ";
+                if (binding.line6.isChecked()&&!days.contains("SA ")) days += "SA ";
+                if (binding.line7.isChecked() && !days.contains("SU ")) days += "SU ";
                 if (days.isEmpty()) days = binding.today.isChecked() ? "Today" : "Tomorrow";
                 AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmNew = new CreateNewAlarm(binding.minuteInt.getProgress(), binding.volumeControl.getProgress(),
@@ -276,15 +288,21 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
     public void AlarmDay(int week, PendingIntent pendingIntent, AlarmManager alarmManager) {
         Calendar c = Calendar.getInstance();
-        if (week < Calendar.DAY_OF_WEEK)
-            c.set(Calendar.WEEK_OF_YEAR, Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) + 1);
+
+        if (week < Calendar.DAY_OF_WEEK || calendar.getTimeInMillis()<System.currentTimeMillis()) {
+            c.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 7);
+        }
         c.set(Calendar.DAY_OF_WEEK, week);
         c.setTime(calendar.getTime());
-        Toast.makeText(this, "Будильник установлен на " + sdf.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
+
+        Toast.makeText(this, "Будильник установлен на " + sdf.format(c.getTime()), Toast.LENGTH_SHORT).show();
+
         Intent alarmInfoIntent = new Intent(this, MainActivity.class);
         alarmInfoIntent.putExtra("NEW", alarmNew);
+
         alarmInfoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+
         setResult(RESULT_OK, alarmInfoIntent);
         finish();
     }
