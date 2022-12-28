@@ -1,4 +1,4 @@
-package com.example.alarm.play;
+package com.example.alarm;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -9,8 +9,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.alarm.R;
-import com.example.alarm.databinding.ActivityMainBinding;
 import com.example.alarm.databinding.MathTrainerBinding;
 
 import java.util.concurrent.Executors;
@@ -20,7 +18,8 @@ import java.util.concurrent.TimeUnit;
 public class MathTrainer extends AppCompatActivity {
     private final Problem problem = new Problem();
 
-    private @NonNull MathTrainerBinding binding;
+    private @NonNull
+    MathTrainerBinding binding;
     boolean fl = false;
     int counter = 2;
     @Override

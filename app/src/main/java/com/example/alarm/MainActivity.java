@@ -4,14 +4,11 @@ package com.example.alarm;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
-import androidx.core.content.SharedPreferencesKt;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.alarm.databinding.ActivityMainBinding;
@@ -19,7 +16,6 @@ import com.example.alarm.databinding.ActivityMainBinding;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;

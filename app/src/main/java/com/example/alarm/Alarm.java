@@ -90,6 +90,7 @@ public class Alarm extends AppCompatActivity {
                 if (vibration) vibrator.cancel();
                 ringtone.stop();
 
+                startActivity(new Intent(this, MathTrainer.class));
                 finish();
             });
 

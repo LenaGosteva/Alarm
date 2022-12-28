@@ -1,4 +1,4 @@
-package com.example.alarm.play;
+package com.example.alarm;
 
 import java.util.Random;
 

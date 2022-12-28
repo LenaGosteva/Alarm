@@ -20,7 +20,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class CreateNewAlarm implements Serializable{
+public class
+CreateNewAlarm implements Serializable{
     public int minute;
     public int vol, hours, minutes;
     public String timeName = " ", days;
