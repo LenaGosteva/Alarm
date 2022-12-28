@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class CreateNewAlarm implements Serializable {
+public class CreateNewAlarm implements Serializable{
     public int minute;
     public int vol, hours, minutes;
     public String timeName = " ", days;
@@ -37,7 +37,7 @@ public class CreateNewAlarm implements Serializable {
     public boolean more;
     public String music;
     public String textMessange;
-    public boolean alarmCanPlay;
+    public boolean alarmCanPlay, alarm;
 
 
     public CreateNewAlarm(int minute, int vol, int hours,
@@ -47,7 +47,7 @@ public class CreateNewAlarm implements Serializable {
                           boolean vib, boolean on, boolean today,
                           boolean monday, boolean tuesday, boolean wednesday, boolean thursday, boolean friday,
                           boolean saturday, boolean sunday, boolean more, String music,
-                          String textMessange, boolean alarmCanPlay) {
+                          String textMessange, boolean alarmCanPlay, boolean alarm) {
         this.minute = minute;
         this.vol = vol;
         this.hours = hours;
@@ -70,6 +70,7 @@ public class CreateNewAlarm implements Serializable {
         this.music = music;
         this.textMessange = textMessange;
         this.alarmCanPlay = alarmCanPlay;
+        this.alarm = alarm;
     }
 
 
@@ -81,6 +82,8 @@ public class CreateNewAlarm implements Serializable {
 
         this.id = (int)System.currentTimeMillis();
         this.alarmCanPlay = false;
+        this.hours = c.get(Calendar.HOUR_OF_DAY);
+        this.minutes = c.get(Calendar.MINUTE);
         this.days = "Tomorrow";
         this.saturday = false;
         this.thursday = false;
@@ -91,7 +94,7 @@ public class CreateNewAlarm implements Serializable {
         this.tuesday = false;
         this.on = true;
         this.music = uriOfMusic.toString();
-        this.vol = 67;
+        this.vol = 10;
 
         this.textMessange = "Hello";
         this.minute = 2;
@@ -106,6 +109,8 @@ public class CreateNewAlarm implements Serializable {
 
         this.id = (int)System.currentTimeMillis();
         this.alarmCanPlay = false;
+        this.hours = c.get(Calendar.HOUR_OF_DAY);
+        this.minutes = c.get(Calendar.MINUTE);
         this.days = "Tomorrow";
         this.saturday = false;
         this.thursday = false;
@@ -116,12 +121,13 @@ public class CreateNewAlarm implements Serializable {
         this.tuesday = false;
         this.on = true;
         this.music = music.toString();
-        this.vol = 67;
+        this.vol = 10;
 
         this.textMessange = "Hello";
         this.minute = 2;
         this.time = 2;
         this.timeName = sdf.format(c.getTime());
     }
+
 
 }

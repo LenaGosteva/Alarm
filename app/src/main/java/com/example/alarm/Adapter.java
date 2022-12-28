@@ -2,6 +2,9 @@ package com.example.alarm;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -40,12 +43,13 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
                                  @SuppressLint("RecyclerView") int position) {
         Log.d("ONTRUEAD", String.valueOf(list.get(position).timeName));
 
+        final CreateNewAlarm alarm = list.get(position);
         holder.time.setText(list.get(position).timeName);
         holder.OnOff.setChecked(list.get(position).on);
         holder.message.setText(list.get(position).textMessange);
         holder.days.setText(list.get(position).days);
         holder.OnOff.setOnClickListener(b ->{
-            list.get(position).on = holder.OnOff.isChecked();
+            alarm.on = holder.OnOff.isChecked();
             Log.d("ONTRUEAD", String.valueOf(list.get(position).on));
             Log.d("ONTRUEAD", String.valueOf(list.get(position).id));
 
@@ -54,9 +58,35 @@ public class Adapter extends RecyclerView.Adapter<Adapter.CreateNewAlarmViewHold
 
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(activity, NewOrChangedAlarm.class);
-            intent.putExtra("Cr", list.get(position));
+            intent.putExtra("Cr", alarm);
             activity.startActivityForResult(intent, REQUEST_L);
         });
+        holder.itemView.setOnLongClickListener(lon ->{
+            int index = list.indexOf(alarm);
+            if (index < 0) return false;
+            AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+            builder.setMessage("Удалить будильник?");
+
+            builder.setPositiveButton("ДА", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                    list.remove(alarm);
+                    notifyItemRemoved(index);
+                }
+            });
+            builder.setNegativeButton("НЕТ", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.dismiss();
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+            return true;
+
+
+        });
+
+
 
     }
 

@@ -19,16 +19,15 @@ import com.example.alarm.databinding.ActivityMainBinding;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
     SharedPreferences prefs;
     Intent intentNew;
     Adapter createNewAlarmAdapter;
-    public static ArrayList<CreateNewAlarm> news = new ArrayList<CreateNewAlarm>() {
-    };
+    public static ArrayList<CreateNewAlarm> news = new ArrayList<CreateNewAlarm>() {};
     LinearLayoutManager linearLayoutManager;
-    Uri uri;
     final static int REQUEST_L = 9876;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
         prefs = getSharedPreferences("test", Context.MODE_PRIVATE);
         super.onCreate(savedInstanceState);
-
         createNewAlarmAdapter = new Adapter(MainActivity.this, news);
         linearLayoutManager = new LinearLayoutManager(this);
         binding.recyclerView.setLayoutManager(linearLayoutManager);
