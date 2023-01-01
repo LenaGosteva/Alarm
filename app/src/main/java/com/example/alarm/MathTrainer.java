@@ -42,7 +42,7 @@ public class MathTrainer extends AppCompatActivity {
             stopTime = System.nanoTime();
             long deltaTime = stopTime - startTime;
             if(fl) {
-                if (deltaTime < 2_000_000_000L *60) {
+                if (deltaTime < 120_000_000_000L) {
                     binding.text.setBackground(getDrawable(R.drawable.buttons));
                     binding.text1.setBackground(getDrawable(R.drawable.buttons));
                     binding.text2.setBackground(getDrawable(R.drawable.buttons));
@@ -75,12 +75,10 @@ public class MathTrainer extends AppCompatActivity {
         });
     }
 
-    @Override
     public void onBackPressed() {
         stopTime = System.nanoTime();
-        if (stopTime - startTime < 2_000_000_000*60){
-            super.onBackPressed();
-        }else{
+        long deltaTime = stopTime - startTime;
+        if (deltaTime > 120_000_000_000L){
             finish();
         }
     }
