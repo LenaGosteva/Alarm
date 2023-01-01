@@ -75,13 +75,16 @@ public class MathTrainer extends AppCompatActivity {
         });
     }
 
-    public void onBackPressed() {
-        stopTime = System.nanoTime();
-        long deltaTime = stopTime - startTime;
-        if (deltaTime > 120_000_000_000L && howManyGener>=30){
-            finish();
-        }
-    }
+//
+//    НЕ ПОРТЬ ЖИЗНЬ ПОКА! ПОТОМ РАЗБЛОКИРУЮ
+//
+//    public void onBackPressed() {
+//        stopTime = System.nanoTime();
+//        long deltaTime = stopTime - startTime;
+//        if (deltaTime > 120_000_000_000L && howManyGener>=30){
+//            finish();
+//        }
+//    }
 
     private void gener(){
         howManyGener += 1;

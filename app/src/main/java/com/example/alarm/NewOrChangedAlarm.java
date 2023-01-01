@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,13 +30,13 @@ public class NewOrChangedAlarm extends AppCompatActivity {
     MaterialTimePicker materialTimePicker;
     public boolean canPlay;
     AudioManager audioManager;
+    static MediaPlayer player;
     protected static int progressM = 2, progress;
     public String days = "";
 
     CreateNewAlarm newAlarm, alarmNew;
     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm", Locale.getDefault());
     Calendar calendar;
-    Intent intent;
     ActivityNewBinding binding;
     public static Uri CheckedMusic = Settings.uriOfMusic;
 
@@ -46,6 +47,8 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         setContentView(binding.getRoot());
         super.onCreate(savedInstanceState);
 
+
+        player = MediaPlayer.create(getApplicationContext(), R.raw.music);
         newAlarm = (CreateNewAlarm) getIntent().getSerializableExtra("Cr");
         if (newAlarm == null) {
             newAlarm = new CreateNewAlarm(Settings.uriOfMusic);
@@ -70,8 +73,10 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         binding.musicButton.setOnClickListener(h -> {
-            intent = new Intent("android.intent.action.AUDIO_PICKER");
-            startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI), 1);
+            Intent intent_upload = new Intent();
+            intent_upload.setType("audio/*");
+            intent_upload.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(intent_upload, 1);
         });
 
 
@@ -131,13 +136,13 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         });
 
         binding.volumeControl.setMin(0);
-        binding.volumeControl.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
+        binding.volumeControl.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
         binding.volumeControl.setProgress(newAlarm.vol);
         binding.volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
-                audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, progress, audioManager.getStreamMaxVolume(AudioManager.STREAM_SYSTEM));
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, progress, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
                 binding.volumeControl.setProgress(progress);
             }
 
@@ -300,7 +305,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
             c.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), Calendar.DAY_OF_MONTH, Calendar.HOUR_OF_DAY, Calendar.MINUTE);
         }
         Toast.makeText(this, "Будильник установлен на " + sdf.format(c.getTime()) , Toast.LENGTH_SHORT).show();
-//        Toast.makeText(this, "Будильник установлен на " + sdf.format(c.getTime())+ " "+ Calendar.DAY_OF_MONTH+" "+ c.get(Calendar.DAY_OF_MONTH), Toast.LENGTH_LONG).show();
+
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
 
         Intent alarmInfoIntent = new Intent(this, MainActivity.class);
@@ -328,11 +333,13 @@ public class NewOrChangedAlarm extends AppCompatActivity {
                 case 1:
                     Uri uri = intent.getData();
                     CheckedMusic = uri;
-                    binding.nameOfCheckedMusic.setText(uri.getPath());
+                    binding.nameOfCheckedMusic.setText(String.format("%s", uri));
+                    player = MediaPlayer.create(this, uri);
+
                     break;
             }
         } else {
-            CheckedMusic = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);
+            player = MediaPlayer.create(this, R.raw.music);
         }
     }
 

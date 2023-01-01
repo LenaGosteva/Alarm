@@ -6,19 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alarm.databinding.ActivityAlarmBinding;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -68,22 +63,12 @@ public class Alarm extends AppCompatActivity {
                 date = Calendar.getInstance();
                 binding.text.setText(sdf.format(date.getTime()));
             }, 0, 1, TimeUnit.SECONDS);
-            ringtone = new MediaPlayer();
-            ringtone = MediaPlayer.create(this, NewOrChangedAlarm.CheckedMusic);
-            try {
-                ringtone.prepare();
-            } catch (Exception e) {
-                e.printStackTrace();
+            ringtone = NewOrChangedAlarm.player;
+
+            if (ringtone == null){
+                ringtone = MediaPlayer.create(this, R.raw.music);
             }
 
-            if (ringtone == null) {
-                ringtone = MediaPlayer.create(this, R.raw.music);
-                try {
-                    ringtone.prepare();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
             audioManager.adjustVolume(AudioManager.MODE_NORMAL, progress);
 
             ringtone.start();

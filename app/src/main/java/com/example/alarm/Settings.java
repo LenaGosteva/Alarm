@@ -3,6 +3,7 @@ package com.example.alarm;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,9 +19,10 @@ import com.example.alarm.databinding.ActivitySettingsBinding;
 
 public class Settings extends AppCompatActivity {
     ActivitySettingsBinding binding;
+    public static MediaPlayer defaultMusic;
     public boolean th = false;
     public String music;
-    public static Uri uriOfMusic = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+    public static Uri uriOfMusic = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +55,10 @@ public class Settings extends AppCompatActivity {
         });
 
         binding.ringtone.setOnClickListener(v ->{
-            startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI), 1);
-        });
+            Intent intent_upload = new Intent();
+            intent_upload.setType("audio/*");
+            intent_upload.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(intent_upload, 1);        });
 
     }
 
@@ -70,11 +74,12 @@ public class Settings extends AppCompatActivity {
                 case 1:
                     uriOfMusic = intent.getData();
                     binding.nameOfCheckedMusic.setText(intent.getData().getPath());
-                    music =  uriOfMusic.toString();
+                    music = uriOfMusic.toString();
+                    defaultMusic = MediaPlayer.create(getApplicationContext(), uriOfMusic);
                     break;
             }
         } else {
-            uriOfMusic = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);
+            defaultMusic = MediaPlayer.create(getApplicationContext(), R.raw.music);
         }
     }
 }

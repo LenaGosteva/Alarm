@@ -1,19 +1,8 @@
 package com.example.alarm;
 
-import static android.app.Activity.RESULT_OK;
 import static com.example.alarm.Settings.uriOfMusic;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.media.RingtoneManager;
 import android.net.Uri;
-import android.util.Log;
-import android.widget.Toast;
-
-import androidx.core.content.SharedPreferencesKt;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
