@@ -10,6 +10,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.Toast;
@@ -241,7 +242,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
                         newAlarm.alarm = true;
                         Toast.makeText(this, "Вы не можете установить будильник на сегодня на время " + sdf.format(calendar.getTime()) + ", т.к. это время уже прошло", Toast.LENGTH_SHORT).show();
                     } else if (binding.today.isChecked() && (calendar.getTimeInMillis() >= System.currentTimeMillis())) {
-
+                        Log.e("DFGJ", NewOrChangedAlarm.CheckedMusic.toString());
                         setAlarm(alarmManager, id, calendar.getTimeInMillis());
                     }
                 } else {

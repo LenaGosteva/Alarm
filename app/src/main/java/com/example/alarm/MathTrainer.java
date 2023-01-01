@@ -1,8 +1,14 @@
 package com.example.alarm;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.Notification;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.textclassifier.ConversationActions;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,16 +30,52 @@ public class MathTrainer extends AppCompatActivity {
     int counter = 2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        long startTime = System.nanoTime();
         fl = false;
         super.onCreate(savedInstanceState);
         binding = MathTrainerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         gener();
         click click = new click();
-        binding.next.setOnClickListener(click);
         binding.text.setOnClickListener(click);
         binding.text1.setOnClickListener(click);
         binding.text2.setOnClickListener(click);
+
+        binding.next.setOnClickListener(v ->{
+            long b = System.nanoTime();
+            long deltaTime = b - startTime;
+            if(fl) {
+                if (deltaTime < 2_000_000_000L *60) {
+                    binding.text.setBackground(getDrawable(R.drawable.buttons));
+                    binding.text1.setBackground(getDrawable(R.drawable.buttons));
+                    binding.text2.setBackground(getDrawable(R.drawable.buttons));
+                    gener();
+                    counter = 3;
+                }else{
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("Уже прошло две минуты. Вы можете выйти из игры. Хотите?");
+
+                    builder.setPositiveButton("ДА", (dialog, id) -> {
+                        startActivity(new Intent(MathTrainer.this, MainActivity.class));
+                        finish();
+                    });
+                    builder.setNegativeButton("НЕТ", (dialog, id) -> {
+                        dialog.dismiss();
+                        gener();
+                    });
+
+                    builder.create().show();
+                }
+            }
+            else{
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Вы не можете нажать эту кнопку, введите ответ!");
+
+                builder.setNeutralButton("OK", (dialog, id) -> dialog.dismiss());
+
+                builder.create().show();
+            }
+        });
     }
 
     @SuppressLint("DefaultLocale")
@@ -70,26 +112,17 @@ public class MathTrainer extends AppCompatActivity {
                 binding.text2.setText(String.format("%.2f", b));
                 break;
         }
+
+
     }
+
+
     class click implements View.OnClickListener{
 
         @SuppressLint({"ResourceAsColor", "UseCompatLoadingForDrawables", "NonConstantResourceId", "DefaultLocale"})
         @Override
         public void onClick(View view){
             switch (view.getId()){
-                case R.id.next:
-
-                    if(fl) {
-                        binding.text.setBackground(getDrawable(R.drawable.buttons));
-                        binding.text1.setBackground(getDrawable(R.drawable.buttons));
-                        binding.text2.setBackground(getDrawable(R.drawable.buttons));
-                        gener();
-                        counter = 3;
-                    }
-                    else{
-                        Toast.makeText(MathTrainer.this, "Вы не можете нажать эту кнопку, введите ответ!", Toast.LENGTH_SHORT).show();
-                    }
-                    break;
                 case R.id.text1:
                 case R.id.text:
                 case R.id.text2:
@@ -106,8 +139,16 @@ public class MathTrainer extends AppCompatActivity {
                             Toast.makeText(MathTrainer.this, "У Вас осталось "+ counter+" попыток", Toast.LENGTH_SHORT).show();
                         }
                         if (counter==0){
-                            Toast.makeText(MathTrainer.this, "У Вас кончились жизни \n Попробуйте другой пример", Toast.LENGTH_SHORT).show();
+                            AlertDialog.Builder builder = new AlertDialog.Builder(MathTrainer.this);
+                            builder.setMessage("Упс! Кажется, жизни кончились((");
+
+                            builder.setNeutralButton("OK", (dialog, id) -> {
+                                dialog.dismiss();
+                                gener();
+                            });
+                            builder.create().show();
                             gener();
+
                         }
                         final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
                         executorService.schedule(() -> {
@@ -116,8 +157,6 @@ public class MathTrainer extends AppCompatActivity {
                             binding.text2.setBackground(getDrawable(R.drawable.buttons));
                         }, 1, TimeUnit.SECONDS);
                     }
-
-
                     break;
             }
         }

@@ -33,7 +33,7 @@
         android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:layout_below="@+id/problem"
         android:layout_marginTop="10dp"
         android:orientation="horizontal"
@@ -74,13 +74,13 @@
 
     <Button
         android:id="@+id/next"
-        android:layout_width="180dp"
-        android:layout_height="60dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/layout"
         android:layout_centerInParent="true"
         android:layout_marginTop="40dp"
         android:background="@drawable/buttons"
         android:text="ДАЛЬШЕ"
         android:textColor="#090808"
-        android:textSize="25sp" />
+        android:textSize="20sp" />
 </RelativeLayout>
