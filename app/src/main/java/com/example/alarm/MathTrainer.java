@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MathTrainer extends AppCompatActivity {
     private final Problem problem = new Problem();
-
+    private static int howManyGener = 0;
     private @NonNull
     MathTrainerBinding binding;
     boolean fl = false;
@@ -42,7 +42,7 @@ public class MathTrainer extends AppCompatActivity {
             stopTime = System.nanoTime();
             long deltaTime = stopTime - startTime;
             if(fl) {
-                if (deltaTime < 120_000_000_000L) {
+                if (deltaTime < 120_000_000_000L || howManyGener<30) {
                     binding.text.setBackground(getDrawable(R.drawable.buttons));
                     binding.text1.setBackground(getDrawable(R.drawable.buttons));
                     binding.text2.setBackground(getDrawable(R.drawable.buttons));
@@ -78,13 +78,13 @@ public class MathTrainer extends AppCompatActivity {
     public void onBackPressed() {
         stopTime = System.nanoTime();
         long deltaTime = stopTime - startTime;
-        if (deltaTime > 120_000_000_000L){
+        if (deltaTime > 120_000_000_000L && howManyGener>=30){
             finish();
         }
     }
 
     private void gener(){
-
+        howManyGener += 1;
         int pos = problem.getRandom(1, 4);
         binding.problem.setText(problem.getProblem());
         float a = problem.getNotResult();
