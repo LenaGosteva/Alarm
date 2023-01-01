@@ -70,7 +70,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
         binding.musicButton.setOnClickListener(h -> {
-            intent = new Intent("android.intent.action.RINGTONE_PICKER");
+            intent = new Intent("android.intent.action.AUDIO_PICKER");
             startActivityForResult(new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI), 1);
         });
 

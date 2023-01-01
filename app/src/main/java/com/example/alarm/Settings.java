@@ -20,7 +20,7 @@ public class Settings extends AppCompatActivity {
     ActivitySettingsBinding binding;
     public boolean th = false;
     public String music;
-    public static Uri uriOfMusic =  RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);
+    public static Uri uriOfMusic = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

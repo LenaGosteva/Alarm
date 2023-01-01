@@ -1,14 +1,9 @@
 package com.example.alarm;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.Notification;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.view.textclassifier.ConversationActions;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,9 +23,11 @@ public class MathTrainer extends AppCompatActivity {
     MathTrainerBinding binding;
     boolean fl = false;
     int counter = 2;
+    long stopTime;
+    long startTime = System.nanoTime();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        long startTime = System.nanoTime();
+
         fl = false;
         super.onCreate(savedInstanceState);
         binding = MathTrainerBinding.inflate(getLayoutInflater());
@@ -42,8 +39,8 @@ public class MathTrainer extends AppCompatActivity {
         binding.text2.setOnClickListener(click);
 
         binding.next.setOnClickListener(v ->{
-            long b = System.nanoTime();
-            long deltaTime = b - startTime;
+            stopTime = System.nanoTime();
+            long deltaTime = stopTime - startTime;
             if(fl) {
                 if (deltaTime < 2_000_000_000L *60) {
                     binding.text.setBackground(getDrawable(R.drawable.buttons));
@@ -78,7 +75,16 @@ public class MathTrainer extends AppCompatActivity {
         });
     }
 
-    @SuppressLint("DefaultLocale")
+    @Override
+    public void onBackPressed() {
+        stopTime = System.nanoTime();
+        if (stopTime - startTime < 2_000_000_000*60){
+            super.onBackPressed();
+        }else{
+            finish();
+        }
+    }
+
     private void gener(){
 
         int pos = problem.getRandom(1, 4);
@@ -119,7 +125,6 @@ public class MathTrainer extends AppCompatActivity {
 
     class click implements View.OnClickListener{
 
-        @SuppressLint({"ResourceAsColor", "UseCompatLoadingForDrawables", "NonConstantResourceId", "DefaultLocale"})
         @Override
         public void onClick(View view){
             switch (view.getId()){
@@ -129,6 +134,7 @@ public class MathTrainer extends AppCompatActivity {
                     String text =  ((TextView)view).getText().toString();
                     if(text.equals(String.format("%.2f",problem.getResult()))){
                         view.setBackground(getDrawable(R.drawable.buttons_true));
+
                         fl = true;
                     }else{
                         view.setBackground(getDrawable(R.drawable.buttons_false));
