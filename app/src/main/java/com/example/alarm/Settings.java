@@ -60,13 +60,13 @@ public class Settings extends AppCompatActivity {
             intent_upload.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(intent_upload, 1);        });
 
+        binding.backL.setOnClickListener(b->{
+            Log.d("MUSICINS", uriOfMusic.toString());
+            startActivity(new Intent(this, MainActivity.class));
+
+        });
     }
 
-    public void back(View view) {
-        Log.d("MUSICINS", uriOfMusic.toString());
-        startActivity(new Intent(this, MainActivity.class));
-
-        }
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         if (resultCode == RESULT_OK) {

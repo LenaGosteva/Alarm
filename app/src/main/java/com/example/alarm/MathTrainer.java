@@ -2,8 +2,13 @@ package com.example.alarm;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.method.KeyListener;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,14 +20,17 @@ import com.example.alarm.databinding.MathTrainerBinding;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MathTrainer extends AppCompatActivity {
     private final Problem problem = new Problem();
     private static int howManyGener = 0;
+    MediaPlayer musicPlay;
     private @NonNull
     MathTrainerBinding binding;
     boolean fl = false;
     int counter = 2;
+    long timeOfPass = System.nanoTime();
     long stopTime;
     long startTime = System.nanoTime();
     @Override
@@ -37,8 +45,40 @@ public class MathTrainer extends AppCompatActivity {
         binding.text.setOnClickListener(click);
         binding.text1.setOnClickListener(click);
         binding.text2.setOnClickListener(click);
+        musicPlay = MediaPlayer.create(this, R.raw.music);
+
+
+        binding.list.setOnClickListener(s->{
+            AtomicInteger howManyPassed = new AtomicInteger();
+
+            Thread t = new Thread(()->{
+                try{
+                    while (true) {
+                        Thread.sleep(1000);
+                        if (System.nanoTime() - timeOfPass >= 20 * 1_000_000_000L) {
+                            if (!musicPlay.isPlaying()) {
+                                musicPlay.start();
+                                howManyPassed.set(howManyGener);
+                            }
+                            if (howManyGener - howManyPassed.get() > 2) {
+                                musicPlay.stop();
+                            }
+                        }
+                    }
+                }catch (Exception e){
+                }
+            });
+            t.start();
+        });
+
+
+
+
+
 
         binding.next.setOnClickListener(v ->{
+            timeOfPass = System.nanoTime();
+
             stopTime = System.nanoTime();
             long deltaTime = stopTime - startTime;
             if(fl) {
@@ -85,6 +125,7 @@ public class MathTrainer extends AppCompatActivity {
 //            finish();
 //        }
 //    }
+
 
     private void gener(){
         howManyGener += 1;
@@ -168,4 +209,6 @@ public class MathTrainer extends AppCompatActivity {
             }
         }
     }
+
+
 }

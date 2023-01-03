@@ -230,18 +230,22 @@
                 <Button
                     android:id="@+id/createdNewAlarm"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="60dp"
+                    android:textSize="12sp"
                     android:background="@drawable/buttons"
-                    android:text="СОХРАНИТЬ" />
+                    android:text="  СОХРАНИТЬ  "
+                    />
 
                 <Button
                     android:id="@+id/backToMain"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="30dp"
+                    android:textSize="12sp"
+
                     android:background="@drawable/buttons"
-                    android:text="НАЗАД" />
+                    android:text="  НАЗАД  " />
             </LinearLayout>
 
         </LinearLayout>
