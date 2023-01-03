@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_gravity="center_horizontal"
+    android:layout_margin="20dp"
     android:padding="20dp"
     tools:context=".MainActivity">
 
@@ -33,7 +35,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="center"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="30dp">
 
         <androidx.recyclerview.widget.RecyclerView

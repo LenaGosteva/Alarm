@@ -302,14 +302,16 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         if (week < Calendar.DAY_OF_WEEK && calendar.getTimeInMillis() < System.currentTimeMillis()) {
             c.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH) + 7, newAlarm.hours, newAlarm.minutes);
         } else {
-            c.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), Calendar.DAY_OF_MONTH, Calendar.HOUR_OF_DAY, Calendar.MINUTE);
-        }
-        Toast.makeText(this, "Будильник установлен на " + sdf.format(c.getTime()) , Toast.LENGTH_SHORT).show();
+            c.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), newAlarm.hours, newAlarm.minutes);
+            Toast.makeText(this, "Будильник установлен на " + sdf.format(c.getTime()), Toast.LENGTH_SHORT).show();
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+        }
+
 
         Intent alarmInfoIntent = new Intent(this, MainActivity.class);
         alarmInfoIntent.putExtra("NEW", alarmNew);
+        alarmInfoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
         setResult(RESULT_OK, alarmInfoIntent);
         finish();
     }

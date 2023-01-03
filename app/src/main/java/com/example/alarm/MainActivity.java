@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         binding.recyclerView.setLayoutManager(linearLayoutManager);
         binding.recyclerView.setAdapter(createNewAlarmAdapter);
 
+        news.add(new CreateNewAlarm());
         Log.d("MUSICINSTOM", Settings.uriOfMusic.toString());
 
         Click click = new Click();

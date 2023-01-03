@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="150dp"
+    android:layout_gravity="center_horizontal"
+    android:layout_height="wrap_content"
+    android:background="@drawable/buttons"
     android:padding="10dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/buttons"
-        android:padding="5dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="10dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp" >
 
             <TextView
                 android:id="@+id/time"
@@ -35,21 +33,14 @@
                 android:id="@+id/days"
                 android:layout_width="150dp"
                 android:layout_height="20dp"
-                android:layout_below="@+id/textM"
                 android:textSize="15dp"
                 tools:hint="jvuvb" />
         </LinearLayout>
+        <Switch
+            android:id="@+id/OnOff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center_vertical"/>
 
-
-    </LinearLayout>
-
-    <Switch
-        android:id="@+id/OnOff"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="25dp"
-        android:foregroundGravity="center_vertical"
-        android:gravity="right" />
-</RelativeLayout>
+</LinearLayout>
