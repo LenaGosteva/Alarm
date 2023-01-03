@@ -20,7 +20,7 @@ import com.example.alarm.databinding.ActivitySettingsBinding;
 public class Settings extends AppCompatActivity {
     ActivitySettingsBinding binding;
     public static MediaPlayer defaultMusic;
-    public boolean th = false;
+    public boolean th;
     public String music;
     public static Uri uriOfMusic = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALL);
 
@@ -29,15 +29,15 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        th = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO? true:false;
         SharedPreferences.Editor ed = getSharedPreferences("test", Context.MODE_PRIVATE).edit();
         SharedPreferences preferences = getSharedPreferences("test", Context.MODE_PRIVATE);
 
         uriOfMusic = Uri.parse(preferences.getString("NAME_OF_MUSIC", uriOfMusic.toString()));
         binding.nameOfCheckedMusic.setText(uriOfMusic.getPath());
-        Log.e("DFGHJK1", String.valueOf(preferences.getBoolean("theme", false)));
+        Log.e("DFGHJK1", String.valueOf(preferences.getBoolean("theme", th)));
 
-        binding.theme.setChecked(preferences.getBoolean("theme", false));
+        binding.theme.setChecked(preferences.getBoolean("theme", th));
         binding.save.setOnClickListener(save -> {
             ed.putString("NAME_OF_MUSIC", music);
             ed.apply();
