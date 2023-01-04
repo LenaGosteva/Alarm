@@ -1,5 +1,7 @@
 package com.example.alarm;
 
+import static java.util.Calendar.DAY_OF_MONTH;
+
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -298,12 +300,11 @@ public class NewOrChangedAlarm extends AppCompatActivity {
 
 
     public void AlarmDay(int week, PendingIntent pendingIntent, AlarmManager alarmManager) {
-        Calendar c = Calendar.getInstance();
         if (week < Calendar.DAY_OF_WEEK && calendar.getTimeInMillis() < System.currentTimeMillis()) {
-            c.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH) + 7, newAlarm.hours, newAlarm.minutes);
+            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(DAY_OF_MONTH) + 7, newAlarm.hours, newAlarm.minutes);
         } else {
-            c.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), newAlarm.hours, newAlarm.minutes);
-            Toast.makeText(this, "Будильник установлен на " + sdf.format(c.getTime()), Toast.LENGTH_SHORT).show();
+            calendar.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(DAY_OF_MONTH), newAlarm.hours, newAlarm.minutes);
+            Toast.makeText(this, "Будильник установлен на " + sdf.format(calendar.getTime()), Toast.LENGTH_SHORT).show();
 
         }
 
@@ -311,7 +312,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
         Intent alarmInfoIntent = new Intent(this, MainActivity.class);
         alarmInfoIntent.putExtra("NEW", alarmNew);
         alarmInfoIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY * 7, pendingIntent);
         setResult(RESULT_OK, alarmInfoIntent);
         finish();
     }

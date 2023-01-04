@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Alarm"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:keepScreenOn="true"
+    android:shape="rectangle"
+    tools:context=".Alarm">
 
     <TextView
         android:id="@+id/text"
@@ -16,21 +18,22 @@
         android:gravity="center"
         android:textSize="90dp"
         tools:hint="10.02" />
+
     <TextView
         android:id="@+id/messageT"
-        android:layout_marginTop="20dp"
-        android:padding="20dp"
-        android:textColor="@color/black"
         android:layout_width="match_parent"
-        android:layout_height="100dp"></TextView>
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:padding="20dp"></TextView>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="40dp"
-        android:layout_marginTop="60dp"
         android:layout_gravity="center"
+        android:layout_marginTop="60dp"
+        android:gravity="center_horizontal"
         android:orientation="horizontal"
-        android:gravity="center_horizontal">
+        android:padding="40dp">
 
         <Button
             android:id="@+id/offAlarm"
@@ -48,8 +51,6 @@
             android:layout_marginLeft="15dp"
             android:background="@drawable/buttons"
             android:text="ОТЛОЖИТЬ "
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             tools:ignore="OnClick" />
     </LinearLayout>
 </LinearLayout>

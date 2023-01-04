@@ -4,6 +4,7 @@
     package="com.example.alarm">
     <permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
     <permission android:name="android.permission.READ_MEDIA_AUDIO"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
@@ -21,18 +22,25 @@
         <activity
             android:name=".MathTrainer"
             android:exported="false">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.HOME" />
+            </intent-filter>
         </activity>
 
         <activity
             android:name=".Settings"
-            android:exported="false" />
+            android:exported="false"
+            />
         <activity
             android:name=".NewOrChangedAlarm"
             android:exported="false">
         </activity>
         <activity
             android:name=".Alarm"
-            android:exported="false" />
+            android:exported="false"
+            />
         <activity
             android:name=".MainActivity"
             android:exported="true">

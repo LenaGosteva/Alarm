@@ -4,11 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.method.KeyListener;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +16,7 @@ import com.example.alarm.databinding.MathTrainerBinding;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MathTrainer extends AppCompatActivity {
@@ -48,6 +45,7 @@ public class MathTrainer extends AppCompatActivity {
         musicPlay = MediaPlayer.create(this, R.raw.music);
 
 
+        AtomicBoolean d = new AtomicBoolean(true);
         binding.list.setOnClickListener(s->{
             AtomicInteger howManyPassed = new AtomicInteger();
 
@@ -56,12 +54,14 @@ public class MathTrainer extends AppCompatActivity {
                     while (true) {
                         Thread.sleep(1000);
                         if (System.nanoTime() - timeOfPass >= 20 * 1_000_000_000L) {
-                            if (!musicPlay.isPlaying()) {
+                            if (!musicPlay.isPlaying()&& d.get()) {
                                 musicPlay.start();
                                 howManyPassed.set(howManyGener);
+                                d.set(false);
                             }
                             if (howManyGener - howManyPassed.get() > 2) {
                                 musicPlay.stop();
+                                d.set(true);
                             }
                         }
                     }
@@ -121,11 +121,14 @@ public class MathTrainer extends AppCompatActivity {
 //    public void onBackPressed() {
 //        stopTime = System.nanoTime();
 //        long deltaTime = stopTime - startTime;
+//        startTime = System.nanoTime();
 //        if (deltaTime > 120_000_000_000L && howManyGener>=30){
 //            finish();
 //        }
 //    }
+    public void startLockTask (){
 
+    }
 
     private void gener(){
         howManyGener += 1;

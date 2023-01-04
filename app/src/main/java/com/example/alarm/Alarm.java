@@ -8,7 +8,11 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.text.Editable;
+import android.text.method.KeyListener;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -21,7 +25,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 
-public class Alarm extends AppCompatActivity {
+public class Alarm extends AppCompatActivity{
 
     MediaPlayer ringtone;
     Calendar date;
@@ -114,4 +118,10 @@ public class Alarm extends AppCompatActivity {
             startActivity(new Intent(this, MainActivity.class));
         }
     }
+
+
+    public void onBackPressed() {
+
+    }
+
 }

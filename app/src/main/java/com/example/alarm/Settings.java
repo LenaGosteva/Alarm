@@ -29,7 +29,7 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        th = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO? true:false;
+        th = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO;
         SharedPreferences.Editor ed = getSharedPreferences("test", Context.MODE_PRIVATE).edit();
         SharedPreferences preferences = getSharedPreferences("test", Context.MODE_PRIVATE);
 
