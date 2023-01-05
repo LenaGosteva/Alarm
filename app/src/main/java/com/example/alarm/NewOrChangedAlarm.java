@@ -137,7 +137,7 @@ public class NewOrChangedAlarm extends AppCompatActivity {
             }
         });
 
-        binding.volumeControl.setMin(0);
+        binding.volumeControl.setMin(10);
         binding.volumeControl.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC));
         binding.volumeControl.setProgress(newAlarm.vol);
         binding.volumeControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -245,11 +245,10 @@ public class NewOrChangedAlarm extends AppCompatActivity {
                         && !binding.line7.isChecked()) {
                     if (!binding.today.isChecked()) {
                         setAlarm(alarmManager, id, calendar.getTimeInMillis() + 1000 * 60 * 60 * 24);
-                    } else if (binding.today.isChecked() && calendar.getTimeInMillis() < System.currentTimeMillis()) {
+                    } else if (binding.today.isChecked() && calendar.getTimeInMillis() <= System.currentTimeMillis()) {
                         newAlarm.alarm = true;
                         Toast.makeText(this, "Вы не можете установить будильник на сегодня на время " + sdf.format(calendar.getTime()) + ", т.к. это время уже прошло", Toast.LENGTH_SHORT).show();
-                    } else if (binding.today.isChecked() && (calendar.getTimeInMillis() >= System.currentTimeMillis())) {
-                        Log.e("DFGJ", NewOrChangedAlarm.CheckedMusic.toString());
+                    } else if (binding.today.isChecked() && (calendar.getTimeInMillis() > System.currentTimeMillis())) {
                         setAlarm(alarmManager, id, calendar.getTimeInMillis());
                     }
                 } else {

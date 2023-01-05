@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="Theme.Day" parent="Theme.MaterialComponents.DayNight">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#CDD48FFD</item>
+        <item name="colorPrimary">@color/main</item>
         <item name="colorPrimaryVariant">@color/black</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
@@ -12,7 +12,6 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?colorPrimary</item>
-        <item name="android:textColor">#222023</item>
 
         <!-- Customize your theme here. -->
     </style>

@@ -4,11 +4,11 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.alarm.databinding.MathTrainerBinding;
@@ -23,7 +23,6 @@ public class MathTrainer extends AppCompatActivity {
     private final Problem problem = new Problem();
     private static int howManyGener = 0;
     MediaPlayer musicPlay;
-    private @NonNull
     MathTrainerBinding binding;
     boolean fl = false;
     int counter = 2;
@@ -129,7 +128,15 @@ public class MathTrainer extends AppCompatActivity {
     public void startLockTask (){
 
     }
+    @Override
+    public boolean onKeyDown( int keyCode, KeyEvent event) {
+        return true;
+    }
 
+    @Override
+    public boolean onKeyUp( int keyCode, KeyEvent event) {
+        return true;
+    }
     private void gener(){
         howManyGener += 1;
         int pos = problem.getRandom(1, 4);

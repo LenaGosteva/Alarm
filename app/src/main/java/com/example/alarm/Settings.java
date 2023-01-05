@@ -29,13 +29,12 @@ public class Settings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySettingsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        th = AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_NO;
         SharedPreferences.Editor ed = getSharedPreferences("test", Context.MODE_PRIVATE).edit();
         SharedPreferences preferences = getSharedPreferences("test", Context.MODE_PRIVATE);
 
         uriOfMusic = Uri.parse(preferences.getString("NAME_OF_MUSIC", uriOfMusic.toString()));
         binding.nameOfCheckedMusic.setText(uriOfMusic.getPath());
-        Log.e("DFGHJK1", String.valueOf(preferences.getBoolean("theme", th)));
+        th = !(AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES);
 
         binding.theme.setChecked(preferences.getBoolean("theme", th));
         binding.save.setOnClickListener(save -> {

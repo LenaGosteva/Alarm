@@ -25,7 +25,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 
-public class Alarm extends AppCompatActivity{
+public class Alarm extends AppCompatActivity {
 
     MediaPlayer ringtone;
     Calendar date;
@@ -122,6 +122,16 @@ public class Alarm extends AppCompatActivity{
 
     public void onBackPressed() {
 
+    }
+
+    @Override
+    public boolean onKeyDown( int keyCode, KeyEvent event) {
+        return true;
+    }
+
+    @Override
+    public boolean onKeyUp( int keyCode, KeyEvent event) {
+        return true;
     }
 
 }
